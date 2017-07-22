@@ -106,8 +106,8 @@ class UserAH(AbstractBaseUser):
         md5_email = hashlib.md5(self.email.encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/' + md5_email + '?d=identicon'
 
-    # def get_absolute_url(self):
-    #     return reverse('users:detail', kwargs={'email': self.email})
+    def get_absolute_url(self):
+        return reverse('users:detail', kwargs={'pk': self.id})
 
     name = models.CharField(max_length=255, null=True, blank=True)
     hangout_email = models.EmailField(null=True, blank=True)
