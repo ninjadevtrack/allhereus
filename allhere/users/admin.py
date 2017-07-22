@@ -2,38 +2,41 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import User
+from .models import UserAH
 
 
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
-        model = User
+        model = UserAH
 
 
 class MyUserCreationForm(UserCreationForm):
 
     error_message = UserCreationForm.error_messages.update({
-        'duplicate_username': 'This username has already been taken.'
+        'duplicate_username': 'This email has already been taken.'
     })
 
     class Meta(UserCreationForm.Meta):
-        model = User
+        model = UserAH
 
     def clean_username(self):
-        username = self.cleaned_data["username"]
+        email = self.cleaned_data["email"]
         try:
-            User.objects.get(username=username)
-        except User.DoesNotExist:
-            return username
+            UserAH.objects.get(email=email)
+        except UserAH.DoesNotExist:
+            return email
         raise forms.ValidationError(self.error_messages['duplicate_username'])
 
-
-@admin.register(User)
+@admin.register(UserAH)
 class MyUserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
-    fieldsets = (
-            ('User Profile', {'fields': ('name',)}),
-    ) + AuthUserAdmin.fieldsets
-    list_display = ('username', 'name', 'is_superuser')
-    search_fields = ['name']
+    fieldsets = AuthUserAdmin.fieldsets + (
+            ('User Profile', {'fields': ('email',
+                                        'school'
+                                        )}),
+    )
+    list_display = ('email', 'name','school')
+    search_fields = ['name', 'email']
+    filter_horizontal = ('teams', )
+    list_filter = ('email', 'school') 

@@ -3,14 +3,14 @@ from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import User
+from .models import UserAH
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
+    model = UserAH
     # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    slug_field = 'email'
+    slug_url_kwarg = 'email'
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -18,28 +18,28 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self):
         return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+                       kwargs={'pk': self.request.user.id})
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
 
-    fields = ['name', ]
+    fields = ['name', 'school', 'position', 'grade', 'content_area']
 
     # we already imported User in the view code above, remember?
-    model = User
+    model = UserAH
 
     # send the user back to their own page after a successful update
     def get_success_url(self):
         return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+                       kwargs={'pk': self.request.user.id})
 
     def get_object(self):
         # Only get the User record for the user making the request
-        return User.objects.get(username=self.request.user.username)
+        return UserAH.objects.get(pk=self.request.user.id)
 
 
 class UserListView(LoginRequiredMixin, ListView):
-    model = User
+    model = UserAH
     # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    slug_field = 'pk'
+    slug_url_kwarg = 'pk'

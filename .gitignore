@@ -57,6 +57,8 @@ node_modules/
 
 # virtual environments
 .env
+venv
+env
 
 # User-uploaded media
 allhere/media/
