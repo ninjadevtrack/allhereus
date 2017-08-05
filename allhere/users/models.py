@@ -85,7 +85,7 @@ class UserAH(AbstractBaseUser):
         return self.email
 
     def __str__(self):
-        return self.email
+        return self.name
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -111,7 +111,12 @@ class UserAH(AbstractBaseUser):
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'pk': self.id})
 
-    name = models.CharField(max_length=255, null=True, blank=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+
+    @property
+    def name(self):
+        return self.first_name + ' ' + self.last_name
 
     # agreed to platform TOS and Privacy Policy
     agree_terms = models.BooleanField(default=False)
@@ -228,18 +233,20 @@ class Student(BaseModel):
     last_name = models.CharField(max_length=255)
     # this is the student and/or student's family's spoken language
     language = models.CharField(max_length=255)
-    
+
     email = models.EmailField(
-                    verbose_name='email address',
-                    max_length=255,
-                    unique=True,
-                )
-    
+        verbose_name='email address',
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True
+    )
+
     Grade = models.CharField(max_length=2, choices=(
         ('PK', 'Pre-Kindergarten'),
-        ('K', 'Kindergarten'), ('1', '1st Grade'), ('2', '2nd Grade'),('3', '3rd Grade'),('4', '4th Grade'),('5', '5th Grade'),
+        ('K', 'Kindergarten'), ('1', '1st Grade'), ('2', '2nd Grade'), ('3', '3rd Grade'), ('4', '4th Grade'), ('5', '5th Grade'),
         ('6', '6th Grade'), ('7', '7th Grade'), ('8', '8th Grade'),
-        ('9', '9th Grade'), ('10', '10th Grade'), ('11', '11th Grade'),('12', '12th Grade'),('O', 'Other')
+        ('9', '9th Grade'), ('10', '10th Grade'), ('11', '11th Grade'), ('12', '12th Grade'), ('O', 'Other')
     ), null=True, blank=True)
 
     group = models.ForeignKey(Group)
@@ -248,21 +255,24 @@ class Student(BaseModel):
 
     @property
     def name(self):
-        return f'{first_name} {last_name}'
+        return self.first_name + ' ' + self.last_name
     
+    def __str__(self):
+        return self.name
 
-class Attendance(models.Model):
+
+class Attendance(BaseModel):
     """Captures info around absences and tardies
 
     Note: This class doesn't inherit from the BaseModel like others
     """
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField()
     absence = models.PositiveIntegerField(default=0)
     tardies = models.PositiveIntegerField(default=0)
 
     student = models.ForeignKey(Student)
 
-class CheckIns(BaseModel):
+class CheckIn(BaseModel):
     """
     Teachers lead checkins with a student's family.
 
@@ -274,7 +284,7 @@ class CheckIns(BaseModel):
         2) text response of things learned
         3) text with ways to improve situation 
     """
-
+    date = models.DateTimeField()
     # this is the person leading the meeting
     teacher = models.ForeignKey('UserAH')
     # this is the student that the meeting is on the behalf of
@@ -287,7 +297,7 @@ class CheckIns(BaseModel):
     format = models.CharField(max_length=1, choices=(
         ('P', 'Phone'), ('V', 'Visit'), ('I', 'In-Person')
     ), null=True, blank=True)
-    
+
     # should_notify_school_admin
     should_notify_school_admin = models.BooleanField(default=False)
 
@@ -295,13 +305,14 @@ class CheckIns(BaseModel):
     success_score = models.PositiveIntegerField(
         default=1,
         validators=[MaxValueValidator(10), MinValueValidator(1)]
-     )
+    )
+
     # What is the most important thing you learned about your mentee at your most recent mentoring check-in?
     things_learned = models.TextField(null=True, blank=True)
     # What could have made this mentor check-in better? *
     how_better = models.TextField(null=True, blank=True)
 
-class CheckInsFormText(BaseModel):
+class CheckInFormText(BaseModel):
     """
     This field will allow groups to customize the form text.
 
@@ -309,8 +320,8 @@ class CheckInsFormText(BaseModel):
     prompts differently
     """
 
-    group = models.ForeignKey(group)
-    
+    group = models.ForeignKey('Group')
+
     success_score_text = models.TextField(null=True, blank=True)
     things_learned_text = models.TextField(null=True, blank=True)
     how_better_text = models.TextField(null=True, blank=True)

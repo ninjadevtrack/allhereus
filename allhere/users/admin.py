@@ -2,10 +2,11 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import UserAH
+from .models import UserAH, Student, Group, School, Team, Attendance, CheckIn, CheckInFormText
 
 
 class MyUserChangeForm(UserChangeForm):
+
     class Meta(UserChangeForm.Meta):
         model = UserAH
 
@@ -27,19 +28,20 @@ class MyUserCreationForm(UserCreationForm):
             return email
         raise forms.ValidationError(self.error_messages['duplicate_username'])
 
+
 @admin.register(UserAH)
 class MyUserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     fieldsets = AuthUserAdmin.fieldsets + (
-            ('User Profile', {'fields': ('email',
-                                        'school'
-                                        )}),
+        ('User Profile', {'fields': ('email',
+                                     'school'
+                                     )}),
     )
-    list_display = ('email', 'name','school')
+    list_display = ('email', 'name', 'school')
     search_fields = ['name', 'email']
     filter_horizontal = ('teams', )
-    list_filter = ('email', 'school') 
+    list_filter = ('email', 'school')
 
 admin.site.register(Student, admin.ModelAdmin)
 
@@ -48,5 +50,6 @@ admin.site.register(School, admin.ModelAdmin)
 admin.site.register(Team, admin.ModelAdmin)
 
 admin.site.register(Attendance, admin.ModelAdmin)
-admin.site.register(CheckIns, admin.ModelAdmin)
-admin.site.register(CheckInsFormText, admin.ModelAdmin)
+admin.site.register(CheckIn, admin.ModelAdmin)
+admin.site.register(CheckInFormText, admin.ModelAdmin)
+

@@ -1,10 +1,16 @@
-from django.core.urlresolvers import reverse
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+from django.shortcuts import render
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import DetailView, ListView, RedirectView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import UserAH
+from .models import UserAH, CheckIn, Team
 
+def dashboard(request):
+    recent_checkins = CheckIn.objects.order_by('-date')[:5]
+    context = {'recent_checkins': recent_checkins}
+    return render(request, 'dashboard.html', context)
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = UserAH
@@ -43,3 +49,27 @@ class UserListView(LoginRequiredMixin, ListView):
     # These next two lines tell the view to index lookups by username
     slug_field = 'pk'
     slug_url_kwarg = 'pk'
+
+
+
+class CheckInList(LoginRequiredMixin, ListView):
+    model = CheckIn
+
+
+class CheckInCreate(LoginRequiredMixin, CreateView):
+    model = CheckIn
+    fields = ['date', 'teacher', 'student', 'status', 'format',
+              'should_notify_school_admin', 'success_score', 'things_learned', 'how_better']
+    success_url = reverse_lazy('users:checkin_list')
+
+
+class CheckInUpdate(LoginRequiredMixin, UpdateView):
+    model = CheckIn
+    fields = ['date', 'teacher', 'student', 'status', 'format',
+              'should_notify_school_admin', 'success_score', 'things_learned', 'how_better']
+    success_url = reverse_lazy('users:checkin_list')
+
+
+class CheckInDelete(LoginRequiredMixin, DeleteView):
+    model = CheckIn
+    success_url = reverse_lazy('users:checkin_list')
