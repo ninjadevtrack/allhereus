@@ -40,3 +40,13 @@ class MyUserAdmin(AuthUserAdmin):
     search_fields = ['name', 'email']
     filter_horizontal = ('teams', )
     list_filter = ('email', 'school') 
+
+admin.site.register(Student, admin.ModelAdmin)
+
+admin.site.register(Group, admin.ModelAdmin)
+admin.site.register(School, admin.ModelAdmin)
+admin.site.register(Team, admin.ModelAdmin)
+
+admin.site.register(Attendance, admin.ModelAdmin)
+admin.site.register(CheckIns, admin.ModelAdmin)
+admin.site.register(CheckInsFormText, admin.ModelAdmin)

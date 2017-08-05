@@ -3,6 +3,7 @@ import hashlib
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -60,6 +61,7 @@ class UserAH(AbstractBaseUser):
     )
 
     username = models.CharField(max_length=255, null=True, blank=True)
+    active = models.BooleanField(default=True)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -110,7 +112,6 @@ class UserAH(AbstractBaseUser):
         return reverse('users:detail', kwargs={'pk': self.id})
 
     name = models.CharField(max_length=255, null=True, blank=True)
-    hangout_email = models.EmailField(null=True, blank=True)
 
     # agreed to platform TOS and Privacy Policy
     agree_terms = models.BooleanField(default=False)
@@ -121,9 +122,9 @@ class UserAH(AbstractBaseUser):
     grade = models.CharField(max_length=255, null=True, blank=True)
     content_area = models.CharField(max_length=255, null=True, blank=True)
 
-    is_group_admin = models.BooleanField(default=False)
-    is_coach = models.BooleanField(default=False)
-    is_teacher = models.BooleanField(default=False)
+    is_manager = models.BooleanField(default=False)
+    is_leader = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=True)
 
     avatar = models.CharField(max_length=255, blank=True, null=True)
 
@@ -144,14 +145,18 @@ class Group(BaseModel):
         members within a group.
     """
     name = models.CharField(max_length=255)
-    state = models.CharField(max_length=50)
-    email_root = models.CharField(max_length=255)
-
-    is_school = models.BooleanField(default=False)
-    is_district = models.BooleanField(default=False)
-    is_university = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    state = models.CharField(max_length=2, null=True, blank=True)
+    email_contact = models.EmailField(
+                                verbose_name='email contact',
+                                max_length=255,
+                                unique=False,
+                            )
+    
     is_charter = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
+
+    notes = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -166,18 +171,18 @@ class Group(BaseModel):
         return UserAH.objects.filter(group=self)
 
 
-class Schools(BaseModel):
+class School(BaseModel):
     """ Schools are sets of users within a Group
 
     Schools can only be associated w/ one Group
     Users can be part of multiple schools
-
-    Example:
-        For K12 groups, a teacher may be on a grade-level team as well as a
-        content-based team.
     """
     name = models.CharField(max_length=255)
+    active = models.BooleanField(default=True)
+    address = models.CharField(max_length=255)
     description = models.TextField()
+    active = models.BooleanField(default=True)
+
     group = models.ForeignKey(Group)
 
     def __str__(self):
@@ -199,6 +204,7 @@ class Team(BaseModel):
         content-based team.
     """
     name = models.CharField(max_length=255)
+    active = models.BooleanField(default=True)
     description = models.TextField()
     group = models.ForeignKey(Group)
 
@@ -209,3 +215,102 @@ class Team(BaseModel):
         if self.id is None:
             return '<Team ' + self.name + ' (unsaved)>'
         return '<Team ' + str(self.id) + ' ' + 'self.name'
+
+
+class Student(BaseModel):
+    """Represents a Student
+
+    Note: These individuals never log in
+    """
+    student_id = models.CharField(max_length=255)
+    active = models.BooleanField(default=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    # this is the student and/or student's family's spoken language
+    language = models.CharField(max_length=255)
+    
+    email = models.EmailField(
+                    verbose_name='email address',
+                    max_length=255,
+                    unique=True,
+                )
+    
+    Grade = models.CharField(max_length=2, choices=(
+        ('PK', 'Pre-Kindergarten'),
+        ('K', 'Kindergarten'), ('1', '1st Grade'), ('2', '2nd Grade'),('3', '3rd Grade'),('4', '4th Grade'),('5', '5th Grade'),
+        ('6', '6th Grade'), ('7', '7th Grade'), ('8', '8th Grade'),
+        ('9', '9th Grade'), ('10', '10th Grade'), ('11', '11th Grade'),('12', '12th Grade'),('O', 'Other')
+    ), null=True, blank=True)
+
+    group = models.ForeignKey(Group)
+    school = models.ForeignKey(School)
+    team = models.ForeignKey(Team)
+
+    @property
+    def name(self):
+        return f'{first_name} {last_name}'
+    
+
+class Attendance(models.Model):
+    """Captures info around absences and tardies
+
+    Note: This class doesn't inherit from the BaseModel like others
+    """
+    date = models.DateTimeField(auto_now_add=True)
+    absence = models.PositiveIntegerField(default=0)
+    tardies = models.PositiveIntegerField(default=0)
+
+    student = models.ForeignKey(Student)
+
+class CheckIns(BaseModel):
+    """
+    Teachers lead checkins with a student's family.
+
+    These checkins can happen in-person at the school, over the phone, or with
+    the teacher visiting the family somewhere.
+
+    It results in 3 entites:
+        1) a 1-10 score
+        2) text response of things learned
+        3) text with ways to improve situation 
+    """
+
+    # this is the person leading the meeting
+    teacher = models.ForeignKey('UserAH')
+    # this is the student that the meeting is on the behalf of
+    student = models.ForeignKey('Student')
+    # what is the current status of the checkin
+    status = models.CharField(max_length=1, choices=(
+        ('C', 'Completed'), ('U', 'Unreachable'), ('M', 'Left Message')
+    ), null=True, blank=True)
+    # how was the checkin conducted
+    format = models.CharField(max_length=1, choices=(
+        ('P', 'Phone'), ('V', 'Visit'), ('I', 'In-Person')
+    ), null=True, blank=True)
+    
+    # should_notify_school_admin
+    should_notify_school_admin = models.BooleanField(default=False)
+
+    # (1 to 10) How successful was the recent check-in you had with your mentee?
+    success_score = models.PositiveIntegerField(
+        default=1,
+        validators=[MaxValueValidator(10), MinValueValidator(1)]
+     )
+    # What is the most important thing you learned about your mentee at your most recent mentoring check-in?
+    things_learned = models.TextField(null=True, blank=True)
+    # What could have made this mentor check-in better? *
+    how_better = models.TextField(null=True, blank=True)
+
+class CheckInsFormText(BaseModel):
+    """
+    This field will allow groups to customize the form text.
+
+    For some groups, the admins/teachers may want to word the form's
+    prompts differently
+    """
+
+    group = models.ForeignKey(group)
+    
+    success_score_text = models.TextField(null=True, blank=True)
+    things_learned_text = models.TextField(null=True, blank=True)
+    how_better_text = models.TextField(null=True, blank=True)
