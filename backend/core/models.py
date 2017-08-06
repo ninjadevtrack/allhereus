@@ -29,6 +29,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     """Custom user model that only requires an email and password"""
     email = models.EmailField(unique=True)
 
+    # Only use a single name because not everyone has both a first and last name
+    full_name = models.CharField(max_length=255, null=True, blank=True)
+
     # required for admin
     is_active = models.BooleanField(
         default=True,
@@ -48,10 +51,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     objects = MyUserManager()
 
     def get_full_name(self):
-        return self.email
+        return self.full_name
 
     def get_short_name(self):
-        return self.email
+        return self.full_name
 
     # required for admin
     def has_perm(self, perm, obj=None):
@@ -70,5 +73,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         md5_email = hashlib.md5(self.email.encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{md5_email}?d=identicon'
 
+    @property
+    def name(self):
+        return self.full_name
+
     def __str__(self):
-        return self.email
+        return f'{self.full_name} <{self.email}>'

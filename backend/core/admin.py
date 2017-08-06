@@ -68,6 +68,7 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('last_updated', 'date_joined', 'image_tag')
     fieldsets = (
         (None, {'fields': ('email', 'password', 'image_tag')}),
+        ('Personal Info', {'fields': ('full_name',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                        'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'last_updated', 'date_joined')})
