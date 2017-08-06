@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.utils.html import format_html
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AdminPasswordChangeForm
@@ -59,9 +60,14 @@ class UserChangeForm(forms.ModelForm):
 
 # https://github.com/django/django/blob/8346680e1ca4a8ddc8190baf3f5f944f6418d5cf/django/contrib/auth/admin.py#L42-L207
 class UserAdmin(BaseUserAdmin):
-    readonly_fields = ('last_updated', 'date_joined')
+    # https://stackoverflow.com/a/40715745/3555105
+    def image_tag(self, obj):
+        return format_html(f'<img src="{obj.avatar_url}" />')
+    image_tag.short_description = 'User Avatar'
+
+    readonly_fields = ('last_updated', 'date_joined', 'image_tag')
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'image_tag')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                        'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'last_updated', 'date_joined')})
@@ -85,7 +91,6 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
-
 
 
 # Now register the new UserAdmin...

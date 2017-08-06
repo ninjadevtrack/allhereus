@@ -1,3 +1,5 @@
+import hashlib
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
@@ -62,6 +64,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         """Does the user have permissions to view the app `app_label`?"""
         # TODO: Add permissions
         return True
+
+    @property
+    def avatar_url(self):
+        md5_email = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        return f'https://www.gravatar.com/avatar/{md5_email}?d=identicon'
 
     def __str__(self):
         return self.email
