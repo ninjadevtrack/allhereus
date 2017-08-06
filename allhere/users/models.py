@@ -210,7 +210,7 @@ class Team(BaseModel):
     """
     name = models.CharField(max_length=255)
     active = models.BooleanField(default=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     group = models.ForeignKey(Group)
 
     def __str__(self):
