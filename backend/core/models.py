@@ -37,7 +37,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         help_text="Designates that this user can access the admin site.",
     )
 
-    created = models.DateField(auto_now_add=True)
+    date_joined = models.DateField(auto_now_add=True)
     last_updated = models.DateField(auto_now=True)
 
     USERNAME_FIELD = 'email'
