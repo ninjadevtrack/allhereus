@@ -71,7 +71,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     @property
     def avatar_url(self):
         md5_email = hashlib.md5(self.email.encode('utf-8')).hexdigest()
-        return f'https://www.gravatar.com/avatar/{md5_email}?d=identicon'
+        # we only want avatars rated G(`r=g`) https://secure.gravatar.com/site/implement/images/
+        return f'https://www.gravatar.com/avatar/{md5_email}?d=identicon&r=g'
 
     @property
     def name(self):
