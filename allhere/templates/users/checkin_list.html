@@ -11,6 +11,9 @@
 <div class="row" style="padding:25px;">
 	<div class="col">
 		<h1>Checkins</h1>
+		{% if request.user.is_manager %}
+		<span class="badge badge-danger badge-pill">Manager View</span>
+		{% endif %}
 	</div>
 	<div class="col">
 		<a href="{% url 'users:checkin_new' %}" class="float-right btn btn-warning">+ New</a>

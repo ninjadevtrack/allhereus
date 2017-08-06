@@ -55,6 +55,15 @@ class UserListView(LoginRequiredMixin, ListView):
 class CheckInList(LoginRequiredMixin, ListView):
     model = CheckIn
 
+    def get_queryset(self):
+        """Returns relevant checkins for Students on teacher's teams or 
+        if user is the manager, all of them for the Group"""
+        if self.request.user.is_manager:
+            return CheckIn.objects.filter(student__group=self.request.user.group)
+        else:
+            print(self.request.user.teams.count())
+            return CheckIn.objects.filter(student__team__in=self.request.user.teams.all())
+
 
 class CheckInCreate(LoginRequiredMixin, CreateView):
     model = CheckIn
