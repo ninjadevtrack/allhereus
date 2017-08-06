@@ -29,20 +29,27 @@ class MyUserCreationForm(UserCreationForm):
         raise forms.ValidationError(self.error_messages['duplicate_username'])
 
 
-@admin.register(UserAH)
-class MyUserAdmin(AuthUserAdmin):
-    form = MyUserChangeForm
-    add_form = MyUserCreationForm
-    fieldsets = AuthUserAdmin.fieldsets + (
-        ('User Profile', {'fields': ('email',
-                                     'school'
-                                     )}),
-    )
-    list_display = ('email', 'name', 'school')
-    search_fields = ['name', 'email']
-    filter_horizontal = ('teams', )
-    list_filter = ('email', 'school')
+# @admin.register(UserAH)
+# class MyUserAdmin(AuthUserAdmin):
+#     form = MyUserChangeForm
+#     add_form = MyUserCreationForm
+#     fieldsets = (
+#         ('User Profile', {'fields': ('email',
+#                                      'school',
+#                                      'position', 'content_area',
+#                                      'is_manager', 'is_leader', 'is_teacher',
+#                                      'avatar', 'login_count', 'group', 'teams',
+                                     
+#                                      )}),
+#     )
 
+#     exclude = ('date_joined', 'is_superuser', 'user_permissions', 'is_staff', 'password')
+#     list_display = ('email', 'name', 'school')
+#     search_fields = ['name', 'email']
+#     filter_horizontal = ('teams', )
+#     list_filter = ('email', 'school')
+
+admin.site.register(UserAH, admin.ModelAdmin)
 admin.site.register(Student, admin.ModelAdmin)
 
 admin.site.register(Group, admin.ModelAdmin)
