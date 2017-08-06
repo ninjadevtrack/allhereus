@@ -59,10 +59,12 @@ class UserChangeForm(forms.ModelForm):
 
 # https://github.com/django/django/blob/8346680e1ca4a8ddc8190baf3f5f944f6418d5cf/django/contrib/auth/admin.py#L42-L207
 class UserAdmin(BaseUserAdmin):
+    readonly_fields = ('last_updated', 'created')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                        'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'last_updated', 'created')})
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
