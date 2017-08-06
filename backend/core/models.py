@@ -32,7 +32,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         default=True,
         help_text="Designates that this user account should be considered active. Users marked as inactive cannot login."
     )
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(
+        default=False,
+        help_text="Designates that this user can access the admin site.",
+    )
 
     created = models.DateField(auto_now_add=True)
     last_updated = models.DateField(auto_now=True)
