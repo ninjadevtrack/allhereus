@@ -3,10 +3,12 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import UserAH, CheckIn, Team
 
+@login_required
 def dashboard(request):
     recent_checkins = CheckIn.objects.order_by('-date')[:5]
     context = {'recent_checkins': recent_checkins}
@@ -20,11 +22,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
+    """TODO Not sure what this does."""
     permanent = False
 
     def get_redirect_url(self):
-        return reverse('users:detail',
-                       kwargs={'pk': self.request.user.id})
+        return reverse('')
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
