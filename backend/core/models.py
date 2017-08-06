@@ -18,7 +18,7 @@ class MyUserManager(BaseUserManager):
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(email=email, password=password)
-        user.is_admin = True
+        user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
@@ -28,8 +28,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
 
     # required for admin
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Designates that this user account should be considered active. Users marked as inactive cannot login."
+    )
+    is_staff = models.BooleanField(default=False)
 
     created = models.DateField(auto_now_add=True)
     last_updated = models.DateField(auto_now=True)
@@ -56,11 +59,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         """Does the user have permissions to view the app `app_label`?"""
         # TODO: Add permissions
         return True
-
-    # required for admin
-    @property
-    def is_staff(self):
-        return self.is_admin
 
     def __str__(self):
         return self.email
