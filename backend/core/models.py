@@ -1,6 +1,8 @@
 import hashlib
 
 from django.db import models
+from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class MyUserManager(BaseUserManager):
@@ -29,8 +31,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     """Custom user model that only requires an email and password"""
     email = models.EmailField(unique=True)
 
-    # Only use a single name because not everyone has both a first and last name
-    full_name = models.CharField(max_length=255, null=True, blank=True)
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
 
     # required for admin
     is_active = models.BooleanField(
@@ -51,10 +53,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     objects = MyUserManager()
 
     def get_full_name(self):
-        return self.full_name
+        return f'{self.first_name} {self.last_name}'
 
     def get_short_name(self):
-        return self.full_name
+        return self.first_name
 
     # required for admin
     def has_perm(self, perm, obj=None):
@@ -76,7 +78,118 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def name(self):
-        return self.full_name
+        return self.get_full_name()
 
     def __str__(self):
-        return f'{self.full_name} <{self.email}>'
+        return f'{self.name} <{self.email}>'
+
+class CommonInfo(models.Model):
+    """Abstract model for storing common model info"""
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Student(CommonInfo):
+    """Student"""
+    student_id = models.CharField(
+        max_length=255, help_text='School identifier for student.')
+    is_active = models.BooleanField(
+        default=True, help_text='Designates that this student should be considered active.',)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    language = models.CharField(max_length=255, help_text="Student/family's spoken language.",)
+    email = models.EmailField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='Contact email for student.',
+    )
+
+    # grade level of student
+    grade = models.CharField(
+        max_length=2,
+        choices=(
+            ('PK', 'Pre-Kindergarten'),
+            ('K', 'Kindergarten'),
+            ('1', '1st Grade'),
+            ('2', '2nd Grade'),
+            ('3', '3rd Grade'),
+            ('4', '4th Grade'),
+            ('5', '5th Grade'),
+            ('6', '6th Grade'),
+            ('7', '7th Grade'),
+            ('8', '8th Grade'),
+            ('9', '9th Grade'),
+            ('10', '10th Grade'),
+            ('11', '11th Grade'),
+            ('12', '12th Grade'),
+            ('O', 'Other')
+        ),
+        null=True,
+        blank=True,
+        help_text='Grade level of student.',
+    )
+
+    @property
+    def name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f'{self.name} <{self.student_id}>'
+
+class CheckIn(CommonInfo):
+    """CheckIn by teacher with student's family.
+
+    In-school contact, phone call, or in-person visit.
+
+    Three results:
+    - a 1-10 score
+    - text response of things learned
+    - text response of ways to improve situation
+    """
+    date = models.DateTimeField(default=timezone.now, help_text='Date of check-in.')
+
+    teacher = models.ForeignKey(
+        MyUser, on_delete=models.CASCADE, help_text='Person leading the check-in.')
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, help_text='Student that check-in is on behalf of.',)
+    status = models.CharField(
+        max_length=1,
+        choices=(
+            ('C', 'Completed'),
+            ('U', 'Unreachable'),
+            ('M', 'Left Message'),
+        ),
+        null=True,
+        blank=True,
+        help_text='Current status of check-in.',
+    )
+    mode = models.CharField(
+        max_length=1,
+        choices=(
+            ('P', 'Phone'), ('V', 'Visit'), ('I', 'In-Person')
+        ),
+        null=True,
+        blank=True,
+        help_text='Mode of communication for check-in.',
+    )
+    notify_school_admin = models.BooleanField(
+        default=False, help_text='Should school administration be notified?',)
+    success_score = models.PositiveIntegerField(
+        default=1,
+        validators=[MaxValueValidator(10), MinValueValidator(1)],
+        help_text='Scale (1-10) of check-in success.',
+    )
+    info_learned = models.TextField(
+        null=True,
+        blank=True,
+        help_text='Most important thing you learned about your mentee at your most recent mentoring check-in.',
+    )
+
+    def __str__(self):
+        return f'Check-in via {self.status} regarding {self.student} by {self.teacher} on {self.date}'

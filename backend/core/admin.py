@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AdminPasswordChangeForm
 
-from core.models import MyUser
+from core.models import MyUser, Student, CheckIn
 
 # https://github.com/django/django/blob/a96b981d84367fd41b1df40adf3ac9ca71a741dd/django/contrib/auth/forms.py#L64-L150
 class UserCreationForm(forms.ModelForm):
@@ -68,7 +68,7 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('last_updated', 'date_joined', 'image_tag')
     fieldsets = (
         (None, {'fields': ('email', 'password', 'image_tag')}),
-        ('Personal Info', {'fields': ('full_name',)}),
+        ('Personal Info', {'fields': ('first_name', 'last_name',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                        'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'last_updated', 'date_joined')})
@@ -96,3 +96,5 @@ class UserAdmin(BaseUserAdmin):
 
 # Now register the new UserAdmin...
 admin.site.register(MyUser, UserAdmin)
+admin.site.register(Student)
+admin.site.register(CheckIn)
