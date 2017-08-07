@@ -5,8 +5,8 @@
 ```bash
 # allhere/
 cd backend && \
-python3 -m venv && \
-venv/bin/activate && \
+python3 -m virtualenv venv && \
+source venv/bin/activate && \
 pip install -r requirements.txt
 ```
 
