@@ -15,12 +15,20 @@ pip install -r requirements.txt
 # allhere/backend/ (venv)
 python manage.py runserver
 ```
+
 ### Create SuperUser
 You can use this account to login the the admin panel at [http://localhost:8000/admin][1]
 ```bash
 # allhere/backend/ (venv)
 python manage.py createsuperuser
 ```
+
+### Run Tests
+```bash
+# allhere/backend (venv)
+python manage.py test
+```
+
 
 [0]: http://www.allhere.co
 [1]: http://localhost:8000/admin

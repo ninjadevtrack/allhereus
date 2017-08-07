@@ -55,6 +55,12 @@ AUTH_USER_MODEL = 'core.MyUser'
 
 ROOT_URLCONF = 'backend.urls'
 
+# automatically append a slash to the url if it can't be found in the urls
+APPEND_SLASH = True
+
+# have python manage.py test run pytest
+TEST_RUNNER = 'backend.runner.PytestTestRunner'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
