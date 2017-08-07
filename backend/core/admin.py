@@ -1,11 +1,10 @@
 from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, AdminPasswordChangeForm
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from core.models import MyUser, Student, CheckIn
+from core.models import MyUser, Student, CheckIn, District, School, Team
 
 # https://github.com/django/django/blob/a96b981d84367fd41b1df40adf3ac9ca71a741dd/django/contrib/auth/forms.py#L64-L150
 class UserCreationForm(forms.ModelForm):
@@ -87,14 +86,52 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'is_staff')
+    list_display = ('email', 'is_staff', 'district')
     list_filter = ('is_superuser', 'is_staff', 'is_active', 'groups')
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
 
-# Now register the new UserAdmin...
+class SchoolInline(admin.StackedInline):
+    model = School
+    extra = 1
+
+
+class TeamInline(admin.StackedInline):
+    model = Team
+
+
+class StudentInline(admin.StackedInline):
+    model = Student
+    extra = 1
+
+
+class DisctrictAdmin(admin.ModelAdmin):
+    inlines = [
+        SchoolInline,
+        TeamInline,
+        StudentInline,
+    ]
+
+    class Meta:
+        model = District
+        fields = '__all__'
+
+
+class SchoolAdmin(admin.ModelAdmin):
+    inlines = [
+        TeamInline,
+    ]
+
+    class Meta:
+        model = Team
+        fields = '__all__'
+
+
 admin.site.register(MyUser, UserAdmin)
 admin.site.register(Student)
 admin.site.register(CheckIn)
+admin.site.register(District, DisctrictAdmin)
+admin.site.register(School, SchoolAdmin)
+admin.site.register(Team)
