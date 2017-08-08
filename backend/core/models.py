@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None):
         """
@@ -27,6 +28,7 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class MyUser(AbstractBaseUser, PermissionsMixin):
     """Custom user model that only requires an email and password"""
     email = models.EmailField(unique=True)
@@ -46,6 +48,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateField(auto_now_add=True)
     last_updated = models.DateField(auto_now=True)
+
+    district = models.ForeignKey('District', related_name='members', null=True, blank=True)
+    school = models.ManyToManyField('School', related_name='members', blank=True)
+    team = models.ManyToManyField('Team', related_name='members', blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -83,6 +89,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f'{self.name} <{self.email}>'
 
+
 class CommonInfo(models.Model):
     """Abstract model for storing common model info"""
     created_on = models.DateTimeField(auto_now_add=True)
@@ -91,8 +98,12 @@ class CommonInfo(models.Model):
     class Meta:
         abstract = True
 
+
 class Student(CommonInfo):
-    """Student"""
+    """Student
+
+    These are entities, not application users.
+    """
     student_id = models.CharField(
         max_length=255, help_text='School identifier for student.')
     is_active = models.BooleanField(
@@ -132,6 +143,10 @@ class Student(CommonInfo):
         help_text='Grade level of student.',
     )
 
+    district = models.ForeignKey('District')
+    school = models.ForeignKey('School')
+    team = models.ForeignKey('Team')
+
     @property
     def name(self):
         return f'{self.first_name} {self.last_name}'
@@ -141,6 +156,7 @@ class Student(CommonInfo):
 
     def __repr__(self):
         return f'{self.name} <{self.student_id}>'
+
 
 class CheckIn(CommonInfo):
     """CheckIn by teacher with student's family.
@@ -179,17 +195,91 @@ class CheckIn(CommonInfo):
         help_text='Mode of communication for check-in.',
     )
     notify_school_admin = models.BooleanField(
-        default=False, help_text='Should school administration be notified?',)
+        default=False, help_text='Should school administrator be notified?',)
     success_score = models.PositiveIntegerField(
         default=1,
         validators=[MaxValueValidator(10), MinValueValidator(1)],
         help_text='Scale (1-10) of check-in success.',
     )
     info_learned = models.TextField(
+        verbose_name='Information Gathered',
         null=True,
         blank=True,
         help_text='Most important thing you learned about your mentee at your most recent mentoring check-in.',
     )
+    info_better = models.TextField(
+        verbose_name='Improvements for Future',
+        null=True,
+        blank=True,
+        help_text='What could have made this mentor check-in better?',
+    )
 
     def __str__(self):
         return f'Check-in via {self.status} regarding {self.student} by {self.teacher} on {self.date}'
+
+
+class District(CommonInfo):
+    """Collection of users representing K12 district or university.
+
+    Users/Students are associated with _one_ District
+    """
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(
+        default=True, help_text='Designates that this Team should be considered active.',)
+    state = models.CharField(
+        max_length=2,
+        null=True,
+        blank=True,
+        help_text='State where District/University is headquartered.'
+    )
+    email_contact = models.EmailField(
+        max_length=255, unique=False, help_text='Email for District/University contact.')
+
+    is_charter = models.BooleanField(default=False)
+    is_private = models.BooleanField(default=False)
+
+    notes = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class School(CommonInfo):
+    """Collection of users within a District
+
+    Schools can be associated with _one_ District
+    Users can be associated with _multiple_ Schools
+    Students can be associated with _one_ School
+    """
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(
+        default=True, help_text='Designates that this Team should be considered active.',)
+    address = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+
+    district = models.ForeignKey(District)
+
+    def __str__(self):
+        return self.name
+
+
+class Team(CommonInfo):
+    """Teams are a subset of users within a District
+
+    Teams can be associated with _one_ District
+    Users can be associated with _multiple_ Teams
+
+    Example:
+        For K12 groups, a teacher may be on a grade-level team
+        as well as a content-based team.
+    """
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(
+        default=True, help_text='Designates that this Team should be considered active.',)
+    description = models.TextField(null=True, blank=True)
+
+    district = models.ForeignKey(District)
+    school = models.ForeignKey(School)
+
+    def __str__(self):
+        return self.name

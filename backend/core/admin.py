@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, AdminPasswordChangeForm
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from core.models import MyUser, Student, CheckIn
+from core.models import MyUser, Student, CheckIn, District, School, Team
+
 
 # https://github.com/django/django/blob/a96b981d84367fd41b1df40adf3ac9ca71a741dd/django/contrib/auth/forms.py#L64-L150
 class UserCreationForm(forms.ModelForm):
@@ -43,10 +43,11 @@ class UserChangeForm(forms.ModelForm):
     password hash display field.
     """
     # https://stackoverflow.com/a/15630360/3555105
-    password = ReadOnlyPasswordHashField(label= ("Password"),
-        help_text= ("Raw passwords are not stored, so there is no way to see "
-                    "this user's password, but you can change the password "
-                    "using <a href=\'../password/\'>this form</a>."))
+    password = ReadOnlyPasswordHashField(
+        label="Password",
+        help_text=("Raw passwords are not stored, so there is no way to see "
+                   "this user's password, but you can change the password "
+                   "using <a href=\'../password/\'>this form</a>."))
 
     class Meta:
         model = MyUser
@@ -57,6 +58,7 @@ class UserChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
 
 # https://github.com/django/django/blob/8346680e1ca4a8ddc8190baf3f5f944f6418d5cf/django/contrib/auth/admin.py#L42-L207
 class UserAdmin(BaseUserAdmin):
@@ -70,7 +72,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {'fields': ('email', 'password', 'image_tag')}),
         ('Personal Info', {'fields': ('first_name', 'last_name',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
-                                       'groups', 'user_permissions')}),
+                                    'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'last_updated', 'date_joined')})
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -78,8 +80,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')}
-        ),
+            'fields': ('email', 'password1', 'password2')}),
     )
     # The forms to add and change user instances
     form = UserChangeForm
@@ -87,14 +88,52 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'is_staff')
+    list_display = ('email', 'is_staff', 'district')
     list_filter = ('is_superuser', 'is_staff', 'is_active', 'groups')
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
 
-# Now register the new UserAdmin...
+class SchoolInline(admin.StackedInline):
+    model = School
+    extra = 1
+
+
+class TeamInline(admin.StackedInline):
+    model = Team
+
+
+class StudentInline(admin.StackedInline):
+    model = Student
+    extra = 1
+
+
+class DisctrictAdmin(admin.ModelAdmin):
+    inlines = [
+        SchoolInline,
+        TeamInline,
+        StudentInline,
+    ]
+
+    class Meta:
+        model = District
+        fields = '__all__'
+
+
+class SchoolAdmin(admin.ModelAdmin):
+    inlines = [
+        TeamInline,
+    ]
+
+    class Meta:
+        model = Team
+        fields = '__all__'
+
+
 admin.site.register(MyUser, UserAdmin)
 admin.site.register(Student)
 admin.site.register(CheckIn)
+admin.site.register(District, DisctrictAdmin)
+admin.site.register(School, SchoolAdmin)
+admin.site.register(Team)
