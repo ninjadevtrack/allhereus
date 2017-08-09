@@ -1,13 +1,15 @@
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 
 from . import views
 
 urlpatterns = [
     url(r'^$', views.home),
 
-    url(r'login', views.login),
+    url(r'login', auth_views.login, {'template_name': 'core/login.html'}, name='login'),
+    url(r'logout', views.logout_view, name="logout"),
     url(r'signup', views.signup),
-    url(r'forgotpassword', views.forgotpassword),
+    url(r'forgotpassword', views.forgotpassword, name='forgot_password'),
 
     url(r'profile$', views.profile),
     url(r'profile/edit', views.profile_edit),
