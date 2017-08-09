@@ -1,1 +1,20 @@
-<h1>login</h1>
+{% extends "core/base.html" %}
+
+{% block page_title %}AllHere - Sign In{% endblock %}
+
+{% block content %}
+
+<h1>Sign In</h1>
+
+
+<form class="login" method="POST" action="{% url 'login' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <a class="button secondaryAction" href="{% url 'forgot_password' %}">Forgot Password?</a>
+  <button class="primaryAction btn btn-primary" type="submit">Sign In</button>
+</form>
+
+{% endblock %}
