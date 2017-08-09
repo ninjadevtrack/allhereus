@@ -1,6 +1,35 @@
 {% extends "core/base.html" %}
 
+{% block css %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}" />
+{% endblock %}
+
 {% block content %}
-<h1>test</h1>
+
+<div class="container">
+  <h1>Welcome, {{ username }}</h1>
+
+  <div class="flex--space-between--align-center">
+    <h2>Recent Checkins</h2>
+    <a href="/checkins/add" class="btn btn-primary">+ New</a>
+  </div>
+  {% if recent_checkins %}
+    <ul class="checkin--list">
+      {% for checkin in recent_checkins %}
+      <li class="checkin">
+        <a href="/checkins/{{ checkin.id }}/">
+          {{ checkin.student }} by {{ checkin.teacher }} ({{ checkin.time }})
+        </a>
+      </li>
+      {% endfor %}
+    <ul>
+  {% else %}
+    <p>no checkins</p>
+  {% endif %}
+  <section class="see-all-checkins-container">
+    <a class="btn btn-primary" href="/checkins/">See All Checkins</a>
+  </section>
+</div>
 
 {% endblock %}

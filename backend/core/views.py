@@ -1,13 +1,31 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+
 
 @login_required
 def home(request):
     """
     the homepage of the user
     """
-    return render(request, 'core/home.html')
+
+    username = 'Aldo Raine'
+    recent_checkins = [{
+        'id': 1,
+        'student': 'Hans Zimmer',
+        'teacher': 'Joe Shmoe',
+        'time': datetime.now()
+    }, {
+        'id': 2,
+        'student': 'Chris Nolan',
+        'teacher': 'Joe Shmoe',
+        'time': datetime.now()
+    }]
+
+    context = {'username': username, 'recent_checkins': recent_checkins}
+    return render(request, 'core/home.html', context=context)
 
 
 def login(request):
