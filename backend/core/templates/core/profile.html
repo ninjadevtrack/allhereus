@@ -1,1 +1,42 @@
-<h1>profile</h1>
+{% extends "core/base.html" %}
+
+{% block content %}
+<article class="container">
+  <section class="space-between">
+      <h1 class="page-header">Profile</h1>
+      <a href="{{ request.get_full_path }}/edit" class="btn btn-primary">Edit</a>
+  </section>
+  <section>
+    <div class="row">
+      <div class="col">
+        <img src="//www.gravatar.com/avatar/e086c1676bf9905147bb4908f6600f4a?d=identicon&r=g" alt="User Avatar" class="avatar-img">
+        </div>
+        <div class="col">
+          <h3 class="text-muted">Name</h3>
+          <h2>Aldo, Raine</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <h3 class="text-muted">Email</h3>
+        <h2>a.raine@hotmail.com</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3 class="text-muted">School</h3>
+        <h2>School of Hards Knocks</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3 class="text-muted">Department</h3>
+        <h2>Math</h2>
+      </div>
+    </div>
+  </section>
+</article>
+
+{% endblock %}
