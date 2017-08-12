@@ -64,7 +64,7 @@ def profile(request):
         'name': f'{request.user.last_name}, {request.user.first_name}',
         'avatar_url': request.user.avatar_url,
         'email': request.user.email,
-        'school': request.user.school.name,
+        'schools': request.user.schools,
         'role': 'staff' if request.user.is_staff else 'user',
         'department': request.user.department,
         'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10]
@@ -80,11 +80,11 @@ def profile_edit(request):
         'name': f'{request.user.last_name}, {request.user.first_name}',
         'avatar_url': request.user.avatar_url,
         'email': request.user.email,
-        'school': request.user.school.name,
+        'schools': request.user.schools,
         'role': 'staff' if request.user.is_staff else 'user',
         'department': request.user.department,
         'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
-        'schools': School.objects.filter(district=request.user.district).order_by('name').all()[:30]
+        'school_options': School.objects.filter(district=request.user.district).order_by('name').all()[:30]
     }
     return render(request, 'core/profile_edit.html', context)
 

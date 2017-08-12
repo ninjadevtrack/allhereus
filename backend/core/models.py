@@ -78,6 +78,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         return True
 
     @property
+    def schools(self):
+        return School.objects.all().filter(members=self)
+
+    @property
     def avatar_url(self):
         md5_email = hashlib.md5(self.email.encode('utf-8')).hexdigest()
         # we only want avatars rated G(`r=g`) https://secure.gravatar.com/site/implement/images/
