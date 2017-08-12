@@ -1,48 +1,22 @@
-body {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #eee;
+body:before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: -1;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
   background-image: url(../../static/core/header.jpg);
+
+  filter: blur(5px);
+  /* bodge to make the blur not have a white border */
+  transform: scale(1.1);
 }
 
-.header {
-  display:flex;
-  margin-top: 50px;
-  justify-content: center;
-}
-
-.form-signin {
-  background-color: white;
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
-  box-shadow: 0 16px 32px 0 rgba(62,57,107,0.2);
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
-.form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.lg-shadow {
+  box-shadow: 0 16px 32px 0 rgba(62,57,107,0.28), 0 0 0 transparent;
 }
