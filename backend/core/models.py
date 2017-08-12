@@ -260,6 +260,10 @@ class District(CommonInfo):
 
     notes = models.TextField(null=True, blank=True)
 
+    custom_text_succces_score = models.TextField(null=True, blank=True)
+    custom_text_info_learned = models.TextField(null=True, blank=True)
+    custom_text_info_better = models.TextField(null=True, blank=True)
+
     def __str__(self):
         return self.name
 
