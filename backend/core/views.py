@@ -95,7 +95,28 @@ def checkins(request):
     """
     list all the checkins for teacher
     """
-    return render(request, 'core/checkins.html')
+    checkins = [
+        {
+            'date': fake.date_time(),
+            'teacher': {
+                'name': fake.name(),
+                'email': fake.email(),
+            },
+            'student': {
+                'name': fake.name(),
+                'email': fake.email(),
+            },
+            'team': fake.company(),
+            'feedback': fake.word(),
+            'id': 1,
+        } for _ in range(8)
+    ]
+
+    context = {
+        'checkins': checkins
+    }
+
+    return render(request, 'core/checkins.html', context)
 
 @login_required
 def checkins_add(request):
