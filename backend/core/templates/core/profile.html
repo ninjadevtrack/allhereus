@@ -1,47 +1,28 @@
-{% extends "core/base.html" %}
-
-{% block content %}
-<article class="container">
-  <section class="space-between">
-      <h1 class="page-header">Profile</h1>
-      <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit</a>
-  </section>
-  <section class="row pb-4 pt-3">
-    <div class="col d-flex align-items-center">
-
-      <img src="{{ avatar_url }}" alt="User Avatar" class="rounded-circle">
-      <h2 class="pl-3">{{ name }} <small class="text-muted">{{ role }}</small></h2>
-    </div>
-  </section>
-  <section class="row">
-    <div class="col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Personal Information</h4>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Email:</b> <a href="mailto:{{ email }}">{{ email }}</a></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>School(s):</b> <ul>{% for school in schools %} <li>{{ school }} </li>{% endfor %}</ul></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Department:</b> <span>{{ department }}</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Recent Activity</h4>
-          <ul class="list-group list-group-flush">
-            {% for checkin in recent_checkins %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">{{ checkin.status }} {{ checkin.mode}}</li>
-            {% endfor %}
-            {% if not recent_checkins %}
-            <p class="text-center">No recent activity to display.</p>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-</article>
+{% extends "core/_profile_base.html" %}
+{% block profile_content %}
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Personal Information</h4>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+      {% if user.department %}
+      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Department:</b> <span>{{ user.department }}</span></li>
+      {% endif %}
+      {% if user.district %}
+      <li class="list-group-item d-flex justify-content-between align-items-center"><b>District:</b> <span>{{ user.district }}</span></li>
+      {% endif %}
+      {% if user.school %}
+      <li class="list-group-item d-flex justify-content-between align-items-center"><b>School:</b> {{ user.school }}</li>
+      {% endif %}
+      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Joined:</b> <span>{{ user.date_joined }}</span></li>
+      {% if user.grade %}
+      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Grade:</b> <span>{{ user.grade }}</span></li>
+      {% endif %}
+      {% if user.subject %}
+      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Subject:</b> <span>{{ user.subject }}</span></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
 
 {% endblock %}
