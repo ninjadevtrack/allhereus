@@ -16,3 +16,35 @@
   padding-top: 5px;
   flex-grow: 1;
 }
+
+.fs-1_5 {
+  font-size: 1.5rem;
+}
+
+.list-style-square {
+  list-style-type: square;
+}
+
+
+/* https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+  background-color: whitesmoke;
+}

@@ -1,0 +1,13 @@
+.nav-bar-profile-img {
+  max-width: 40px;
+}
+
+/* override bootstrap */
+.dropdown-menu {
+  min-width: 0;
+}
+
+/* override bootstrap */
+a.no-decoration {
+  text-decoration: none;
+}
