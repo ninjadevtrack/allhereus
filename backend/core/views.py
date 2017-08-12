@@ -141,8 +141,15 @@ def checkin_edit(request, id):
     """
     edit an individual checkin
     """
+
     checkin = CheckIn.objects.get(id=id)
-    form = CheckInForm(request.user, instance=checkin)
+    if request.method == 'GET':
+        form = CheckInForm(request.user, instance=checkin)
+    else:
+        form = CheckInForm(request.user, request.POST, instance=checkin)
+        if form.is_valid():
+            form.save()
+            return redirect('checkins')
 
     return render(request, 'core/checkin_edit.html', {'form': form})
 
