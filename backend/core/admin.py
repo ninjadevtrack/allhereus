@@ -71,6 +71,8 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password', 'image_tag')}),
         ('Personal Info', {'fields': ('first_name', 'last_name',)}),
+        ('Organization Info', {'fields': ('district', 'school', 'team',)}),
+        # ('Organization Info', {'fields': ('district', 'school', 'team',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                     'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'last_updated', 'date_joined')})

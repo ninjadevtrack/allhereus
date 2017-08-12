@@ -1,1 +1,61 @@
-<h1>profile editing</h1>
+{% extends "core/base.html" %}
+
+{% block content %}
+<form class="container">
+  <section class="space-between">
+      <h1 class="page-header">Profile</h1>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="submit" href="" class="btn btn-primary">Save</button>
+        <a href="{% url 'profile' %}" class="btn btn-light">Cancel</a>
+      </div>
+  </section>
+  <section class="row pb-4 pt-3">
+    <div class="col d-flex align-items-center">
+      <img src="{{ avatar_url }}" alt="User Avatar" class="rounded-circle">
+      <h2 class="pl-3">{{ name }} <small class="text-muted">{{ role }}</small></h2>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Personal Information</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
+              <label for="email">Email:</label>
+              <input id="email" type="email" class="form-control" placeholder="{{ email }}"/>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
+              <label for="school">School:</label>
+              <select name="school" id="school">
+                {% for school in schools %}
+                <option value="school.id">{{ school.name }}</option>
+                {% endfor %}
+              </select>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
+              <label for="department">Department:</label>
+              <input id="department" type="text" class="form-control" placeholder="{{ department }}" />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recent Activity</h4>
+          <ul class="list-group list-group-flush">
+            {% for checkin in recent_checkins %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">{{ checkin.status }} {{ checkin.mode}}</li>
+            {% endfor %}
+            {% if not recent_checkins %}
+            <p class="text-center">No recent activity to display.</p>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+{% endblock %}

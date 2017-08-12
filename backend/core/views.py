@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
+from .models import CheckIn, School
+
 
 @login_required
 def home(request):
@@ -58,14 +60,33 @@ def profile(request):
     """
     displays user's info
     """
-    return render(request, 'core/profile.html')
+    context = {
+        'name': f'{request.user.last_name}, {request.user.first_name}',
+        'avatar_url': request.user.avatar_url,
+        'email': request.user.email,
+        'school': request.user.school.name,
+        'role': 'staff' if request.user.is_staff else 'user',
+        'department': request.user.department,
+        'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10]
+    }
+    return render(request, 'core/profile.html', context)
 
 @login_required
 def profile_edit(request):
     """
     profile in editing state
     """
-    return render(request, 'core/profile_edit.html')
+    context = {
+        'name': f'{request.user.last_name}, {request.user.first_name}',
+        'avatar_url': request.user.avatar_url,
+        'email': request.user.email,
+        'school': request.user.school.name,
+        'role': 'staff' if request.user.is_staff else 'user',
+        'department': request.user.department,
+        'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
+        'schools': School.objects.filter(district=request.user.district).order_by('name').all()[:30]
+    }
+    return render(request, 'core/profile_edit.html', context)
 
 @login_required
 def checkins(request):

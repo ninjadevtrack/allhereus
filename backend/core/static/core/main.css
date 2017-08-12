@@ -4,14 +4,15 @@
   align-items: center;
 }
 
-.avatar-img {
-  border-radius: 100%;
-}
-
 .inline-flex {
   display: inline-flex;
 }
 
 .profile-group-name {
   padding-left: 10px;
+}
+
+.page-header {
+  padding-top: 5px;
+  flex-grow: 1;
 }

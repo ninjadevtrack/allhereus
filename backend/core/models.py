@@ -35,6 +35,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
+    department = models.CharField(max_length=255, null=True, blank=True)
 
     # required for admin
     is_active = models.BooleanField(
@@ -80,7 +81,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     def avatar_url(self):
         md5_email = hashlib.md5(self.email.encode('utf-8')).hexdigest()
         # we only want avatars rated G(`r=g`) https://secure.gravatar.com/site/implement/images/
-        return f'https://www.gravatar.com/avatar/{md5_email}?d=identicon&r=g'
+        return f'https://www.gravatar.com/avatar/{md5_email}?d=identicon&r=g&s=75'
 
     @property
     def name(self):
