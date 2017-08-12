@@ -9,11 +9,13 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home' %}">Home</a>
+      {% url 'home' as home_url %}
+      <li class="nav-item {% if request.get_full_path == home_url %} active {% endif %}">
+        <a class="nav-link" href="{{ home_url }}">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'checkins' %}">Checkins</a>
+      {% url 'checkins' as checkins_url %}
+      <li class="nav-item {% if request.get_full_path == checkins_url %} active {% endif %}">
+        <a class="nav-link" href="{{ checkins_url }}">Checkins</a>
       </li>
     </ul>
     <ul class="navbar-nav">
@@ -28,8 +30,10 @@
         </div>
       </li>
     {% else %}
-      <li class="nav-item">
-        <a href="{% url 'login' %}">Login</a>
+      <li class="nav-item {% if request.get_full_path == login_url %} active {% endif %}"">
+        {% url 'login' as login_url %}
+        <a href="{{ login_url }}" >Login</a>
+        }
       </li>
     {% endif %}
     </ul>
