@@ -5,40 +5,58 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     {% load static %}
     <link rel="stylesheet" href="{% static 'core/login.css' %}">
-    {% block css %}
-    {% endblock %}
   </head>
   <body>
-    
-    <div class="container">
-        <div class="header">
-            <img src="{% static 'core/logo_allhere.png' %}" alt="AllHere" />
-        </div>
-        <form class="form-signin" method="POST" action="{% url 'login' %}">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            {% csrf_token %}
-            <div class="form-group">
-            
-                <div class="input-group">
-                    <input class="form-control" id="{{ form.username.id_for_label }}" maxlength="30" name="{{ form.username.html_name }}" placeholder="{{ form.username.html_name }}" type="text" /> 
-                    {{ form.username.errors }}
-                </div>
-                <div class="input-group">
-                    <input class="form-control" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" placeholder="{{ form.password.html_name }}" type="password" /> 
-                    {{ form.password.errors }}
-                </div>
-            
-            </div>
-            {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-            {% endif %}
-            
-            {{ form.non_field_errors }}
-            
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+    <div class="d-flex h-100">
+      <div class="container col-md-6 col-lg-3">
 
-            <a class="button secondaryAction" href="{% url 'forgot_password' %}">Forgot Password?</a>
-        </form>
+        <section class="d-flex mt-4 mb-2 justify-content-center">
+          <img src="{% static 'core/logo_allhere.png' %}" alt="AllHere" />
+        </section>
+
+        <div class="card lg-shadow">
+
+          <div class="card-header">
+            <h3 class="mb-0">Login</h3>
+          </div>
+
+          <div class="card-body">
+
+            <form method="POST" action"{% url 'login' %}" class="form">
+              {% csrf_token %}
+
+              <div class="form-group">
+                <label for="{{ form.username.html_name }}">Email</label>
+                <input id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" placeholder="{{ form.username.html_name }}" type="email" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="{{ form.password.html_name }}">Password</label>
+                <input id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="{{ form.password.html_name }}" type="password" class="form-control" required>
+
+                <p class="text-muted">
+                  <a href="{% url 'forgot_password' %}">Forgot Password?</a>
+                </p>
+
+              </div>
+
+              {% if redirect_field_value %}
+                  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+
+              {% for error in form.non_field_errors %}
+                <p class="text-danger">{{ error }}</p>
+              {% endfor %}
+
+              <section class="d-flex align-items-center justify-content-between">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+              </section>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
