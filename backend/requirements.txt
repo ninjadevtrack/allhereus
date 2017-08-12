@@ -1,0 +1,16 @@
+## The following requirements were added by pip freeze:
+argh==0.26.2
+colorama==0.3.9
+Django==1.11.4
+docopt==0.6.2
+Faker==0.7.18
+pathtools==0.1.2
+py==1.4.34
+pytest==3.2.0
+pytest-django==3.1.2
+pytest-watch==4.1.0
+python-dateutil==2.6.1
+pytz==2017.2
+PyYAML==3.12
+six==1.10.0
+watchdog==0.8.3

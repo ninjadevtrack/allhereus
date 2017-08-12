@@ -1,0 +1,59 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="mt-3 mb-3">Checkins</h1>
+    <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
+  </div>
+
+  <input class="form-control mb-3" type="search" placeholder="search...">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Teacher</th>
+        <th>Student</th>
+        <th>Feedback</th>
+        <th>Team</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for checkin in checkins %}
+        <tr>
+          <th scope="row">
+            <a href="{% url 'checkin' checkin.id %}">{{ checkin.date }}</a>
+          </th>
+          <td>
+            <a href="mailto:{{ checkin.teacher.email }}">{{ checkin.teacher.name }}</a>
+          </td>
+          <td>
+            {% if checkin.student.email %}
+              <a href="mailto:{{ checkin.student.email }}">{{ checkin.student.name }}</a>
+            {% else %}
+              {{ checkin.student.name }}
+            {% endif %}
+          </td>
+          <td>{{ checkin.feedback }}</td>
+          <td>{{ checkin.team | truncatechars:25 }}</td>
+          <td>
+            <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-secondary">Edit</a>
+            <button type="button" class="btn btn-danger" name="delete">Delete</button>
+          </td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <section class="d-flex justify-content-between align-items-center pb-4">
+    <span>Showing all {{ checkins | length }} checkins</span>
+    <a href="#" class="btn btn-light" name="export">Export to CSV</a>
+  </section>
+
+
+</div>
+
+{% endblock %}

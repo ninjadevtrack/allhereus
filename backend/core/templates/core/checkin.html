@@ -1,0 +1,70 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<article class="container">
+  <section class="space-between">
+      <h1 class="page-header">Checkin</h1>
+      <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-primary">Edit</a>
+  </section>
+  <section class="row">
+    <div class="col-lg-6 col-md-12 pb-2">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Details</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Date:</b> {{ checkin.date }}</li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Teacher:</b> <a href="mailto:{{ checkin.teacher.email }}">{{ checkin.teacher }}</a></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Student:</b> <a {% if checkin.student.email %} href="mailto:{{ checkin.student.email }}" {% endif %}>{{ checkin.student }}</a></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Mode:</b> {% if checkin.get_mode_display %}{{ checkin.get_mode_display }} {% else %} <span class="text-muted">No mode was entered for this field.</span>{% endif %}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 pb-2">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Results</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Notify School Admin:</b> {% if checkin.notify_school_admin %} Yes {% else %} No {% endif %}</li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Success Score:</b> {{ checkin.success_score }} / 10</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col-lg-6 col-md-12 pb-2">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Information Gathered</h4>
+          {% if checkin.info_learned %}
+          <div class="card-text pre-wrap">
+          {{ checkin.info_learned }}
+          {% else %}
+          <div class="card-text text-muted">
+          No information was entered for this field.
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 pb-2">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Improvements for Future</h4>
+          {% if checkin.info_better %}
+          <div class="card-text pre-wrap">
+          {{ checkin.info_better }}
+          {% else %}
+          <div class="card-text text-muted">
+          No improvements were entered for this field.
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+{% endblock %}
