@@ -61,11 +61,12 @@ def profile(request):
     """
     displays user's info
     """
+
     context = {
-        'name': f'{request.user.last_name}, {request.user.first_name}',
+        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
         'avatar_url': request.user.avatar_url,
         'email': request.user.email,
-        'school': request.user.school.name,
+        'schools': request.user.schools,
         'role': 'staff' if request.user.is_staff else 'user',
         'department': request.user.department,
         'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10]
@@ -78,14 +79,14 @@ def profile_edit(request):
     profile in editing state
     """
     context = {
-        'name': f'{request.user.last_name}, {request.user.first_name}',
+        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
         'avatar_url': request.user.avatar_url,
         'email': request.user.email,
-        'school': request.user.school.name,
+        'schools': request.user.schools,
         'role': 'staff' if request.user.is_staff else 'user',
         'department': request.user.department,
         'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
-        'schools': School.objects.filter(district=request.user.district).order_by('name').all()[:30]
+        'school_options': School.objects.filter(district=request.user.district).order_by('name').all()[:30]
     }
     return render(request, 'core/profile_edit.html', context)
 
@@ -117,7 +118,12 @@ def checkin(request, id):
     """
     view an individual checkin
     """
-    return render(request, 'core/checkin.html')
+    checkin_event = CheckIn.objects.get(id=id)
+    return render(request, 'core/checkin.html', {
+        'checkin': checkin_event,
+        'success_score_percentage': checkin_event.success_score / 10 * 100,
+        }
+    )
 
 @login_required
 def checkin_edit(request, id):
@@ -140,3 +146,10 @@ def team(request, id):
     view individual team
     """
     return render(request, 'core/team.html')
+
+
+def privacy(request):
+    """
+    return the privacy policy
+    """
+    return render(request, 'core/privacy.html')

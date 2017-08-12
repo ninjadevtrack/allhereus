@@ -14,19 +14,19 @@
     </div>
   </section>
   <section class="row">
-    <div class="col-md-6">
+    <div class="col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Personal Information</h4>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Email:</b> <a href="mailto:{{ email }}">{{ email }}</a></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>School:</b> <span>{{ school }}</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>School(s):</b> <ul>{% for school in schools %} <li>{{ school }} </li>{% endfor %}</ul></li>
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Department:</b> <span>{{ department }}</span></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Recent Activity</h4>

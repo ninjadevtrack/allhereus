@@ -1,10 +1,5 @@
 {% extends "core/base.html" %}
 
-{% block css %}
-  {% load static %}
-  <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}" />
-{% endblock %}
-
 {% block content %}
 
 <div class="container">
@@ -18,7 +13,7 @@
     <ul class="list-style-square">
       {% for checkin in recent_checkins %}
       <li class="fs-1_5">
-        <a href="{% url 'checkins' %}/{{ checkin.id }}/">
+        <a href="{% url 'checkin' checkin.id %}">
           {{ checkin.student }} by {{ checkin.teacher }} ({{ checkin.time }})
         </a>
       </li>
