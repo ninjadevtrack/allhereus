@@ -7,8 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
-from faker import Faker
-
 from .models import CheckIn
 from .forms import CheckInForm, ProfileForm
 
@@ -20,12 +18,12 @@ def home(request):
     """
 
     checkin_count = 8
-
-    recent_checkins = CheckIn.objects.order_by('created_on').all()[:checkin_count]
+    checkins = CheckIn.objects.order_by('created_on').all()
+    recent_checkins = checkins[:checkin_count]
 
     context = {
-        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
         'recent_checkins': recent_checkins,
+        'total': len(checkins),
     }
 
     return render(request, 'core/home.html', context=context)
