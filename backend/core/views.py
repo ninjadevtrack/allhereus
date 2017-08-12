@@ -1,10 +1,13 @@
-from datetime import datetime
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
+from faker import Faker
+
 from .models import CheckIn, School
+
+
+fake = Faker()
 
 
 @login_required
@@ -14,17 +17,15 @@ def home(request):
     """
 
     username = 'Aldo Raine'
-    recent_checkins = [{
-        'id': 1,
-        'student': 'Hans Zimmer',
-        'teacher': 'Joe Shmoe',
-        'time': datetime.now()
-    }, {
-        'id': 2,
-        'student': 'Chris Nolan',
-        'teacher': 'Joe Shmoe',
-        'time': datetime.now()
-    }]
+
+    recent_checkins = [
+        {
+            'student': fake.name(),
+            'teacher': fake.name(),
+            'id': 1,
+            'time': fake.date_time(),
+        } for _ in range(8)
+    ]
 
     context = {'username': username, 'recent_checkins': recent_checkins}
     return render(request, 'core/home.html', context=context)
