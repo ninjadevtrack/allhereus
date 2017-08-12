@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
@@ -129,7 +129,7 @@ def checkin(request, id):
     """
     view an individual checkin
     """
-    checkin_event = CheckIn.objects.get(id=id)
+    checkin_event = get_object_or_404(CheckIn, pk=id)
     return render(request, 'core/checkin.html', {
         'checkin': checkin_event,
         'success_score_percentage': checkin_event.success_score / 10 * 100,
@@ -142,7 +142,7 @@ def checkin_edit(request, id):
     edit an individual checkin
     """
 
-    checkin = CheckIn.objects.get(id=id)
+    checkin = get_object_or_404(CheckIn, pk=id)
     if request.method == 'GET':
         form = CheckInForm(request.user, instance=checkin)
     else:
