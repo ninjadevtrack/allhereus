@@ -2,6 +2,14 @@
 
 {% block title %}Checkin{% endblock %}
 
+{% block css %}
+<style>
+ul {
+	list-style: none;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
@@ -27,13 +35,13 @@
 		<div class="col col-md-6 offset-md-3">
 		<form method="post">{% csrf_token %}
 			<div class="form-group">
-				<label for="{{ form.date.html_name }}">Date:</label>
-				{{ form.date }}
+				<label for="{{ form.teacher.html_name }}">On behalf of Teacher:</label>
+				{{ form.teacher }}
 			</div>
 
 			<div class="form-group">
-				<label for="{{ form.teacher.html_name }}">Teacher:</label>
-				{{ form.teacher }}
+				<label for="{{ form.date.html_name }}">Date:</label>
+				{{ form.date }}
 			</div>
 
 			<div class="form-group">
@@ -47,7 +55,7 @@
 			</div>
 
 			<div class="form-group">
-				<label for="{{ form.mode.html_name }}">Mode:</label>
+				<label for="{{ form.mode.html_name }}">Format:</label>
 				{{ form.mode }}
 			</div>
 
@@ -62,16 +70,16 @@
 			</div>
 
 			<div class="form-group">
-				<label for="{{ form.info_learned.html_name }}">Information Gathered:</label>
+				<label for="{{ form.info_learned.html_name }}">What is the most important thing you learned about your mentee at your most recent mentoring check-in?</label>
 				{{ form.info_learned }}
 			</div>
 
 			<div class="form-group">
-				<label for="{{ form.info_better.html_name }}">Improvements for Future:</label>
+				<label for="{{ form.info_better.html_name }}">What could have made this mentor check-in better?</label>
 				{{ form.info_better }}
 			</div>
 
-		    <input type="submit" value="Submit" />
+		    <input type="submit" class="btn btn-primary" value="Submit" />
 		</form>
 	</div>
 	</div>
