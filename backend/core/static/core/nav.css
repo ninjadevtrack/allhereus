@@ -6,8 +6,3 @@
 .dropdown-menu {
   min-width: 0;
 }
-
-/* override bootstrap */
-a.no-decoration {
-  text-decoration: none;
-}
