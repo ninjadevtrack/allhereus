@@ -11,10 +11,12 @@ from .models import (
 
 @pytest.fixture
 def teacher():
-    return MyUser.objects.create(
+    return MyUser.objects.create_user(
         email='teach@allhere.co',
         first_name='Donny',
-        last_name='Donowitz')
+        last_name='Donowitz',
+        password='test123'
+        )
 
 
 @pytest.fixture
