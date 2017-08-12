@@ -45,7 +45,8 @@ ul {
 
         <div class="form-group">
           <label for="{{ form.date.html_name }}">Date:</label>
-          {{ form.date }}
+          <!-- use type text instead of date so that we disable the time picker  -->
+          <input id="{{ form.date.id_for_label }}" name="date" placeholder="{{ form.date.html_name }}" type="text" class="form-control" required>
         </div>
 
         <div class="form-group">

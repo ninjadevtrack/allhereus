@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelChoiceField, RadioSelect, IntegerField, NumberInput
+from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput
 from .models import MyUser, CheckIn, Student
 
 
@@ -12,7 +12,6 @@ class CheckInForm(ModelForm):
         fields = ['date', 'teacher', 'student', 'status',
                   'mode', 'notify_school_admin', 'success_score',
                   'info_learned', 'info_better']
-        widgets = {field: RadioSelect() for field in ['mode', 'status']}
 
     def __init__(self, user, *args, **kwargs):
         super(CheckInForm, self).__init__(*args, **kwargs)
