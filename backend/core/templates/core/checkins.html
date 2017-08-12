@@ -1,1 +1,57 @@
-<h1>checkins</h1>
+{% extends "core/base.html" %}
+
+{% block title %}Checkins{% endblock %}
+
+{% block css %}    
+<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="row" style="padding:25px;">
+    <div class="col">
+        <h1>Checkins</h1>
+        {% if request.user.role != 'T' %}
+        <span class="badge badge-danger badge-pill">{{ request.user.role }}</span>
+        {% endif %}
+    </div>
+    <div class="col">
+        <a href="{% url 'checkin_add' %}" class="float-right btn btn-warning">+ New</a>
+    </div>
+</div>
+
+<table id="checkins_datatable" class="table table-hover display" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>User</th>
+      <th>Student</th>
+      <th># Feedback</th>
+      <th>Actions</th>
+    </tr>
+  </thead>     
+  <tbody>
+    {% for check in checkins %}
+      <tr>
+        <td>{{ check.date }}</td>
+        <td><a href="/users/{{firstName}}">{{ check.teacher.name }}</a></td>
+        <td><a href="/student/{{student}}">{{ check.student.name }}</a></td>
+        <td>{{ check.get_status_display }}</td>
+        <td class="actions">
+            <a href="{% url 'checkin_edit' check.id %}" class="btn btn-info">edit <i class="fa fa-edit"></a>
+            <a href="" class="btn btn-danger">delete <i class="fa fa-trash"></a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+
+{% block js %}
+<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    $('#checkins_datatable').DataTable();
+</script>
+{% endblock %}

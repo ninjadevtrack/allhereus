@@ -94,7 +94,16 @@ def checkins(request):
     """
     list all the checkins for teacher
     """
-    return render(request, 'core/checkins.html')
+
+    if request.user.role=='DA':
+        checkins = CheckIn.objects.filter(student__group=request.user.district)
+    elif request.user.role=='SA':
+        checkins = CheckIn.objects.filter(student__school=request.user.school)
+    else:
+        checkins = CheckIn.objects.filter(student__in=request.user.student_set.all())
+
+    context = {'checkins': checkins.all()}
+    return render(request, 'core/checkins.html', context)
 
 @login_required
 def checkins_add(request):
