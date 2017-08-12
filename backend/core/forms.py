@@ -5,7 +5,7 @@ from .models import MyUser, CheckIn, Student
 class CheckInForm(ModelForm):
     """Custom class to create/edit CheckIn"""
 
-    success_score = IntegerField(widget=NumberInput(attrs={'type':'range', 'step': '10'}))
+    success_score = IntegerField(widget=NumberInput(attrs={'type':'range', 'step': '1', 'min': '0', 'max': '10'}))
 
     class Meta:
         model = CheckIn
