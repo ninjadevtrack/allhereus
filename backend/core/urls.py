@@ -21,4 +21,6 @@ urlpatterns = [
 
     url(r'teams/$', views.teams, name='teams'),
     url(r'teams/(?P<id>[0-9]+)/', views.team, name='team'),
+
+    url(r'privacy', views.privacy, name='privacy'),
 ]

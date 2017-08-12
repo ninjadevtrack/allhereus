@@ -131,3 +131,10 @@ def team(request, id):
     view individual team
     """
     return render(request, 'core/team.html')
+
+
+def privacy(request):
+    """
+    return the privacy policy
+    """
+    return render(request, 'core/privacy.html')
