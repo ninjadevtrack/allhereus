@@ -6,12 +6,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
-from faker import Faker
-
 from .models import CheckIn, School
 from .forms import CheckInForm
-
-fake = Faker()
 
 
 @login_required
@@ -20,18 +16,15 @@ def home(request):
     the homepage of the user
     """
 
-    username = 'Aldo Raine'
+    checkin_count = 8
 
-    recent_checkins = [
-        {
-            'student': fake.name(),
-            'teacher': fake.name(),
-            'id': 1,
-            'time': fake.date_time(),
-        } for _ in range(8)
-    ]
+    recent_checkins = CheckIn.objects.order_by('created_on').all()[:checkin_count]
 
-    context = {'username': username, 'recent_checkins': recent_checkins}
+    context = {
+        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
+        'recent_checkins': recent_checkins,
+    }
+
     return render(request, 'core/home.html', context=context)
 
 
