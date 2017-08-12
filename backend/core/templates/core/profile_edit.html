@@ -24,10 +24,11 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
               <label for="email">Email:</label>
-              <input id="email" name="email" type="email" class="form-control" placeholder="{{ email }}"/>
+              <input id="email" name="email" type="email" class="form-control" value="{{ email }}" placeholder="{{ email }}"/>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
               <label for="school">School(s):</label>
+              {% if school_options %}
               <select multiple name="school" id="school" class="form-control">
                 {% for school in school_options %}
                   {% if school in schools %}
@@ -38,6 +39,9 @@
                 {% endfor %}
               </select>
               <small class="form-text text-muted">Hold down "Control", or "Command" on a Mac, to select more than one.</small>
+              {% else %}
+              <p class="text-muted">Sorry. There aren't any available schools to choose from in your district.</p>
+              {% endif %}
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
               <label for="department">Department:</label>

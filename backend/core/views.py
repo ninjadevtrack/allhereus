@@ -61,8 +61,9 @@ def profile(request):
     """
     displays user's info
     """
+
     context = {
-        'name': f'{request.user.last_name}, {request.user.first_name}',
+        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
         'avatar_url': request.user.avatar_url,
         'email': request.user.email,
         'schools': request.user.schools,
@@ -78,7 +79,7 @@ def profile_edit(request):
     profile in editing state
     """
     context = {
-        'name': f'{request.user.last_name}, {request.user.first_name}',
+        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
         'avatar_url': request.user.avatar_url,
         'email': request.user.email,
         'schools': request.user.schools,
