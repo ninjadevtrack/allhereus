@@ -1,6 +1,10 @@
+import csv
+from datetime import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from faker import Faker
 
@@ -156,6 +160,28 @@ def checkin_edit(request, id):
             return redirect('checkins')
 
     return render(request, 'core/checkin_edit.html', {'form': form})
+
+
+@login_required
+def checkins_csv(request):
+    response = HttpResponse(content_type='text/csv')
+
+    filename = f'AllHere Checkins Archive {datetime.now()}'
+    response['Content-Disposition'] = f'attachment; filename="{ filename }.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow(['date', 'teacher', 'student', 'status', 'visit type',
+                     'info learned', 'info better', 'success score'])
+
+    checkins = CheckIn.objects.all()
+    for checkin in checkins:
+        writer.writerow([checkin.date, checkin.teacher, checkin.student,
+                         checkin.get_status_display(), checkin.get_mode_display(),
+                         checkin.info_learned, checkin.info_better,
+                         checkin.success_score])
+
+    return response
 
 
 @login_required
