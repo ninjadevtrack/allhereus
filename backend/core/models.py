@@ -51,7 +51,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     last_updated = models.DateField(auto_now=True)
 
     district = models.ForeignKey('District', related_name='members', null=True, blank=True)
-    school = models.ManyToManyField('School', related_name='members', blank=True)
+    school = models.ForeignKey('School', related_name='members', blank=True)
 
     grade = models.CharField(max_length=255, null=True, blank=True)
     subject = models.CharField(max_length=255, null=True, blank=True)
