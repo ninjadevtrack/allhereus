@@ -52,7 +52,22 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     district = models.ForeignKey('District', related_name='members', null=True, blank=True)
     school = models.ManyToManyField('School', related_name='members', blank=True)
-    team = models.ManyToManyField('Team', related_name='members', blank=True)
+
+    grade = models.CharField(max_length=255, null=True, blank=True)
+    subject = models.CharField(max_length=255, null=True, blank=True)
+
+    role = models.CharField(
+        max_length=2,
+        choices=(
+            ('T', 'Teacher'),
+            ('SA', 'School Admin'),
+            ('DA', 'District Admin'),
+        ),
+        default='T',
+        help_text='Account Type',
+    )
+    # if True, a user can edit membership
+    is_manager = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -146,7 +161,7 @@ class Student(CommonInfo):
 
     district = models.ForeignKey('District')
     school = models.ForeignKey('School')
-    team = models.ForeignKey('Team')
+    teacher = models.ForeignKey('MyUser')
 
     @property
     def name(self):
@@ -259,28 +274,6 @@ class School(CommonInfo):
     description = models.TextField(null=True, blank=True)
 
     district = models.ForeignKey(District)
-
-    def __str__(self):
-        return self.name
-
-
-class Team(CommonInfo):
-    """Teams are a subset of users within a District
-
-    Teams can be associated with _one_ District
-    Users can be associated with _multiple_ Teams
-
-    Example:
-        For K12 groups, a teacher may be on a grade-level team
-        as well as a content-based team.
-    """
-    name = models.CharField(max_length=255)
-    is_active = models.BooleanField(
-        default=True, help_text='Designates that this Team should be considered active.',)
-    description = models.TextField(null=True, blank=True)
-
-    district = models.ForeignKey(District)
-    school = models.ForeignKey(School)
 
     def __str__(self):
         return self.name
