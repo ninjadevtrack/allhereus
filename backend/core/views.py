@@ -4,10 +4,13 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 
-from .models import CheckIn, School
-from .forms import CheckInForm
+from faker import Faker
+
+from .models import CheckIn
+from .forms import CheckInForm, ProfileForm
 
 
 @login_required
@@ -59,15 +62,10 @@ def profile(request):
     """
     displays user's info
     """
-
     context = {
-        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
-        'avatar_url': request.user.avatar_url,
-        'email': request.user.email,
-        'schools': request.user.schools,
-        'role': 'staff' if request.user.is_staff else 'user',
-        'department': request.user.department,
-        'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10]
+        'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
+        'user': request.user,
+        'view': 'display',
     }
     return render(request, 'core/profile.html', context)
 
@@ -77,17 +75,22 @@ def profile_edit(request):
     """
     profile in editing state
     """
-    context = {
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('profile'))
+    else:
+        form = ProfileForm(instance=request.user)
+    return render(request, 'core/profile_edit.html', {
         'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
         'avatar_url': request.user.avatar_url,
-        'email': request.user.email,
-        'schools': request.user.schools,
         'role': 'staff' if request.user.is_staff else 'user',
-        'department': request.user.department,
         'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
-        'school_options': School.objects.filter(district=request.user.district).order_by('name').all()[:30]
-    }
-    return render(request, 'core/profile_edit.html', context)
+        'form': form,
+        'error_message': [error for error in form.non_field_errors()],
+    })
 
 
 @login_required

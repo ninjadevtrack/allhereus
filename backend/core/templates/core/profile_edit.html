@@ -1,72 +1,63 @@
-{% extends "core/base.html" %}
+{% extends "core/_profile_base.html" %}
+{% block profile_content %}
+<div class="card">
+  <div class="card-body">
+  <form id="profile_form" action="{% url 'profile_edit' %}" method="post">
+    {% csrf_token %}
 
-{% block content %}
-<form action="{% url 'profile_edit' %}" method="post" class="container">
-  {% csrf_token %}
-  <section class="space-between">
-      <h1 class="page-header">Profile</h1>
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="submit" href="" class="btn btn-primary">Save</button>
-        <a href="{% url 'profile' %}" class="btn btn-light">Cancel</a>
-      </div>
-  </section>
-  <section class="row pb-4 pt-3">
-    <div class="col d-flex align-items-center">
-      <img src="{{ avatar_url }}" alt="User Avatar" class="rounded-circle">
-      <h2 class="pl-3">{{ name }} <small class="text-muted">{{ role }}</small></h2>
-    </div>
-  </section>
-  <section class="row">
-    <div class="col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Personal Information</h4>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
-              <label for="email">Email:</label>
-              <input id="email" name="email" type="email" class="form-control" value="{{ email }}" placeholder="{{ email }}"/>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
-              <label for="school">School(s):</label>
-              {% if school_options %}
-              <select multiple name="school" id="school" class="form-control">
-                {% for school in school_options %}
-                  {% if school in schools %}
-                <option value="{{ school.id }}" selected>{{ school.name }}</option>
-                  {% else %}
-                <option value="{{ school.id }}">{{ school.name }}</option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-              <small class="form-text text-muted">Hold down "Control", or "Command" on a Mac, to select more than one.</small>
-              {% else %}
-              <p class="text-muted">Sorry. There aren't any available schools to choose from in your district.</p>
-              {% endif %}
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
-              <label for="department">Department:</label>
-              <input id="department" name="department" type="text" class="form-control" placeholder="{{ department }}" />
-            </li>
-          </ul>
-        </div>
-        <div class="card-footer">If you would like to change your avatar, please visit Gravatar's website, <a href="https://secure.gravatar.com/">secure.gravatar.com</a></div>
-      </div>
-    </div>
-    <div class="col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Recent Activity</h4>
-          <ul class="list-group list-group-flush">
-            {% for checkin in recent_checkins %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">{{ checkin.status }} {{ checkin.mode}}</li>
+      <h4 class="card-title">Personal Information</h4>
+
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
+          {{ form.email.label_tag}}
+          <div>
+            <input id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" type="email" value="{{ form.email.value | default_if_none:'' }}" placeholder="Email Address" class="form-control {% if form.email.errors %} is-invalid {% endif %}"/>
+            <div class="invalid-feedback">
+            {% for error in form.email.errors %}
+              {{ error }}
             {% endfor %}
-            {% if not recent_checkins %}
-            <p class="text-center">No recent activity to display.</p>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-</form>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
+          {{ form.school.label_tag }}
+          {% if form.school.field.queryset %}
+          <div>
+            <select name="{{ form.school.html_name }}" id="{{ form.school.id_for_label }}" class="form-control {% if form.school.errors %} is-invalid {% endif %}">
+              {% for school in form.school.field.queryset %}
+                {% if school == request.user.school %}
+              <option value="{{ school.pk }}" selected>{{ school.name }}</option>
+                {% else %}
+              <option value="{{ school.pk }}">{{ school.name }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+            {% for error in form.school.errors %}
+              {{ error }}
+            {% endfor %}
+            </div>
+          </div>
+          {% else %}
+          <p class="text-muted">Sorry. There aren't any available schools to choose from in your district.</p>
+          {% endif %}
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
+          {{ form.department.label_tag}}
+          <div>
+            <input id="{{ form.department.id_for_label }}" name="{{ form.department.html_name }}" type="text" value="{{ form.department.value | default_if_none:'' }}" placeholder="Department" class="form-control {% if form.department.errors %} is-invalid {% endif %}"/>
+            <div class="invalid-feedback">
+            {% for error in form.department.errors %}
+              {{ error }}
+            {% endfor %}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <div class="card-footer">If you would like to change your avatar, please visit Gravatar's website, <a href="https://secure.gravatar.com/">secure.gravatar.com</a>
+  </div>
+</div>
+
 {% endblock %}

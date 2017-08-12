@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<article class="container">
+  <section class="space-between">
+      <h1 class="page-header">Profile</h1>
+      {% if view == 'display' %}
+      <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit</a>
+      {% else %}
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="submit" href="" form="profile_form" class="btn btn-primary">Save</button>
+        <a href="{% url 'profile' %}" class="btn btn-light">Cancel</a>
+      </div>
+      {% endif %}
+  </section>
+  <section class="row pb-4 pt-3">
+    <div class="col d-flex align-items-center">
+
+      <img src="{{ user.avatar_url }}" alt="User Avatar" class="rounded-circle">
+      <h2 class="pl-3">{{ user.name }} <small class="text-muted">{{ user.role.get_role_display }}</small></h2>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col-lg-6 col-md-12">
+      {% block profile_content %}
+      {% endblock %}
+    </div>
+    {% include "core/_recent_activity.html" with checkins=recent_checkins %}
+  </section>
+</article>
+
+{% endblock %}
