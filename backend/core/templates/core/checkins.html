@@ -48,7 +48,7 @@
     </table>
     <section class="d-flex justify-content-between align-items-center pb-4">
       <span>Showing all {{ checkins | length }} checkins</span>
-      <a href="#" class="btn btn-light" name="export">Export to CSV</a>
+      <a href="{% url 'checkins_csv' %}" class="btn btn-light" name="export">Export to CSV</a>
     </section>
   {% else %}
     <p class="text-center">Sorry. No checkins found.</p>
