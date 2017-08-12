@@ -95,27 +95,15 @@ def checkins(request):
     """
     list all the checkins for teacher
     """
-    checkins = [
-        {
-            'date': fake.date_time(),
-            'teacher': {
-                'name': fake.name(),
-                'email': fake.email(),
-            },
-            'student': {
-                'name': fake.name(),
-                'email': fake.email(),
-            },
-            'team': fake.company(),
-            'feedback': fake.word(),
-            'id': 1,
-        } for _ in range(8)
-    ]
 
-    context = {
-        'checkins': checkins
-    }
+    if request.user.role=='DA':
+        checkins = CheckIn.objects.filter(student__group=request.user.district)
+    elif request.user.role=='SA':
+        checkins = CheckIn.objects.filter(student__school=request.user.school)
+    else:
+        checkins = CheckIn.objects.filter(student__in=request.user.student_set.all())
 
+    context = {'checkins': checkins.all()}
     return render(request, 'core/checkins.html', context)
 
 @login_required

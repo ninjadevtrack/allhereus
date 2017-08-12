@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from core.models import MyUser, Student, CheckIn, District, School, Team
+from core.models import MyUser, Student, CheckIn, District, School
 
 
 # https://github.com/django/django/blob/a96b981d84367fd41b1df40adf3ac9ca71a741dd/django/contrib/auth/forms.py#L64-L150
@@ -71,7 +71,8 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password', 'image_tag')}),
         ('Personal Info', {'fields': ('first_name', 'last_name',)}),
-        ('Organization Info', {'fields': ('district', 'school', 'team',)}),
+        ('Account Info', {'fields': ('role', 'is_manager',)}),
+        ('Organization Info', {'fields': ('district', 'school',)}),
         # ('Organization Info', {'fields': ('district', 'school', 'team',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                     'groups', 'user_permissions')}),
@@ -102,10 +103,6 @@ class SchoolInline(admin.StackedInline):
     extra = 1
 
 
-class TeamInline(admin.StackedInline):
-    model = Team
-
-
 class StudentInline(admin.StackedInline):
     model = Student
     extra = 1
@@ -114,7 +111,6 @@ class StudentInline(admin.StackedInline):
 class DisctrictAdmin(admin.ModelAdmin):
     inlines = [
         SchoolInline,
-        TeamInline,
         StudentInline,
     ]
 
@@ -124,12 +120,9 @@ class DisctrictAdmin(admin.ModelAdmin):
 
 
 class SchoolAdmin(admin.ModelAdmin):
-    inlines = [
-        TeamInline,
-    ]
 
     class Meta:
-        model = Team
+        model = School
         fields = '__all__'
 
 
@@ -138,4 +131,3 @@ admin.site.register(Student)
 admin.site.register(CheckIn)
 admin.site.register(District, DisctrictAdmin)
 admin.site.register(School, SchoolAdmin)
-admin.site.register(Team)
