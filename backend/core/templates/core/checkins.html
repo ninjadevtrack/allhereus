@@ -8,52 +8,52 @@
     <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
   </div>
 
-  <input class="form-control mb-3" type="search" placeholder="search...">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Teacher</th>
-        <th>Student</th>
-        <th>Feedback</th>
-        <th>Better</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for checkin in checkins %}
+  {% if checkins %}
+    <input class="form-control mb-3" type="search" placeholder="search...">
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <th scope="row">
-            <a href="{% url 'checkin' checkin.id %}">{{ checkin.date }}</a>
-          </th>
-          <td>
-            <a href="mailto:{{ checkin.teacher.email }}">{{ checkin.teacher.name }}</a>
-          </td>
-          <td>
-            {% if checkin.student.email %}
-              <a href="mailto:{{ checkin.student.email }}">{{ checkin.student.name }}</a>
-            {% else %}
-              {{ checkin.student.name }}
-            {% endif %}
-          </td>
-          <td>{{ checkin.info_learned | truncatechars:25 }}</td>
-          <td>{{ checkin.info_better | truncatechars:25 }}</td>
-          <td>
-            <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-secondary">Edit</a>
-            <button type="button" class="btn btn-danger" name="delete">Delete</button>
-          </td>
-          <td></td>
+          <th>Date</th>
+          <th>Teacher</th>
+          <th>Student</th>
+          <th>Feedback</th>
+          <th>Better</th>
+          <th></th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <section class="d-flex justify-content-between align-items-center pb-4">
-    <span>Showing all {{ checkins | length }} checkins</span>
-    <a href="#" class="btn btn-light" name="export">Export to CSV</a>
-  </section>
-
-
+      </thead>
+      <tbody>
+        {% for checkin in checkins %}
+          <tr>
+            <th scope="row">
+              <a href="{% url 'checkin' checkin.id %}">{{ checkin.date }}</a>
+            </th>
+            <td>
+              <a href="mailto:{{ checkin.teacher.email }}">{{ checkin.teacher.name }}</a>
+            </td>
+            <td>
+              {% if checkin.student.email %}
+                <a href="mailto:{{ checkin.student.email }}">{{ checkin.student.name }}</a>
+              {% else %}
+                {{ checkin.student.name }}
+              {% endif %}
+            </td>
+            <td>{{ checkin.info_learned | truncatechars:25 }}</td>
+            <td>{{ checkin.info_better | truncatechars:25 }}</td>
+            <td>
+              <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-secondary">Edit</a>
+              <button type="button" class="btn btn-danger" name="delete">Delete</button>
+            </td>
+        {% endfor %}
+      </tbody>
+    </table>
+    <section class="d-flex justify-content-between align-items-center pb-4">
+      <span>Showing all {{ checkins | length }} checkins</span>
+      <a href="{% url 'checkins_csv' %}" class="btn btn-light" name="export">Export to CSV</a>
+    </section>
+  {% else %}
+    <p class="text-center">Sorry. No checkins found.</p>
+    <p class="text-center">Try adding one with the <span class="badge badge-primary">+ New</span> button.</p>
+  {% endif %}
 </div>
 
 {% endblock %}

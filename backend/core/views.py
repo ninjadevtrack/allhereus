@@ -1,15 +1,16 @@
+import csv
+from datetime import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 
 from faker import Faker
 
 from .models import CheckIn
 from .forms import CheckInForm, ProfileForm
-
-fake = Faker()
 
 
 @login_required
@@ -18,18 +19,15 @@ def home(request):
     the homepage of the user
     """
 
-    username = 'Aldo Raine'
+    checkin_count = 8
 
-    recent_checkins = [
-        {
-            'student': fake.name(),
-            'teacher': fake.name(),
-            'id': 1,
-            'time': fake.date_time(),
-        } for _ in range(8)
-    ]
+    recent_checkins = CheckIn.objects.order_by('created_on').all()[:checkin_count]
 
-    context = {'username': username, 'recent_checkins': recent_checkins}
+    context = {
+        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
+        'recent_checkins': recent_checkins,
+    }
+
     return render(request, 'core/home.html', context=context)
 
 
@@ -158,6 +156,28 @@ def checkin_edit(request, id):
             return redirect('checkins')
 
     return render(request, 'core/checkin_edit.html', {'form': form})
+
+
+@login_required
+def checkins_csv(request):
+    response = HttpResponse(content_type='text/csv')
+
+    filename = f'AllHere Checkins Archive {datetime.now()}'
+    response['Content-Disposition'] = f'attachment; filename="{ filename }.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow(['date', 'teacher', 'student', 'status', 'visit type',
+                     'info learned', 'info better', 'success score'])
+
+    checkins = CheckIn.objects.all()
+    for checkin in checkins:
+        writer.writerow([checkin.date, checkin.teacher, checkin.student,
+                         checkin.get_status_display(), checkin.get_mode_display(),
+                         checkin.info_learned, checkin.info_better,
+                         checkin.success_score])
+
+    return response
 
 
 @login_required
