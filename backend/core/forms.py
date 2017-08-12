@@ -23,9 +23,12 @@ class CheckInForm(ModelForm):
 
 
 class ProfileForm(ModelForm):
-    # email = EmailField(label='Email', max_length=255)
-    # schools = MultipleChoiceField(label='Schools')
-    # department = CharField(label='Department')
     class Meta:
         model = MyUser
         fields = ['email', 'school', 'department']
+
+
+class StudentForm(ModelForm):
+    class Meta:
+        model = Student
+        fields = ['student_id', 'first_name', 'last_name', 'language', 'email', 'grade', 'district', 'school', 'teacher']

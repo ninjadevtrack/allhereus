@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import CheckIn
-from .forms import CheckInForm, ProfileForm
+from .forms import CheckInForm, ProfileForm, StudentForm
 
 
 @login_required
@@ -177,6 +177,23 @@ def checkins_csv(request):
 
     return response
 
+
+@login_required
+def student_add(request):
+    """
+    Create new student
+    """
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('profile'))
+    else:
+        form = StudentForm()
+    return render(request, 'core/student_edit.html', {
+        'form': form,
+        'error_message': [error for error in form.non_field_errors()],
+    })
 
 @login_required
 def teams(request):

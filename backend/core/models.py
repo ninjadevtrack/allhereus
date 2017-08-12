@@ -125,6 +125,7 @@ class Student(CommonInfo):
     These are entities, not application users.
     """
     student_id = models.CharField(
+        verbose_name='Student ID',
         max_length=255, help_text='School identifier for student.')
     is_active = models.BooleanField(
         default=True, help_text='Designates that this student should be considered active.',)
