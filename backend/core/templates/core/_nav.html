@@ -20,6 +20,7 @@
       </li>
     </ul>
     <ul class="navbar-nav">
+    {% if request.user.is_authenticated %}
       <li class="dropdown">
         <a href="#" class="dropdown-toggle no-decoration" data-toggle="dropdown" data-offset="100px" aria-haspopup="true" aria-expanded="false">
           <img alt="profile image" class="rounded-circle nav-bar-profile-img" src="{{ request.user.avatar_url }}"/>
@@ -29,6 +30,11 @@
           <a href="{% url 'logout' %}" class="dropdown-item text-center">Logout</a>
         </ul>
       </li>
+    {% else %}
+      <li class="nav-item">
+        <a href="{% url 'login' %}">Login</a>
+      </li>
+    {% endif %}
     </ul>
   </div>
 </nav>
