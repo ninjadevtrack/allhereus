@@ -25,6 +25,10 @@
   list-style-type: square;
 }
 
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
 
 /* https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
 /* Sticky footer styles

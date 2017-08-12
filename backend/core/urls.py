@@ -16,7 +16,7 @@ urlpatterns = [
 
     url(r'checkins/$', views.checkins, name='checkins'),
     url(r'checkins/add', views.checkins_add, name='checkin_add'),
-    url(r'checkins/(?P<id>[0-9]+)/', views.checkin, name='checkin'),
+    url(r'checkins/(?P<id>[0-9]+)/$', views.checkin, name='checkin'),
     url(r'checkins/(?P<id>[0-9]+)/edit', views.checkin_edit, name='checkin_edit'),
 
     url(r'teams/$', views.teams, name='teams'),

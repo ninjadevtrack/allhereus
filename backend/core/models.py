@@ -60,10 +60,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     objects = MyUserManager()
 
     def get_full_name(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name}' if self.first_name and self.last_name else self.email
 
     def get_short_name(self):
-        return self.first_name
+        return self.first_name if self.first_name else self.email
 
     # required for admin
     def has_perm(self, perm, obj=None):
@@ -92,7 +92,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         return self.get_full_name()
 
     def __str__(self):
-        return f'{self.name} <{self.email}>'
+        return self.get_full_name()
 
 
 class CommonInfo(models.Model):

@@ -108,7 +108,12 @@ def checkin(request, id):
     """
     view an individual checkin
     """
-    return render(request, 'core/checkin.html')
+    checkin_event = CheckIn.objects.get(id=id)
+    return render(request, 'core/checkin.html', {
+        'checkin': checkin_event,
+        'success_score_percentage': checkin_event.success_score / 10 * 100,
+        }
+    )
 
 @login_required
 def checkin_edit(request, id):
