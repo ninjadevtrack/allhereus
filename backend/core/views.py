@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from faker import Faker
 
 from .models import CheckIn, School
-
+from .forms import CheckInForm
 
 fake = Faker()
 
@@ -106,12 +106,23 @@ def checkins(request):
     context = {'checkins': checkins.all()}
     return render(request, 'core/checkins.html', context)
 
+
 @login_required
 def checkins_add(request):
     """
     create a new checkin
     """
-    return render(request, 'core/checkins_add.html')
+
+    if request.method == 'GET':
+        form = CheckInForm(request.user)
+    else:
+        form = CheckInForm(request.user, request.POST)
+        # If data is valid, proceeds to create a new CheckIn and redirect the user
+        if form.is_valid():
+            form.save()
+            return redirect('checkins')
+
+    return render(request, 'core/checkin_edit.html', {'form': form})
 
 @login_required
 def checkin(request, id):
@@ -130,7 +141,10 @@ def checkin_edit(request, id):
     """
     edit an individual checkin
     """
-    return render(request, 'core/checkin_edit.html')
+    checkin = CheckIn.objects.get(id=id)
+    form = CheckInForm(request.user, instance=checkin)
+
+    return render(request, 'core/checkin_edit.html', {'form': form})
 
 @login_required
 def teams(request):
