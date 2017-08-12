@@ -29,6 +29,14 @@ python manage.py createsuperuser
 python manage.py test
 ```
 
+### Dependencies
+
+#### Frontend
+
+- http://getbootstrap.com
+- https://popper.js.org/
+- https://bootstrap-datepicker.readthedocs.io/en/stable/
+
 
 [0]: http://www.allhere.co
 [1]: http://localhost:8000/admin
