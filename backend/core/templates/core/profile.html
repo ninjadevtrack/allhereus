@@ -1,28 +1,32 @@
 {% extends "core/_profile_base.html" %}
 {% block profile_content %}
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Personal Information</h4>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
-      {% if user.department %}
-      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Department:</b> <span>{{ user.department }}</span></li>
-      {% endif %}
-      {% if user.district %}
-      <li class="list-group-item d-flex justify-content-between align-items-center"><b>District:</b> <span>{{ user.district }}</span></li>
-      {% endif %}
-      {% if user.school %}
-      <li class="list-group-item d-flex justify-content-between align-items-center"><b>School:</b> {{ user.school }}</li>
-      {% endif %}
-      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Joined:</b> <span>{{ user.date_joined }}</span></li>
-      {% if user.grade %}
-      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Grade:</b> <span>{{ user.grade }}</span></li>
-      {% endif %}
-      {% if user.subject %}
-      <li class="list-group-item d-flex justify-content-between align-items-center"><b>Subject:</b> <span>{{ user.subject }}</span></li>
-      {% endif %}
-    </ul>
+<div class="col-lg-6 col-md-12">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Personal Information</h4>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+        {% if user.department %}
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>Department:</b> <span>{{ user.department }}</span></li>
+        {% endif %}
+        {% if user.district %}
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>District:</b> <span>{{ user.district }}</span></li>
+        {% endif %}
+        {% if user.school %}
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>School:</b> {{ user.school }}</li>
+        {% endif %}
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>Joined:</b> <span>{{ user.date_joined }}</span></li>
+        {% if user.grade %}
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>Grade:</b> <span>{{ user.grade }}</span></li>
+        {% endif %}
+        {% if user.subject %}
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>Subject:</b> <span>{{ user.subject }}</span></li>
+        {% endif %}
+      </ul>
+    </div>
   </div>
 </div>
-
+<div class="col-lg-6 col-md-12">
+  {% include "core/_recent_activity.html" with checkins=recent_checkins %}
+</div>
 {% endblock %}
