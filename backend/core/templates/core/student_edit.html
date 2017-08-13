@@ -1,0 +1,198 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+  {% if view != 'edit'%}
+  <h1 class="mt-3 mb-3">New Student</h1>
+  {% else %}
+  <section class="d-flex justify-content-between align-items-center">
+    <h1 class="mt-3 mb-3">Edit Student</h1>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="submit" href="" form="student_form" class="btn btn-primary">Save Student</button>
+      <a href="{% url 'student' student.pk %}" class="btn btn-light">Cancel</a>
+    </div>
+  </section>
+  {% endif %}
+  <div class="row">
+    <div class="card col-md-12 col-lg-12 ml-lg-auto mr-lg-auto">
+      <div class="card-body">
+        {% if view != 'edit'%}
+        <form id="student_form" action="{% url 'student_add' %}" method="post">
+        {% else %}
+        <form id="student_form" action="{% url 'student_edit' student.pk %}" method="post">
+        {% endif %}
+        {% csrf_token %}
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="{{ form.first_name.id_for }}" class="col-form-label">{{ form.first_name.label }}</label>
+              <input id="{{ form.first_name.id_for_label }}" name="{{ form.first_name.html_name }}" type="text" value="{{ form.first_name.value | default_if_none:'' }}" placeholder="Newt" class="form-control{% if form.first_name.errors %} is-invalid{% endif %}" {% if form.first_name.field.required %} required {% endif %}/>
+              {% if form.first_name.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.first_name.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.last_name.id_for }}" class="col-form-label">{{ form.last_name.label }}</label>
+              <input id="{{ form.last_name.id_for_label }}" name="{{ form.last_name.html_name }}" type="text" value="{{ form.last_name.value | default_if_none:'' }}" placeholder="Scamander" class="form-control {% if form.last_name.errors %} is-invalid {% endif %}" {% if form.last_name.field.required %} required {% endif %}/>
+              {% if form.last_name.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.last_name.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.email.id_for }}" class="col-form-label">{{ form.email.label }}</label>
+              <input id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" type="email" value="{{ form.email.value | default_if_none:'' }}" placeholder="n.scamander@example.com" class="form-control {% if form.email.errors %} is-invalid {% endif %}" {% if form.email.field.required %} required {% endif %}/>
+              {% if form.email.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.email.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="{{ form.language.id_for }}" class="col-form-label">{{ form.language.label }}</label>
+              <input id="{{ form.language.id_for_label }}" name="{{ form.language.html_name }}" type="text" value="{{ form.language.value | default_if_none:'' }}" placeholder="English" class="form-control {% if form.language.errors %} is-invalid {% endif %}" {% if form.language.field.required %} required {% endif %}/>
+              {% if form.language.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.language.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.student_id.id_for }}" class="col-form-label">{{ form.student_id.label }}</label>
+              <input id="{{ form.student_id.id_for_label }}" name="{{ form.student_id.html_name }}" type="text" value="{{ form.student_id.value | default_if_none:'' }}" placeholder="0987-6540-3210" class="form-control {% if form.student_id.errors %} is-invalid {% endif %}" {% if form.student_id.field.required %} required {% endif %}/>
+              {% if form.student_id.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.student_id.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.teacher.id_for }}" class="col-form-label">{{ form.teacher.label }}</label>
+              <select name="{{ form.teacher.html_name }}" id="{{ form.teacher.id_for_label }}" class="form-control {% if form.teacher.errors %} is-invalid {% endif %}" {% if form.teacher.field.required %} required {% endif %}>
+                {% for teacher in form.teacher.field.queryset %}
+                  {% if teacher == form.teacher.value %}
+                <option value="{{ teacher.pk }}" selected>{{ teacher.name | truncatechars:41 }}</option>
+                  {% else %}
+                <option value="{{ teacher.pk }}">{{ teacher.name | truncatechars:41 }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              {% if not form.teacher.field.queryset %}
+              <p class="text-muted">Sorry. There aren't any available teachers to choose from in your district.</p>
+              {% endif %}
+              {% if form.teacher.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.teacher.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="{{ form.district.id_for }}" class="col-form-label">{{ form.district.label }}</label>
+              <select name="{{ form.district.html_name }}" id="{{ form.district.id_for_label }}" class="form-control {% if form.district.errors %} is-invalid {% endif %}" {% if form.district.field.required %} required {% endif %}>
+                {% for district in form.district.field.queryset %}
+                  {% if district == form.district.value %}
+                <option value="{{ district.pk }}" selected>{{ district.name | truncatechars:41 }}</option>
+                  {% else %}
+                <option value="{{ district.pk }}">{{ district.name | truncatechars:41 }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              {% if not form.district.field.queryset %}
+              <p class="text-muted">Sorry. There aren't any available districts to choose from in your district.</p>
+              {% endif %}
+              {% if form.district.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.district.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="{{ form.school.id_for }}" class="col-form-label">{{ form.school.label }}</label>
+              <select name="{{ form.school.html_name }}" id="{{ form.school.id_for_label }}" class="form-control {% if form.school.errors %} is-invalid {% endif %}" {% if form.school.field.required %} required {% endif %}>
+                {% for school in form.school.field.queryset %}
+                  {% if school == form.school.value %}
+                <option value="{{ school.pk }}" selected>{{ school.name | truncatechars:41 }}</option>
+                  {% else %}
+                <option value="{{ school.pk }}">{{ school.name | truncatechars:41 }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              {% if not form.school.field.queryset %}
+              <p class="text-muted">Sorry. There aren't any available schools to choose from in your district.</p>
+              {% endif %}
+              {% if form.school.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.school.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="{{ form.grade.id_for }}" class="col-form-label">{{ form.grade.label }}</label>
+              <select name="{{ form.grade.html_name }}" id="{{ form.grade.id_for_label }}" class="form-control {% if form.grade.errors %} is-invalid {% endif %}" {% if form.grade.field.required %} required {% endif %}>
+                {% for id, grade in form.grade.field.choices %}
+                  {% if grade == form.grade.value %}
+                <option value="{{ id }}" selected>{{ grade }}</option>
+                  {% else %}
+                <option value="{{ id }}">{{ grade }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              {% if not form.grade.field.choices %}
+              <p class="text-muted">Sorry. There aren't any available grades to choose from in your district.</p>
+              {% endif %}
+              {% if form.grade.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.grade.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% if view != 'edit' %}
+          <button type="submit" class="btn btn-primary">Create Student</button>
+          {% else %}
+          <div class="d-flex justify-content-between align-items-center">
+            <button type="submit" class="btn btn-primary">Save Student</button>
+            <button type="submit" class="btn btn-secondary">Cancel</button>
+          </div>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

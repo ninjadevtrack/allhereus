@@ -25,3 +25,9 @@ class ProfileForm(ModelForm):
     class Meta:
         model = MyUser
         fields = ['email', 'school', 'department', 'first_name', 'last_name', 'subject', 'grade']
+
+
+class StudentForm(ModelForm):
+    class Meta:
+        model = Student
+        fields = ['student_id', 'first_name', 'last_name', 'language', 'email', 'grade', 'district', 'school', 'teacher']

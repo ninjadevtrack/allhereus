@@ -7,8 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .models import CheckIn
-from .forms import CheckInForm, ProfileForm
+from .models import CheckIn, Student
+from .forms import CheckInForm, ProfileForm, StudentForm
+
+TABLE_DISPLAY_LIMIT = 100
 
 
 @login_required
@@ -16,14 +18,9 @@ def home(request):
     """
     the homepage of the user
     """
-
-    checkin_count = 8
-    checkins = CheckIn.objects.order_by('created_on').all()
-    recent_checkins = checkins[:checkin_count]
-
     context = {
-        'recent_checkins': recent_checkins,
-        'total': len(checkins),
+        'recent_checkins': request.user.checkins[:10],
+        'total': len(request.user.checkins),
     }
 
     return render(request, 'core/home.html', context=context)
@@ -61,7 +58,7 @@ def profile(request):
     displays user's info
     """
     context = {
-        'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
+        'recent_checkins': request.user.checkins[:10],
         'user': request.user,
         'view': 'display',
     }
@@ -173,6 +170,70 @@ def checkins_csv(request):
                          checkin.success_score])
 
     return response
+
+
+@login_required
+def student(request, id):
+    """
+    Student detail view
+    """
+    student = Student.objects.get(id=id)
+    return render(request, 'core/student.html', {
+        'student': student,
+        'recent_checkins': student.checkins[:10]
+    })
+
+
+@login_required
+def student_add(request):
+    """
+    Create new student
+    """
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('students'))
+    else:
+        form = StudentForm()
+    return render(request, 'core/student_edit.html', {
+        'form': form,
+        'error_message': [error for error in form.non_field_errors()],
+    })
+
+
+@login_required
+def student_edit(request, id):
+    """
+    Edit existing student
+    """
+    print(id)
+    student = get_object_or_404(Student, pk=id)
+    if request.method == 'POST':
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('students'))
+    else:
+        form = StudentForm(instance=student)
+    return render(request, 'core/student_edit.html', {
+        'form': form,
+        'view': 'edit',
+        'student': student,
+        'error_message': [error for error in form.non_field_errors()],
+    })
+
+
+@login_required
+def students(request):
+    """
+    List view of students
+    """
+    students = Student.objects.order_by('last_name').all()
+    return render(request, 'core/student_list.html', {
+        'students': students[:TABLE_DISPLAY_LIMIT],
+        'student_total': len(students),
+    })
 
 
 @login_required
