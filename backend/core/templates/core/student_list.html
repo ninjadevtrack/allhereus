@@ -23,13 +23,13 @@
       <tr>
         <th scope="row">{{ forloop.counter }}</th>
         <td>
-          <a href="{% url 'student' student.id %}">{{ student.first_name }}</a>
+          <a href="{{ student.url }}">{{ student.first_name }}</a>
         </td>
         <td>
-          <a href="{% url 'student' student.id %}">{{ student.last_name }}</a>
+          <a href="{{ student.url }}">{{ student.last_name }}</a>
         </td>
         <td>
-          <a href="{% url 'student' student.id %}">{{ student.student_id }}</a>
+          <a href="{{ student.url }}">{{ student.student_id }}</a>
         </td>
         <td>
           <a href="mailto:{{ student.email | default_if_none:""}}">{{ student.email | default_if_none:""}}</a>

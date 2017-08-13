@@ -174,6 +174,10 @@ class Student(CommonInfo):
     teacher = models.ForeignKey('MyUser')
 
     @property
+    def url(self):
+        return reverse('student', args=[self.id])
+
+    @property
     def name(self):
         return f'{self.first_name} {self.last_name}'
 

@@ -196,8 +196,7 @@ def student_add(request):
         form = StudentForm(request.POST)
         if form.is_valid():
             form.save()
-            # TODO: redirect to new user
-            return HttpResponseRedirect(reverse('profile'))
+            return HttpResponseRedirect(reverse('students'))
     else:
         form = StudentForm()
     return render(request, 'core/student_edit.html', {
@@ -207,11 +206,33 @@ def student_add(request):
 
 
 @login_required
+def student_edit(request, id):
+    """
+    Edit existing student
+    """
+    print(id)
+    student = get_object_or_404(Student, pk=id)
+    if request.method == 'POST':
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('students'))
+    else:
+        form = StudentForm(instance=student)
+    return render(request, 'core/student_edit.html', {
+        'form': form,
+        'view': 'edit',
+        'student': student,
+        'error_message': [error for error in form.non_field_errors()],
+    })
+
+
+@login_required
 def students(request):
     """
     List view of students
     """
-    students = Student.objects.order_by('created_on').all()
+    students = Student.objects.order_by('last_name').all()
     return render(request, 'core/student_list.html', {
         'students': students[:TABLE_DISPLAY_LIMIT],
         'student_total': len(students),
