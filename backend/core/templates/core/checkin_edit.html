@@ -34,7 +34,7 @@ ul {
           <div class="form-group col-md-6">
             <label for="{{ form.date.html_name }}">Date:</label>
             <!-- use type text instead of date so that we disable the time picker  -->
-            <input id="{{ form.date.id_for_label }}" name="date" value="{{ form.date.value }}" placeholder="{{ form.date.html_name }}" type="text" class="form-control" required>
+            <input id="{{ form.date.id_for_label }}" name="date" value="{{ form.date.value|date:"n/d/Y" }}" placeholder="{{ form.date.html_name }}" type="text" class="form-control" required>
             {% for error in form.date.errors %}
               <p class="text-danger">{{ error }}</p>
             {% endfor %}
@@ -147,6 +147,6 @@ ul {
 {% block js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
 <script>
-$('input[name="date"]').datepicker({ format: 'yyyy-mm-dd' });
+$('input[name="date"]').datepicker({ format: 'm/dd/yyyy' });
 </script>
 {% endblock %}
