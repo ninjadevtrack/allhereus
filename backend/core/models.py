@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.urls import reverse
 
 
 class MyUserManager(BaseUserManager):
@@ -93,6 +94,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         return True
 
     @property
+    def checkins(self):
+        return CheckIn.objects.order_by('created_on').filter(teacher=self)
+
+    @property
     def schools(self):
         return School.objects.all().filter(members=self)
 
@@ -172,6 +177,14 @@ class Student(CommonInfo):
     def name(self):
         return f'{self.first_name} {self.last_name}'
 
+    @property
+    def checkins(self):
+        return CheckIn.objects.order_by('created_on').filter(student=self)
+
+    @property
+    def last_checkin(self):
+        return self.checkins.first()
+
     def __str__(self):
         return self.name
 
@@ -234,6 +247,10 @@ class CheckIn(CommonInfo):
         blank=True,
         help_text='What could have made this mentor check-in better?',
     )
+
+    @property
+    def url(self):
+        return reverse('checkin', args=[self.id])
 
     def __str__(self):
         return f'Check-in via {self.status} regarding {self.student} by {self.teacher} on {self.date}'

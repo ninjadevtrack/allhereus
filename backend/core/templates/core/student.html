@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+{% block content %}
+<article class="container">
+  <section class="space-between">
+      <h1 class="mt-3 mb-3">Student Profile</h1>
+      <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit</a>
+  </section>
+  <h2>{{ student.name }}</h2>
+  <section class="row">
+    <div class="col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Personal Information</h4>
+          <ul class="list-group list-group-flush">
+            {% if student.email %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Email:</b> <a href="mailto:{{ student.email }}">{{ student.email }}</a></li>
+            {% endif %}
+            {% if student.student_id %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Student ID:</b> {{ student.student_id }}</li>
+            {% endif %}
+            {% if student.language %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Language:</b> {{ student.language }}</li>
+            {% endif %}
+            {% if student.teacher %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Teacher:</b> {{ student.teacher }}</li>
+            {% endif %}
+            {% if student.district %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>District:</b> {{ student.district }}</li>
+            {% endif %}
+            {% if student.school %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>School:</b> {{ student.school }}</li>
+            {% endif %}
+            {% if student.grade %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Grade:</b> {{ student.grade }}</li>
+            {% endif %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Last Checkin:</b> <a href="{% url 'checkin' student.last_checkin.id %}">{{ student.last_checkin.date | naturaltime }}</a></li>
+          </ul>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recent Checkins <span class="badge badge-secondary">{{ recent_checkins | length}}</span></h4>
+          <ul class="list-group list-group-flush">
+            {% for checkin in recent_checkins %}
+            <li class="list-group-item"><a href="{% url 'checkin' checkin.id %}">{{ checkin.date }} by {{ checkin.teacher }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+{% endblock %}
