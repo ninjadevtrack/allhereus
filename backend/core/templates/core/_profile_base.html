@@ -21,11 +21,8 @@
     </div>
   </section>
   <section class="row">
-    <div class="col-lg-6 col-md-12">
-      {% block profile_content %}
-      {% endblock %}
-    </div>
-    {% include "core/_recent_activity.html" with checkins=recent_checkins %}
+    {% block profile_content %}
+    {% endblock %}
   </section>
 </article>
 

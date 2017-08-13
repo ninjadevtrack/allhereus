@@ -1,62 +1,102 @@
 {% extends "core/_profile_base.html" %}
 {% block profile_content %}
-<div class="card">
-  <div class="card-body">
-  <form id="profile_form" action="{% url 'profile_edit' %}" method="post">
-    {% csrf_token %}
+<div class="col-lg-12 ml-lg-auto mr-lg-auto col-md-12">
+  <div class="card">
+    <div class="card-body">
+    <form id="profile_form" action="{% url 'profile_edit' %}" method="post">
+      {% csrf_token %}
 
-      <h4 class="card-title">Personal Information</h4>
-
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
-          {{ form.email.label_tag}}
-          <div>
-            <input id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" type="email" value="{{ form.email.value | default_if_none:'' }}" placeholder="Email Address" class="form-control {% if form.email.errors %} is-invalid {% endif %}"/>
-            <div class="invalid-feedback">
-            {% for error in form.email.errors %}
-              {{ error }}
-            {% endfor %}
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
-          {{ form.school.label_tag }}
-          {% if form.school.field.queryset %}
-          <div>
-            <select name="{{ form.school.html_name }}" id="{{ form.school.id_for_label }}" class="form-control {% if form.school.errors %} is-invalid {% endif %}">
-              {% for school in form.school.field.queryset %}
-                {% if school == request.user.school %}
-              <option value="{{ school.pk }}" selected>{{ school.name }}</option>
-                {% else %}
-              <option value="{{ school.pk }}">{{ school.name }}</option>
-                {% endif %}
+        <h4 class="card-title">Personal Information</h4>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="{{ form.first_name.id_for_label }}" class="col-form-label">{{ form.first_name.label }}</label>
+              <input type="text" id="{{ form.first_name.id_for_label }}" name="{{ form.first_name.html_name }}" placeholder="Rick" value="{{ form.first_name.value | default_if_none:'' }}" class="form-control {% if form.first_name.errors %} is-invalid {% endif %}"/>
+              <div class="invalid-feedback">
+              {% for error in form.first_name.errors %}
+                {{ error }}
               {% endfor %}
-            </select>
-            <div class="invalid-feedback">
-            {% for error in form.school.errors %}
-              {{ error }}
-            {% endfor %}
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.last_name.id_for_label }}" class="col-form-label">{{ form.last_name.label }}</label>
+              <input type="text" id="{{ form.last_name.id_for_label }}" name="{{ form.last_name.html_name }}" placeholder="Sanchez" value="{{ form.last_name.value | default_if_none:'' }}" class="form-control {% if form.last_name.errors %} is-invalid {% endif %}"/>
+              <div class="invalid-feedback">
+              {% for error in form.last_name.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.email.id_for_label }}" class="col-form-label">{{ form.email.label }}</label>
+              <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="r.sanchez@example.com" value="{{ form.email.value | default_if_none:'' }}" class="form-control {% if form.email.errors %} is-invalid {% endif %}"/>
+              <div class="invalid-feedback">
+              {% for error in form.email.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
             </div>
           </div>
-          {% else %}
-          <p class="text-muted">Sorry. There aren't any available schools to choose from in your district.</p>
-          {% endif %}
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center form-inline">
-          {{ form.department.label_tag}}
-          <div>
-            <input id="{{ form.department.id_for_label }}" name="{{ form.department.html_name }}" type="text" value="{{ form.department.value | default_if_none:'' }}" placeholder="Department" class="form-control {% if form.department.errors %} is-invalid {% endif %}"/>
-            <div class="invalid-feedback">
-            {% for error in form.department.errors %}
-              {{ error }}
-            {% endfor %}
+
+
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="{{ form.department.id_for_label }}" class="col-form-label">{{ form.department.label }}</label>
+              <input type="text" id="{{ form.department.id_for_label }}" name="{{ form.department.html_name }}" placeholder="Science" value="{{ form.department.value | default_if_none:'' }}" class="form-control {% if form.department.errors %} is-invalid {% endif %}"/>
+              <div class="invalid-feedback">
+              {% for error in form.department.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="{{ form.subject.id_for_label }}" class="col-form-label">{{ form.subject.label }}</label>
+              <input type="subject" id="{{ form.subject.id_for_label }}" name="{{ form.subject.html_name }}" placeholder="Physics" value="{{ form.subject.value | default_if_none:'' }}" class="form-control {% if form.subject.errors %} is-invalid {% endif %}"/>
+              <div class="invalid-feedback">
+              {% for error in form.subject.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="{{ form.grade.id_for_label }}" class="col-form-label">{{ form.grade.label }}</label>
+              <input type="grade" id="{{ form.grade.id_for_label }}" name="{{ form.grade.html_name }}" placeholder="Fourth" value="{{ form.grade.value | default_if_none:'' }}" class="form-control {% if form.grade.errors %} is-invalid {% endif %}"/>
+              <div class="invalid-feedback">
+              {% for error in form.grade.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.school.id_for_label }}" class="col-form-label">{{ form.school.label }}</label>
+              {% if form.school.field.queryset %}
+              <select name="{{ form.school.html_name }}" id="{{ form.school.id_for_label }}" name="{{ form.school.html_name }}" class="form-control {% if form.school.errors %} is-invalid {% endif %}"/>
+              {% for school in form.school.field.queryset %}
+                  {% if school == request.user.school %}
+                <option value="{{ school.pk }}" selected>{{ school.name }}</option>
+                  {% else %}
+                <option value="{{ school.pk }}">{{ school.name }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <div class="invalid-feedback">
+              {% for error in form.school.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% else %}
+              <p class="text-muted">Sorry. There aren't any available schools to choose from in your district.</p>
+              {% endif %}
             </div>
           </div>
-        </li>
-      </ul>
-    </form>
-  </div>
-  <div class="card-footer">If you would like to change your avatar, please visit Gravatar's website, <a href="https://secure.gravatar.com/">secure.gravatar.com</a>
+      </form>
+    </div>
+    <div class="card-footer">If you would like to change your avatar, please visit Gravatar's website, <a href="https://secure.gravatar.com/">secure.gravatar.com</a>.
+    </div>
   </div>
 </div>
 

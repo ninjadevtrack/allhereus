@@ -82,9 +82,6 @@ def profile_edit(request):
     else:
         form = ProfileForm(instance=request.user)
     return render(request, 'core/profile_edit.html', {
-        'name': f'{request.user.last_name}, {request.user.first_name}' if request.user.last_name else request.user.email,
-        'avatar_url': request.user.avatar_url,
-        'role': 'staff' if request.user.is_staff else 'user',
         'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
         'form': form,
         'error_message': [error for error in form.non_field_errors()],
