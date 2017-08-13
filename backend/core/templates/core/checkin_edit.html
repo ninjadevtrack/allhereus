@@ -11,60 +11,86 @@ ul {
 {% endblock %}
 
 {% block content %}
-<div class="col-lg-12 col-md-12">
-  <div class="container">
 
-    <h1 class="mt-3 mb-3">Add Checkin</h1>
+<div class="container">
 
-    <div class="row">
-      {% if form.errors %}
-          {% for field in form %}
-              {% for error in field.errors %}
-                  <div class="alert alert-danger">
-                      <strong>{{ error | escape }}</strong>
-                  </div>
-              {% endfor %}
+  <h1 class="mt-3 mb-3">Add Checkin</h1>
+
+  <div class="row">
+    <div class="col">
+      <div class="mb-4">
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="{{ form.teacher.html_name }}">On behalf of Teacher:</label>
+          {{ form.teacher }}
+          {% for error in form.teacher.errors %}
+            <p class="text-danger">{{ error }}</p>
           {% endfor %}
-          {% for error in form.non_field_errors %}
-              <div class="alert alert-danger">
-                  <strong>{{ error | escape }}</strong>
-              </div>
-          {% endfor %}
-      {% endif %}
-    </div>
+        </div>
 
-
-    <div class="row">
-      <div class="col col-md-6 offset-md-3">
-        <form method="post">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="{{ form.teacher.html_name }}">On behalf of Teacher:</label>
-            {{ form.teacher }}
-          </div>
-
-          <div class="form-group">
+        <div class="form-row">
+          <div class="form-group col-md-6">
             <label for="{{ form.date.html_name }}">Date:</label>
             <!-- use type text instead of date so that we disable the time picker  -->
-            <input id="{{ form.date.id_for_label }}" name="date" placeholder="{{ form.date.html_name }}" type="text" class="form-control" required>
+            <input id="{{ form.date.id_for_label }}" name="date" value="{{ form.date.value|date:"n/d/Y" }}" placeholder="{{ form.date.html_name }}" type="text" class="form-control" required>
+            {% for error in form.date.errors %}
+              <p class="text-danger">{{ error }}</p>
+            {% endfor %}
           </div>
 
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label for="{{ form.student.html_name }}">Student:</label>
             {{ form.student }}
+            {% for error in form.student.errors %}
+              <p class="text-danger">{{ error }}</p>
+            {% endfor %}
           </div>
 
-          <div class="form-group">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group d-flex flex-column col-md-7 col-lg-6">
             <label for="{{ form.status.html_name }}">Status:</label>
-            {{ form.status }}
+            <div class="btn-group" data-toggle="buttons">
+              {% for val, text in form.status.field.choices %}
+                {% if form.status.value == val %}
+                <label class="btn btn-info active">
+                  <input type="radio" name="{{ form.status.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}" checked>{{ text }}
+                </label>
+                {% else %}
+                <label class="btn btn-info">
+                  <input type="radio" name="{{ form.status.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}">{{ text }}
+                </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% for error in form.status.errors %}
+              <p class="text-danger">{{ error }}</p>
+            {% endfor %}
           </div>
-
-          <div class="form-group">
+          <div class="form-group d-flex flex-column col-md-5">
             <label for="{{ form.mode.html_name }}">Format:</label>
-            {{ form.mode }}
+            <div class="btn-group" data-toggle="buttons">
+              {% for val, text in form.mode.field.choices %}
+                {% if form.mode.value == val %}
+                <label class="btn btn-info active">
+                  <input type="radio" name="{{ form.mode.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}" checked>{{ text }}
+                </label>
+                {% else %}
+                <label class="btn btn-info">
+                  <input type="radio" name="{{ form.mode.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}">{{ text }}
+                </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% for error in form.mode.errors %}
+              <p class="text-danger">{{ error }}</p>
+            {% endfor %}
           </div>
 
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label for="{{ form.success_score.html_name }}">
               {% if request.user.district.custom_text_succces_score %}
                 {{ request.user.district.custom_text_succces_score }}
@@ -75,35 +101,43 @@ ul {
             {{ form.success_score }}
           </div>
 
-          <div class="form-group">
-            <label for="{{ form.info_learned.html_name }}">
-              {% if request.user.district.custom_text_info_learned %}
-                {{ request.user.district.custom_text_info_learned }}
-              {% else %}
-                What is the most important thing you learned about your mentee at your most recent mentoring check-in?
-              {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.info_learned.html_name }}">
+            {% if request.user.district.custom_text_info_learned %}
+              {{ request.user.district.custom_text_info_learned }}
+            {% else %}
+              What is the most important thing you learned about your mentee at your most recent mentoring check-in?
+            {% endif %}
+          </label>
+          {{ form.info_learned }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.info_better.html_name }}">
+            {% if request.user.district.custom_text_info_better %}
+              {{ request.user.district.custom_text_info_better }}
+            {% else %}
+              What could have made this mentor check-in better?
+            {% endif %}
+          </label>
+          {{ form.info_better }}
+        </div>
+
+        <div class="form-group">
+
+          <div class="form-check">
+            <label class="form-check-label" for="{{ form.notify_school_admin.html_name }}">
+              <input class="form-check-input" type="checkbox" value="{{ form.notify_school_admin.value }}">
+              Notify School Admin?
             </label>
-            {{ form.info_learned }}
           </div>
+        </div>
 
-          <div class="form-group">
-            <label for="{{ form.info_better.html_name }}">
-              {% if request.user.district.custom_text_info_better %}
-                {{ request.user.district.custom_text_info_better }}
-              {% else %}
-                What could have made this mentor check-in better?
-              {% endif %}
-            </label>
-            {{ form.info_better }}
-          </div>
+        <input type="submit" class="btn btn-primary btn-block" value="Submit" />
+      </form>
 
-          <div class="form-group">
-            <label for="{{ form.notify_school_admin.html_name }}">Notify School Admin?</label>
-            {{ form.notify_school_admin }}
-          </div>
-
-          <input type="submit" class="btn btn-primary" value="Submit" />
-        </form>
       </div>
     </div>
   </div>
@@ -113,6 +147,6 @@ ul {
 {% block js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
 <script>
-$('input[name="date"]').datepicker({ format: 'yyyy-mm-dd' });
+$('input[name="date"]').datepicker({ format: 'm/dd/yyyy' });
 </script>
 {% endblock %}

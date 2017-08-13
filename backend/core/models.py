@@ -219,17 +219,17 @@ class CheckIn(CommonInfo):
             ('U', 'Unreachable'),
             ('M', 'Left Message'),
         ),
-        null=True,
-        blank=True,
+        blank=False,
         help_text='Current status of check-in.',
     )
     mode = models.CharField(
         max_length=1,
         choices=(
-            ('P', 'Phone'), ('V', 'Visit'), ('I', 'In-Person')
+            ('P', 'Phone'),
+            ('V', 'Visit'),
+            ('I', 'In-Person')
         ),
-        null=True,
-        blank=True,
+        blank=False,
         help_text='Mode of communication for check-in.',
     )
     notify_school_admin = models.BooleanField(
