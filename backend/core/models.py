@@ -171,7 +171,7 @@ class Student(CommonInfo):
 
     district = models.ForeignKey('District')
     school = models.ForeignKey('School')
-    teacher = models.ForeignKey('MyUser')
+    teacher = models.ForeignKey('MyUser', null=True, blank=True)
 
     @property
     def url(self):

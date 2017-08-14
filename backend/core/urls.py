@@ -22,6 +22,7 @@ urlpatterns = [
 
     url(r'students/$', views.students, name='students'),
     url(r'students/add', views.student_add, name='student_add'),
+    url(r'students/unassigned', views.students_unassigned, name='students_unassigned'),
     url(r'students/(?P<id>[0-9]+)/$', views.student, name='student'),
     url(r'students/(?P<id>[0-9]+)/edit', views.student_edit, name='student_edit'),
 

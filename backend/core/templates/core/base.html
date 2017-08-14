@@ -16,7 +16,7 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      <strong>Uh, Oh!</strong> {{ error_message }}
+      <strong>Uh, Oh!</strong> {% for error in error_message %}{{ error }} {% endfor %}
     </div>
       {% endif %}
     {% endblock %}

@@ -24,6 +24,10 @@
   white-space: pre-wrap;
 }
 
+.s-1_5 {
+  transform: scale(1.5);
+}
+
 
 /* https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
 /* Sticky footer styles
