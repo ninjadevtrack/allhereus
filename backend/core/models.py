@@ -94,6 +94,14 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         return True
 
     @property
+    def is_school_admin(self):
+        return self.role == 'SA'
+
+    @property
+    def is_district_admin(self):
+        return self.role == 'DA'
+
+    @property
     def checkins(self):
         return CheckIn.objects.order_by('created_on').filter(teacher=self)
 

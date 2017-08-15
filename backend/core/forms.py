@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField
+from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError
 from .models import MyUser, CheckIn, Student
 
 
@@ -13,10 +13,39 @@ class CheckInForm(ModelForm):
                   'mode', 'notify_school_admin', 'success_score',
                   'info_learned', 'info_better']
 
+    def clean(self):
+        cleaned_data = super(CheckInForm, self).clean()
+        teacher = cleaned_data.get("teacher")
+        student = cleaned_data.get("student")
+
+        # Basic validation of relationships
+        # We should enforce this more on the model side
+        if self.user.is_district_admin:
+            if teacher.district != self.user.district or student.district != self.user.district:
+                raise ValidationError("Teacher/student districts must match.")
+        elif self.user.is_school_admin:
+            if teacher.school != self.user.school or student.school != self.user.school:
+                raise ValidationError("Teacher/student schools must match.")
+        else:
+            self.fields['teacher'] = self.user
+
     def __init__(self, user, *args, **kwargs):
+        self.user = user
         super(CheckInForm, self).__init__(*args, **kwargs)
-        self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(pk=user.id), empty_label=None)
-        self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(teacher=user), empty_label=None)
+        # District admins can view teachers and students of distrct
+        # School admins can view teachers and students of school
+        # Teachers can view their students and cannot change the teacher field
+        if user.is_district_admin:
+            self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(district=user.district), empty_label=None)
+            self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(district=user.district), empty_label=None)
+        elif user.is_school_admin:
+            self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(school=user.school), empty_label=None)
+            self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(school=user.school), empty_label=None)
+        else:
+            self.fields['teacher'].widget.attrs['disabled'] = True
+            self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(pk=user.id), empty_label=None)
+            self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(teacher=user), empty_label=None)
+
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 

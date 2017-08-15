@@ -93,7 +93,7 @@ def checkins(request):
     """
 
     if request.user.role == 'DA':
-        checkins = CheckIn.objects.filter(student__group=request.user.district)
+        checkins = CheckIn.objects.filter(student__district=request.user.district)
     elif request.user.role == 'SA':
         checkins = CheckIn.objects.filter(student__school=request.user.school)
     else:
@@ -110,7 +110,8 @@ def checkins_add(request):
     """
 
     if request.method == 'GET':
-        form = CheckInForm(request.user)
+        date = datetime.now()
+        form = CheckInForm(request.user, initial={'date': date.strftime('%-m/%d/%Y')})
     else:
         form = CheckInForm(request.user, request.POST)
         # If data is valid, proceeds to create a new CheckIn and redirect the user
@@ -118,7 +119,10 @@ def checkins_add(request):
             form.save()
             return redirect('checkins')
 
-    return render(request, 'core/checkin_edit.html', {'form': form})
+    return render(request, 'core/checkin_edit.html', {
+        'form': form,
+        'error_message': [error for error in form.non_field_errors()],
+    })
 
 
 @login_required
@@ -148,7 +152,10 @@ def checkin_edit(request, id):
             form.save()
             return redirect('checkins')
 
-    return render(request, 'core/checkin_edit.html', {'form': form})
+    return render(request, 'core/checkin_edit.html', {
+        'form': form,
+        'error_message': [error for error in form.non_field_errors()],
+    })
 
 
 @login_required
