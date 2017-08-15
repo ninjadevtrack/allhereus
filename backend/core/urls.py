@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'teams/(?P<id>[0-9]+)/', views.team, name='team'),
 
     url(r'privacy', views.privacy, name='privacy'),
+    url(r'support', views.support, name='support'),
 ]
