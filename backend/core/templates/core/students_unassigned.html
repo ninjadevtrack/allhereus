@@ -42,11 +42,12 @@
             </div>
           </td>
         </tr>
-        {% empty %}
-        <p class="text-muted">Sorry, we couldn't find any students for you.</p>
         {% endfor %}
       </tbody>
     </table>
+    {% if not students %}
+    <p class="text-muted text-center">Sorry, we couldn't find any students for you.</p>
+    {% endif %}
     <div class="d-flex justify-content-end align-items-center">
       <div>
         <button type="submit" form="student-assignment-form" class="btn btn-primary">Assign Selected to Self</button>
