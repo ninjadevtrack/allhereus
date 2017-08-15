@@ -89,15 +89,15 @@
             <div class="form-group col-md-4">
               <label for="{{ form.teacher.id_for }}" class="col-form-label">{{ form.teacher.label }}</label>
               <select name="{{ form.teacher.html_name }}" id="{{ form.teacher.id_for_label }}" class="form-control {% if form.teacher.errors %} is-invalid {% endif %}" {% if form.teacher.field.required %} required {% endif %}>
-                {% for teacher in form.teacher.field.queryset %}
-                  {% if teacher == form.teacher.value %}
-                <option value="{{ teacher.pk }}" selected>{{ teacher.name | truncatechars:41 }}</option>
+                {% for id, name in form.teacher.field.choices %}
+                  {% if id == form.teacher.value %}
+                <option value="{{ id }}" selected>{{ name | truncatechars:41 }}</option>
                   {% else %}
-                <option value="{{ teacher.pk }}">{{ teacher.name | truncatechars:41 }}</option>
+                <option value="{{ id }}">{{ name | truncatechars:41 }}</option>
                   {% endif %}
                 {% endfor %}
               </select>
-              {% if not form.teacher.field.queryset %}
+              {% if not form.teacher.field.choices %}
               <p class="text-muted">Sorry. There aren't any available teachers to choose from in your district.</p>
               {% endif %}
               {% if form.teacher.errors %}
@@ -114,15 +114,15 @@
               <div class="form-group col-md-6">
               <label for="{{ form.district.id_for }}" class="col-form-label">{{ form.district.label }}</label>
               <select name="{{ form.district.html_name }}" id="{{ form.district.id_for_label }}" class="form-control {% if form.district.errors %} is-invalid {% endif %}" {% if form.district.field.required %} required {% endif %}>
-                {% for district in form.district.field.queryset %}
-                  {% if district == form.district.value %}
-                <option value="{{ district.pk }}" selected>{{ district.name | truncatechars:41 }}</option>
+                {% for id, name in form.district.field.choices %}
+                  {% if id == form.district.value %}
+                <option value="{{ id }}" selected>{{ name | truncatechars:41 }}</option>
                   {% else %}
-                <option value="{{ district.pk }}">{{ district.name | truncatechars:41 }}</option>
+                <option value="{{ id }}">{{ name | truncatechars:41 }}</option>
                   {% endif %}
                 {% endfor %}
               </select>
-              {% if not form.district.field.queryset %}
+              {% if not form.district.field.choices %}
               <p class="text-muted">Sorry. There aren't any available districts to choose from in your district.</p>
               {% endif %}
               {% if form.district.errors %}
@@ -133,19 +133,18 @@
               </div>
               {% endif %}
             </div>
-
             <div class="form-group col-md-6">
               <label for="{{ form.school.id_for }}" class="col-form-label">{{ form.school.label }}</label>
               <select name="{{ form.school.html_name }}" id="{{ form.school.id_for_label }}" class="form-control {% if form.school.errors %} is-invalid {% endif %}" {% if form.school.field.required %} required {% endif %}>
-                {% for school in form.school.field.queryset %}
-                  {% if school == form.school.value %}
-                <option value="{{ school.pk }}" selected>{{ school.name | truncatechars:41 }}</option>
+                {% for id, name in form.school.field.choices %}
+                  {% if id == form.school.value %}
+                <option value="{{ id }}" selected>{{ name | truncatechars:41 }}</option>
                   {% else %}
-                <option value="{{ school.pk }}">{{ school.name | truncatechars:41 }}</option>
+                <option value="{{ id }}">{{ name | truncatechars:41 }}</option>
                   {% endif %}
                 {% endfor %}
               </select>
-              {% if not form.school.field.queryset %}
+              {% if not form.school.field.choices %}
               <p class="text-muted">Sorry. There aren't any available schools to choose from in your district.</p>
               {% endif %}
               {% if form.school.errors %}
@@ -163,7 +162,7 @@
               <label for="{{ form.grade.id_for }}" class="col-form-label">{{ form.grade.label }}</label>
               <select name="{{ form.grade.html_name }}" id="{{ form.grade.id_for_label }}" class="form-control {% if form.grade.errors %} is-invalid {% endif %}" {% if form.grade.field.required %} required {% endif %}>
                 {% for id, grade in form.grade.field.choices %}
-                  {% if grade == form.grade.value %}
+                  {% if id == form.grade.value %}
                 <option value="{{ id }}" selected>{{ grade }}</option>
                   {% else %}
                 <option value="{{ id }}">{{ grade }}</option>

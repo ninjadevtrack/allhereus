@@ -4,6 +4,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -229,11 +230,42 @@ def students(request):
     """
     List view of students
     """
-    students = Student.objects.order_by('last_name').all()
+    students = Student.objects.order_by('last_name').filter(teacher=request.user).all()
     return render(request, 'core/student_list.html', {
         'students': students[:TABLE_DISPLAY_LIMIT],
         'student_total': len(students),
     })
+
+
+@login_required
+def students_unassigned(request):
+    """
+    List view/ form to assign unassigned students to teacher
+    """
+    errors = []
+    if request.method == 'POST':
+        student_ids = []
+        for form_input in request.POST:
+            # get primary key values from checkboxes with name formated 'checkbox-<pk>'
+            if form_input.split('-')[0] == 'checkbox':
+                student_ids.append(int(form_input.split('-')[1]))
+        students = []
+        for student_id in student_ids:
+            try:
+                student = Student.objects.get(pk=student_id)
+                if student.teacher:
+                    errors.append(f'Student already has a teacher assigned')
+                students.append(student)
+            except ObjectDoesNotExist:
+                errors.append(f'Student does not exist for provided id')
+        if not errors:
+            for student in students:
+                student.teacher = request.user
+                student.save()
+            return HttpResponseRedirect(reverse('students'))
+    students = Student.objects.order_by('last_name').filter(teacher=None).all()
+    # students = Student.objects.order_by('last_name').filter(teacher=request.user).all()
+    return render(request, 'core/students_unassigned.html', {'students': students, 'error_message': errors})
 
 
 @login_required
