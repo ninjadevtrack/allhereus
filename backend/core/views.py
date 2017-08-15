@@ -258,3 +258,10 @@ def privacy(request):
     return the privacy policy
     """
     return render(request, 'core/privacy.html')
+
+
+def support(request):
+    """
+    return the support page
+    """
+    return render(request, 'core/support.html')
