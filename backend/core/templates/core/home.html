@@ -9,7 +9,7 @@
 
   <div class="row">
 
-    {% if request.user.role == 'T' %}
+    {% if request.user.role == 'DA' %}
     <div class="card text-center col-md-3">
       <div class="card-header">
         Schools
@@ -21,9 +21,8 @@
     </div>
     {% endif %}
 
-    {% if request.user.role == 'T' %}
+    {% if request.user.role == 'DA' or request.user.role == 'SA' %}
 
-  
     <div class="card text-center col-md-3">
       <div class="card-header">
         Users
@@ -45,7 +44,7 @@
         <a href="{% url 'checkins' %}" class="btn btn-outline-primary">Manage Checkins</a>
       </div>
     </div>
-    
+
     <div class="card text-center col-md-3">
       <div class="card-header">
         Students
