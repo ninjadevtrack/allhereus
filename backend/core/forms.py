@@ -80,7 +80,10 @@ class StudentForm(ModelForm):
         elif user.is_school_admin and user.school is not None:
             self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(school=user.school), empty_label=None)
-        else:
+        elif user.school is not None:
             self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
+            self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(id=user.id), empty_label=None)
+        else:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=-99), empty_label=None)
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(id=user.id), empty_label=None)
 
