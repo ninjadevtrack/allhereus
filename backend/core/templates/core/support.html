@@ -1,1 +1,26 @@
-<p>support</p>
+{% extends 'core/base.html' %}
+
+{% block content %}
+<article class="container">
+  <h1>Support</h1>
+
+  <div class="video-container">
+    <iframe src="https://player.vimeo.com/video/199096280" width="640" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+  </div>
+  <div class="video-container">
+    <iframe src="https://player.vimeo.com/video/199099883" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+  </div>
+</article>
+
+{% endblock %}
+
+{% block css %}
+<style>
+.video-container {
+  margin-bottom: 50px;
+}
+</style>
+{% endblock %}
+
