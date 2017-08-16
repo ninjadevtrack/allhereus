@@ -7,70 +7,78 @@
       <h1 class="mt-3 mb-3">Hello, {{ request.user.name }}</h1>
   </section>
 
-  <div class="row">
+  <div class="row mb-4">
 
     {% if request.user.role == 'DA' %}
-    <div class="card text-center col-md-3">
-      <div class="card-header">
-        Schools
-      </div>
-      <div class="card-block">
-        <svg width="97" height="85" viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg"><path d="M960 0l960 384v128h-128q0 26-20.5 45t-48.5 19h-1526q-28 0-48.5-19t-20.5-45h-128v-128zm-704 640h256v768h128v-768h256v768h128v-768h256v768h128v-768h256v768h59q28 0 48.5 19t20.5 45v64h-1664v-64q0-26 20.5-45t48.5-19h59v-768zm1595 960q28 0 48.5 19t20.5 45v128h-1920v-128q0-26 20.5-45t48.5-19h1782z"/></svg>
-        <a href="{% url 'home' %}" class="btn btn-outline-primary">Manage Schools</a>
+    <div class="col-md-3">
+      <div class="card text-center pb-4">
+        <div class="card-header text-white bg-primary">
+          Schools
+        </div>
+        <div class="card-block d-flex flex-column align-items-center justify-content-center">
+          <svg class="m-4" width="97" height="85" viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg"><path d="M960 0l960 384v128h-128q0 26-20.5 45t-48.5 19h-1526q-28 0-48.5-19t-20.5-45h-128v-128zm-704 640h256v768h128v-768h256v768h128v-768h256v768h128v-768h256v768h59q28 0 48.5 19t20.5 45v64h-1664v-64q0-26 20.5-45t48.5-19h59v-768zm1595 960q28 0 48.5 19t20.5 45v128h-1920v-128q0-26 20.5-45t48.5-19h1782z"/></svg>
+          <a href="{% url 'home' %}" class="btn btn-outline-primary">Manage Schools</a>
+        </div>
       </div>
     </div>
     {% endif %}
 
     {% if request.user.role == 'DA' or request.user.role == 'SA' %}
-
-    <div class="card text-center col-md-3">
-      <div class="card-header">
-        Users
-      </div>
-      <div class="card-block">
-        <svg width="97" height="85" viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg"><path d="M657 896q-162 5-265 128h-134q-82 0-138-40.5t-56-118.5q0-353 124-353 6 0 43.5 21t97.5 42.5 119 21.5q67 0 133-23-5 37-5 66 0 139 81 256zm1071 637q0 120-73 189.5t-194 69.5h-874q-121 0-194-69.5t-73-189.5q0-53 3.5-103.5t14-109 26.5-108.5 43-97.5 62-81 85.5-53.5 111.5-20q10 0 43 21.5t73 48 107 48 135 21.5 135-21.5 107-48 73-48 43-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-1024-1277q0 106-75 181t-181 75-181-75-75-181 75-181 181-75 181 75 75 181zm704 384q0 159-112.5 271.5t-271.5 112.5-271.5-112.5-112.5-271.5 112.5-271.5 271.5-112.5 271.5 112.5 112.5 271.5zm576 225q0 78-56 118.5t-138 40.5h-134q-103-123-265-128 81-117 81-256 0-29-5-66 66 23 133 23 59 0 119-21.5t97.5-42.5 43.5-21q124 0 124 353zm-128-609q0 106-75 181t-181 75-181-75-75-181 75-181 181-75 181 75 75 181z"/></svg>
-        <a href="{% url 'home' %}" class="btn btn-outline-primary">Manage Users</a>
+    <div class="col-md-3">
+      <div class="card text-center pb-4">
+        <div class="card-header text-white bg-primary">
+          Users
+        </div>
+        <div class="card-block d-flex flex-column align-items-center justify-content-center">
+          <svg class="m-4" width="97" height="85" viewBox="0 0 2048 1792" xmlns="http://www.w3.org/2000/svg"><path d="M657 896q-162 5-265 128h-134q-82 0-138-40.5t-56-118.5q0-353 124-353 6 0 43.5 21t97.5 42.5 119 21.5q67 0 133-23-5 37-5 66 0 139 81 256zm1071 637q0 120-73 189.5t-194 69.5h-874q-121 0-194-69.5t-73-189.5q0-53 3.5-103.5t14-109 26.5-108.5 43-97.5 62-81 85.5-53.5 111.5-20q10 0 43 21.5t73 48 107 48 135 21.5 135-21.5 107-48 73-48 43-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-1024-1277q0 106-75 181t-181 75-181-75-75-181 75-181 181-75 181 75 75 181zm704 384q0 159-112.5 271.5t-271.5 112.5-271.5-112.5-112.5-271.5 112.5-271.5 271.5-112.5 271.5 112.5 112.5 271.5zm576 225q0 78-56 118.5t-138 40.5h-134q-103-123-265-128 81-117 81-256 0-29-5-66 66 23 133 23 59 0 119-21.5t97.5-42.5 43.5-21q124 0 124 353zm-128-609q0 106-75 181t-181 75-181-75-75-181 75-181 181-75 181 75 75 181z"/></svg>
+          <a href="{% url 'home' %}" class="btn btn-outline-primary">Manage Users</a>
+        </div>
       </div>
     </div>
 
     {% endif %}
-
-    <div class="card text-center col-md-3">
-      <div class="card-header">
-        Checkins
-      </div>
-      <div class="card-block">
-        <svg width="85" height="85" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1303 964l-512 512q-10 9-23 9t-23-9l-288-288q-9-10-9-23t9-22l46-46q9-9 22-9t23 9l220 220 444-444q10-9 23-9t22 9l46 46q9 9 9 22t-9 23zm-1175 700h1408v-1024h-1408v1024zm384-1216v-288q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v288q0 14 9 23t23 9h64q14 0 23-9t9-23zm768 0v-288q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v288q0 14 9 23t23 9h64q14 0 23-9t9-23zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"/></svg>
-        <a href="{% url 'checkins' %}" class="btn btn-outline-primary">Manage Checkins</a>
-      </div>
-    </div>
-
-    <div class="card text-center col-md-3">
-      <div class="card-header">
-        Students
-      </div>
-      <div class="card-block">
-        <svg width="85" height="85" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1444 548l-292 292v824q0 46-33 79t-79 33-79-33-33-79v-384h-64v384q0 46-33 79t-79 33-79-33-33-79v-824l-292-292q-28-28-28-68t28-68q29-28 68.5-28t67.5 28l228 228h368l228-228q28-28 68-28t68 28q28 29 28 68.5t-28 67.5zm-324-164q0 93-65.5 158.5t-158.5 65.5-158.5-65.5-65.5-158.5 65.5-158.5 158.5-65.5 158.5 65.5 65.5 158.5z"/></svg>
-        <a href="{% url 'students' %}" class="btn btn-outline-primary">Manage Students</a>
+    <div class="col-md-3">
+      <div class="card text-center pb-4">
+        <div class="card-header text-white bg-primary">
+          Checkins
+        </div>
+        <div class="card-block d-flex flex-column align-items-center justify-content-center">
+          <svg class="m-4" width="85" height="85" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1303 964l-512 512q-10 9-23 9t-23-9l-288-288q-9-10-9-23t9-22l46-46q9-9 22-9t23 9l220 220 444-444q10-9 23-9t22 9l46 46q9 9 9 22t-9 23zm-1175 700h1408v-1024h-1408v1024zm384-1216v-288q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v288q0 14 9 23t23 9h64q14 0 23-9t9-23zm768 0v-288q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v288q0 14 9 23t23 9h64q14 0 23-9t9-23zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"/></svg>
+          <a href="{% url 'checkins' %}" class="btn btn-outline-primary">Manage Checkins</a>
+        </div>
       </div>
     </div>
 
-    <div class="card text-center col-md-3">
-      <div class="card-header">
-        Support
-      </div>
-      <div class="card-block">
-        <svg width="85" height="85" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1008 1200v160q0 14-9 23t-23 9h-160q-14 0-23-9t-9-23v-160q0-14 9-23t23-9h160q14 0 23 9t9 23zm256-496q0 50-15 90t-45.5 69-52 44-59.5 36q-32 18-46.5 28t-26 24-11.5 29v32q0 14-9 23t-23 9h-160q-14 0-23-9t-9-23v-68q0-35 10.5-64.5t24-47.5 39-35.5 41-25.5 44.5-21q53-25 75-43t22-49q0-42-43.5-71.5t-95.5-29.5q-56 0-95 27-29 20-80 83-9 12-25 12-11 0-19-6l-108-82q-10-7-12-20t5-23q122-192 349-192 129 0 238.5 89.5t109.5 214.5zm-368-448q-130 0-248.5 51t-204 136.5-136.5 204-51 248.5 51 248.5 136.5 204 204 136.5 248.5 51 248.5-51 204-136.5 136.5-204 51-248.5-51-248.5-136.5-204-204-136.5-248.5-51zm768 640q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"/></svg>
-        <a href="{% url 'support' %}" class="btn btn-outline-primary">Get Help</a>
+    <div class="col-md-3">
+      <div class="card text-center pb-4">
+        <div class="card-header text-white bg-primary">
+          Students
+        </div>
+        <div class="card-block d-flex flex-column align-items-center justify-content-center">
+          <svg class="m-4" width="85" height="85" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1444 548l-292 292v824q0 46-33 79t-79 33-79-33-33-79v-384h-64v384q0 46-33 79t-79 33-79-33-33-79v-824l-292-292q-28-28-28-68t28-68q29-28 68.5-28t67.5 28l228 228h368l228-228q28-28 68-28t68 28q28 29 28 68.5t-28 67.5zm-324-164q0 93-65.5 158.5t-158.5 65.5-158.5-65.5-65.5-158.5 65.5-158.5 158.5-65.5 158.5 65.5 65.5 158.5z"/></svg>
+          <a href="{% url 'students' %}" class="btn btn-outline-primary">Manage Students</a>
+        </div>
       </div>
     </div>
-
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center pb-4">
+        <div class="card-header text-white bg-primary">
+          Support
+        </div>
+        <div class="card-block d-flex flex-column align-items-center justify-content-center">
+          <svg class="m-4" width="85" height="85" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1008 1200v160q0 14-9 23t-23 9h-160q-14 0-23-9t-9-23v-160q0-14 9-23t23-9h160q14 0 23 9t9 23zm256-496q0 50-15 90t-45.5 69-52 44-59.5 36q-32 18-46.5 28t-26 24-11.5 29v32q0 14-9 23t-23 9h-160q-14 0-23-9t-9-23v-68q0-35 10.5-64.5t24-47.5 39-35.5 41-25.5 44.5-21q53-25 75-43t22-49q0-42-43.5-71.5t-95.5-29.5q-56 0-95 27-29 20-80 83-9 12-25 12-11 0-19-6l-108-82q-10-7-12-20t5-23q122-192 349-192 129 0 238.5 89.5t109.5 214.5zm-368-448q-130 0-248.5 51t-204 136.5-136.5 204-51 248.5 51 248.5 136.5 204 204 136.5 248.5 51 248.5-51 204-136.5 136.5-204 51-248.5-51-248.5-136.5-204-204-136.5-248.5-51zm768 640q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"/></svg>
+          <a href="{% url 'support' %}" class="btn btn-outline-primary">Get Help</a>
+        </div>
+      </div>
+    </div>
   </div>
 
 
   <div class="row">
     <div class="col-md-9 ml-auto mr-auto">
-      <div class="card">
+      <div class="card mb-4">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center pb-2">
             <h4 class="card-title">Recent Checkins</h4>
@@ -98,35 +106,4 @@
   </div>
 </article>
 
-{% endblock %}
-
-
-{% block css %}
-<style>
-
-.row {
-  margin-bottom: 20px;
-}
-.card {
-  padding: 0px 0px 25px 0px;
-}
-
-.card-header {
-  background-color: #007bff;
-  color: white;
-}
-
-svg {
-  margin: 15px;
-}
-
-.card-block {
-  padding: 0px 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-</style>
 {% endblock %}
