@@ -103,7 +103,21 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def checkins(self):
-        return CheckIn.objects.order_by('created_on').filter(teacher=self)
+        if self.role == 'DA':
+            return CheckIn.objects.filter(student__district=self.district).order_by('-date').all()
+        if self.role == 'SA':
+            return CheckIn.objects.filter(student__school=self.school).order_by('-date').all()
+        else:
+            return CheckIn.objects.filter(student__in=self.student_set.all()).order_by('-date').all()
+
+    @property
+    def students(self):
+        if self.role == 'DA':
+            return Student.objects.filter(district=self.district).order_by('-date').all()
+        if self.role == 'SA':
+            return Student.objects.filter(school=self.school).order_by('-date').all()
+        else:
+            return self.student_set.order_by('-date').all()
 
     @property
     def schools(self):
@@ -191,7 +205,7 @@ class Student(CommonInfo):
 
     @property
     def checkins(self):
-        return CheckIn.objects.order_by('created_on').filter(student=self)
+        return CheckIn.objects.order_by('-date').filter(student=self)
 
     @property
     def last_checkin(self):
@@ -261,11 +275,19 @@ class CheckIn(CommonInfo):
     )
 
     @property
+    def district(self):
+        return self.student.district
+
+    @property
+    def school(self):
+        return self.student.school
+
+    @property
     def url(self):
         return reverse('checkin', args=[self.id])
 
     def __str__(self):
-        return f'Check-in via {self.status} regarding {self.student} by {self.teacher} on {self.date}'
+        return f'Check-in on {self.student} by {self.teacher} at {self.date}'
 
 
 class District(CommonInfo):

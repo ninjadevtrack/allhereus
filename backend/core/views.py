@@ -4,7 +4,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -80,7 +80,7 @@ def profile_edit(request):
     else:
         form = ProfileForm(instance=request.user)
     return render(request, 'core/profile_edit.html', {
-        'recent_checkins': CheckIn.objects.order_by('created_on').all()[:10],
+        'recent_checkins': request.user.checkins[:10],
         'form': form,
         'error_message': [error for error in form.non_field_errors()],
     })
@@ -92,14 +92,7 @@ def checkins(request):
     list all the checkins for teacher
     """
 
-    if request.user.role == 'DA':
-        checkins = CheckIn.objects.filter(student__district=request.user.district).order_by('-date')
-    elif request.user.role == 'SA':
-        checkins = CheckIn.objects.filter(student__school=request.user.school).order_by('-date')
-    else:
-        checkins = CheckIn.objects.filter(student__in=request.user.student_set.all()).order_by('-date')
-
-    context = {'checkins': checkins.all()}
+    context = {'checkins': request.user.checkins}
     return render(request, 'core/checkins.html', context)
 
 
@@ -125,12 +118,26 @@ def checkins_add(request):
     })
 
 
+# Throw PermissionDenied Exception if user does not have permission to view
+def has_checkin_permission(checkin, user):
+    if checkin.district != user.district:
+        raise PermissionDenied("Checkin is not in your district")
+    if checkin.school != user.school and not user.is_district_admin:
+        raise PermissionDenied("Checkin is not in your school")
+    if checkin.teacher != user and not user.is_school_admin:
+        raise PermissionDenied("Checkin is not in yours")
+
+
 @login_required
 def checkin(request, id):
     """
     view an individual checkin
     """
     checkin_event = get_object_or_404(CheckIn, pk=id)
+
+    # 403 if user is not allowed
+    has_checkin_permission(checkin_event, request.user)
+
     return render(request, 'core/checkin.html', {
         'checkin': checkin_event,
         'success_score_percentage': checkin_event.success_score / 10 * 100,
@@ -144,6 +151,10 @@ def checkin_edit(request, id):
     """
 
     checkin = get_object_or_404(CheckIn, pk=id)
+
+    # 403 if user is not allowed
+    has_checkin_permission(checkin, request.user)
+
     if request.method == 'GET':
         form = CheckInForm(request.user, instance=checkin)
     else:
@@ -153,9 +164,27 @@ def checkin_edit(request, id):
             return redirect('checkins')
 
     return render(request, 'core/checkin_edit.html', {
+        'checkin': checkin,
         'form': form,
         'error_message': [error for error in form.non_field_errors()],
     })
+
+
+@login_required
+def checkin_delete(request, id):
+    """
+    Delete an individual checkin
+    """
+    checkin = get_object_or_404(CheckIn, pk=id)
+
+    # 403 if user is not allowed
+    has_checkin_permission(checkin, request.user)
+
+    if request.method == 'POST':
+        checkin.delete()
+        return redirect('checkins')
+
+    return render(request, 'core/checkin_delete.html', {'checkin': checkin})
 
 
 @login_required
@@ -170,7 +199,7 @@ def checkins_csv(request):
     writer.writerow(['date', 'teacher', 'student', 'status', 'visit type',
                      'info learned', 'info better', 'success score'])
 
-    checkins = CheckIn.objects.all()
+    checkins = request.user.checkins
     for checkin in checkins:
         writer.writerow([checkin.date, checkin.teacher, checkin.student,
                          checkin.get_status_display(), checkin.get_mode_display(),
@@ -185,7 +214,7 @@ def student(request, id):
     """
     Student detail view
     """
-    student = Student.objects.get(id=id)
+    student = get_object_or_404(Student, pk=id)
     return render(request, 'core/student.html', {
         'student': student,
         'recent_checkins': student.checkins[:10]
@@ -215,7 +244,6 @@ def student_edit(request, id):
     """
     Edit existing student
     """
-    print(id)
     student = get_object_or_404(Student, pk=id)
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
@@ -237,7 +265,7 @@ def students(request):
     """
     List view of students
     """
-    students = Student.objects.order_by('last_name').filter(teacher=request.user).all()
+    students = request.user.students.order_by('last_name')
     return render(request, 'core/student_list.html', {
         'students': students[:TABLE_DISPLAY_LIMIT],
         'student_total': len(students),
