@@ -40,8 +40,7 @@
             <td>{{ checkin.info_learned | truncatechars:25 }}</td>
             <td>{{ checkin.info_better | truncatechars:25 }}</td>
             <td>
-              <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-secondary">Edit</a>
-              <button type="button" class="btn btn-danger" name="delete">Delete</button>
+              <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-secondary btn-sm">Edit</a>
             </td>
         {% endfor %}
       </tbody>

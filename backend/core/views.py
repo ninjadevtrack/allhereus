@@ -93,11 +93,11 @@ def checkins(request):
     """
 
     if request.user.role == 'DA':
-        checkins = CheckIn.objects.filter(student__district=request.user.district)
+        checkins = CheckIn.objects.filter(student__district=request.user.district).order_by('-date')
     elif request.user.role == 'SA':
-        checkins = CheckIn.objects.filter(student__school=request.user.school)
+        checkins = CheckIn.objects.filter(student__school=request.user.school).order_by('-date')
     else:
-        checkins = CheckIn.objects.filter(student__in=request.user.student_set.all())
+        checkins = CheckIn.objects.filter(student__in=request.user.student_set.all()).order_by('-date')
 
     context = {'checkins': checkins.all()}
     return render(request, 'core/checkins.html', context)
