@@ -35,10 +35,10 @@ class CheckInForm(ModelForm):
         # District admins can view teachers and students of distrct
         # School admins can view teachers and students of school
         # Teachers can view their students and cannot change the teacher field
-        if user.is_district_admin:
+        if user.is_district_admin and user.district is not None:
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(district=user.district), empty_label=None)
             self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(district=user.district), empty_label=None)
-        elif user.is_school_admin:
+        elif user.is_school_admin and user.school is not None:
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(school=user.school), empty_label=None)
             self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(school=user.school), empty_label=None)
         else:
@@ -74,13 +74,13 @@ class StudentForm(ModelForm):
         # District admins can view teachers and students of distrct
         # School admins can view teachers and students of school
         # Teachers can view their students and cannot change the teacher field
-        if user.is_district_admin:
+        if user.is_district_admin and user.district is not None:
             self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(district=user.district), empty_label=None)
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(district=user.district), empty_label=None)
-        elif user.is_school_admin:
+        elif user.is_school_admin and user.school is not None:
             self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(school=user.school), empty_label=None)
         else:
             self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(id=user.id), empty_label=None)
-            
+
