@@ -1,5 +1,5 @@
-from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError, HiddenInput
-from .models import MyUser, CheckIn, Student, School, District
+from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError
+from .models import MyUser, CheckIn, Student, School
 
 
 class CheckInForm(ModelForm):
@@ -84,6 +84,5 @@ class StudentForm(ModelForm):
             self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(id=user.id), empty_label=None)
         else:
-            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=-99), empty_label=None)
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.none(), empty_label=None)
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(id=user.id), empty_label=None)
-
