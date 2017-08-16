@@ -19,16 +19,41 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-*r3lafkk9c+#*m%cu2(rn_9n*g=q2zkmvt6dxsq5w&uvr@7cq'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.getenv('DEBUG') == '1':
+    DEBUG = True
+else:
+    DEBUG = False
+
+# SECURITY WARNING: keep the secret key used in production secret!
+if DEBUG:
+    SECRET_KEY = '-*r3lafkk9c+#*m%cu2(rn_9n*g=q2zkmvt6dxsq5w&uvr@7cq'
+else:
+    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_USE_TLS = True
+    EMAIL_HOST = os.getenv('DJANGO_EMAIL_HOST')
+    EMAIL_PORT = os.getenv('DJANGO_EMAIL_PORT')
+    EMAIL_HOST_USER = os.getenv('DJANGO_SMTP_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('DJANGO_SMTP_PASSWORD')
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    SERVER_EMAIL = EMAIL_HOST_USER
 
-ALLOWED_HOSTS = []
+RAVEN_CONFIG = {
+    'dsn': os.getenv('SENTRY_DSN'),
+}
+
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    # domain set here, server_server.py, and nginx config
+    ALLOWED_HOSTS = ['.allhere.co']
+
+if DEBUG:
+    USE_X_FORWARDED_HOST = True
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
@@ -44,9 +69,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'core.apps.CoreConfig',
+    'django.contrib.sites',
+    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE = [
+    'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,8 +157,54 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/app/django/static'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'tags': {'custom-tag': 'x'},
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
