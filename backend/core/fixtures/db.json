@@ -1,0 +1,712 @@
+
+[
+{
+  "model": "core.myuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$uo3vxRFUwmn1$dARVaX9loTkZxbuQlWnOTlKszWyVZRKyiOJ/AI9cy6c=",
+    "last_login": "2017-08-16T17:43:12.955Z",
+    "is_superuser": true,
+    "email": "platformadmin@allhere.co",
+    "first_name": null,
+    "last_name": null,
+    "department": null,
+    "is_active": true,
+    "is_staff": true,
+    "date_joined": "2017-08-16",
+    "last_updated": "2017-08-16",
+    "district": null,
+    "school": null,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$RJ9wPcBhzPKD$TKQIM+4k3/rYXYJaJAJpBEF8vbRJVyLOL/ktq5Ers3k=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "teacher1@allhere.co",
+    "first_name": "Demo",
+    "last_name": "Teacher 1",
+    "department": null,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2017-08-16",
+    "last_updated": "2017-08-16",
+    "district": 1,
+    "school": null,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$1QRIJAVQygaT$Le8ONb5MCqef29nJY73uftKM9SX6xTNyoSDkKMbrOf8=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "teacher2@allhere.co",
+    "first_name": "Demo",
+    "last_name": "Teacher 2",
+    "department": null,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2017-08-16",
+    "last_updated": "2017-08-16",
+    "district": 1,
+    "school": 1,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$TVSGVmupZVsZ$yepg7m/6HNKIcfFEBdU2TztGNNjPlJqTXbefpShy7gs=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "school_admin@allhere.co",
+    "first_name": "School",
+    "last_name": "Admin",
+    "department": null,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2017-08-16",
+    "last_updated": "2017-08-16",
+    "district": 1,
+    "school": 1,
+    "grade": null,
+    "subject": null,
+    "role": "SA",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$alDQ4yYX89SB$6KX3ldZFmYzoC7UtXTkUHs+6URndGIzlzUgj0hnCEcU=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "district_admin@allhere.co",
+    "first_name": "District",
+    "last_name": "Admin",
+    "department": null,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2017-08-16",
+    "last_updated": "2017-08-16",
+    "district": 1,
+    "school": null,
+    "grade": null,
+    "subject": null,
+    "role": "DA",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.school",
+  "pk": 1,
+  "fields": {
+    "created_on": "2017-08-16T17:44:16.837Z",
+    "modified_on": "2017-08-16T17:44:16.837Z",
+    "name": "Demo School 1",
+    "is_active": true,
+    "address": "1 Maple St",
+    "description": "",
+    "district": 1
+  }
+},
+{
+  "model": "core.school",
+  "pk": 2,
+  "fields": {
+    "created_on": "2017-08-16T17:44:16.839Z",
+    "modified_on": "2017-08-16T17:44:16.839Z",
+    "name": "Demo School 2",
+    "is_active": true,
+    "address": "2 Oak St",
+    "description": "",
+    "district": 1
+  }
+},
+{
+  "model": "core.district",
+  "pk": 1,
+  "fields": {
+    "created_on": "2017-08-16T17:44:16.834Z",
+    "modified_on": "2017-08-16T17:44:16.834Z",
+    "name": "Demo District",
+    "is_active": true,
+    "state": "MA",
+    "email_contact": "district_contact@allhere.co",
+    "is_charter": false,
+    "is_private": false,
+    "notes": "",
+    "custom_text_succces_score": "",
+    "custom_text_info_learned": "",
+    "custom_text_info_better": ""
+  }
+},
+{
+  "model": "core.student",
+  "pk": 1,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.344Z",
+    "modified_on": "2017-08-16T17:51:42.344Z",
+    "student_id": "u1831",
+    "is_active": true,
+    "first_name": "Thomas",
+    "last_name": "Robinson",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 2,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.356Z",
+    "modified_on": "2017-08-16T17:51:42.357Z",
+    "student_id": "S4994",
+    "is_active": true,
+    "first_name": "Susan",
+    "last_name": "Kline",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 3,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.361Z",
+    "modified_on": "2017-08-16T17:51:42.361Z",
+    "student_id": "q6852",
+    "is_active": true,
+    "first_name": "Michelle",
+    "last_name": "Velez",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 4,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.364Z",
+    "modified_on": "2017-08-16T17:51:42.364Z",
+    "student_id": "d3903",
+    "is_active": true,
+    "first_name": "Michael",
+    "last_name": "Brown",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 5,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.368Z",
+    "modified_on": "2017-08-16T17:51:42.368Z",
+    "student_id": "a9310",
+    "is_active": true,
+    "first_name": "Danielle",
+    "last_name": "Bennett",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 6,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.371Z",
+    "modified_on": "2017-08-16T17:51:42.372Z",
+    "student_id": "c3925",
+    "is_active": true,
+    "first_name": "Jessica",
+    "last_name": "Griffith",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 7,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.375Z",
+    "modified_on": "2017-08-16T17:51:42.375Z",
+    "student_id": "s3933",
+    "is_active": true,
+    "first_name": "Jennifer",
+    "last_name": "Thompson",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 8,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.378Z",
+    "modified_on": "2017-08-16T17:51:42.378Z",
+    "student_id": "O6587",
+    "is_active": true,
+    "first_name": "Jeffrey",
+    "last_name": "Gonzalez",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 9,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.380Z",
+    "modified_on": "2017-08-16T17:51:42.380Z",
+    "student_id": "d408",
+    "is_active": true,
+    "first_name": "Sherri",
+    "last_name": "Collier",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 10,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.383Z",
+    "modified_on": "2017-08-16T17:51:42.383Z",
+    "student_id": "L3601",
+    "is_active": true,
+    "first_name": "Philip",
+    "last_name": "Woodard",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 11,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.386Z",
+    "modified_on": "2017-08-16T17:51:42.386Z",
+    "student_id": "J2355",
+    "is_active": true,
+    "first_name": "Dave",
+    "last_name": "Leonard",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 12,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.388Z",
+    "modified_on": "2017-08-16T17:51:42.388Z",
+    "student_id": "o4428",
+    "is_active": true,
+    "first_name": "Nathaniel",
+    "last_name": "Williams",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 13,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.391Z",
+    "modified_on": "2017-08-16T17:51:42.391Z",
+    "student_id": "x632",
+    "is_active": true,
+    "first_name": "Jonathan",
+    "last_name": "Gonzales",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 14,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.393Z",
+    "modified_on": "2017-08-16T17:51:42.393Z",
+    "student_id": "H4849",
+    "is_active": true,
+    "first_name": "Rachel",
+    "last_name": "Perkins",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 15,
+  "fields": {
+    "created_on": "2017-08-16T17:51:42.396Z",
+    "modified_on": "2017-08-16T17:51:42.396Z",
+    "student_id": "X9735",
+    "is_active": true,
+    "first_name": "Lisa",
+    "last_name": "Wiley",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": 2
+  }
+},
+{
+  "model": "core.student",
+  "pk": 16,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.153Z",
+    "modified_on": "2017-08-16T17:51:53.153Z",
+    "student_id": "S8131",
+    "is_active": true,
+    "first_name": "Brandi",
+    "last_name": "Martinez",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 17,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.159Z",
+    "modified_on": "2017-08-16T17:51:53.159Z",
+    "student_id": "a45",
+    "is_active": true,
+    "first_name": "Lisa",
+    "last_name": "Romero",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 18,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.162Z",
+    "modified_on": "2017-08-16T17:51:53.162Z",
+    "student_id": "X5635",
+    "is_active": true,
+    "first_name": "Warren",
+    "last_name": "Thompson",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 19,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.165Z",
+    "modified_on": "2017-08-16T17:51:53.165Z",
+    "student_id": "P1785",
+    "is_active": true,
+    "first_name": "Elizabeth",
+    "last_name": "Williams",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 20,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.169Z",
+    "modified_on": "2017-08-16T17:51:53.169Z",
+    "student_id": "Z6645",
+    "is_active": true,
+    "first_name": "Rachel",
+    "last_name": "Cole",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 21,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.172Z",
+    "modified_on": "2017-08-16T17:51:53.172Z",
+    "student_id": "B4963",
+    "is_active": true,
+    "first_name": "Tiffany",
+    "last_name": "Perry",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 22,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.174Z",
+    "modified_on": "2017-08-16T17:51:53.174Z",
+    "student_id": "n4238",
+    "is_active": true,
+    "first_name": "Kathy",
+    "last_name": "Jones",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 23,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.177Z",
+    "modified_on": "2017-08-16T17:51:53.177Z",
+    "student_id": "v2217",
+    "is_active": true,
+    "first_name": "Patricia",
+    "last_name": "Daniel",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 24,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.180Z",
+    "modified_on": "2017-08-16T17:51:53.180Z",
+    "student_id": "e2192",
+    "is_active": true,
+    "first_name": "Robert",
+    "last_name": "Smith",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 25,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.183Z",
+    "modified_on": "2017-08-16T17:51:53.183Z",
+    "student_id": "X457",
+    "is_active": true,
+    "first_name": "Robert",
+    "last_name": "King",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 26,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.185Z",
+    "modified_on": "2017-08-16T17:51:53.185Z",
+    "student_id": "U6066",
+    "is_active": true,
+    "first_name": "Ashley",
+    "last_name": "Berry",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 27,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.188Z",
+    "modified_on": "2017-08-16T17:51:53.188Z",
+    "student_id": "A5736",
+    "is_active": true,
+    "first_name": "Chloe",
+    "last_name": "Davis",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 28,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.191Z",
+    "modified_on": "2017-08-16T17:51:53.191Z",
+    "student_id": "Q8974",
+    "is_active": true,
+    "first_name": "Bonnie",
+    "last_name": "Winters",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 29,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.194Z",
+    "modified_on": "2017-08-16T17:51:53.194Z",
+    "student_id": "N9307",
+    "is_active": true,
+    "first_name": "Mariah",
+    "last_name": "Gonzalez",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 30,
+  "fields": {
+    "created_on": "2017-08-16T17:51:53.196Z",
+    "modified_on": "2017-08-16T17:51:53.196Z",
+    "student_id": "F1314",
+    "is_active": true,
+    "first_name": "James",
+    "last_name": "Smith",
+    "language": null,
+    "email": null,
+    "grade": null,
+    "district": 1,
+    "school": 1,
+    "teacher": null
+  }
+}
+]
