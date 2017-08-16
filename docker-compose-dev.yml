@@ -10,7 +10,7 @@ services:
     restart: always
     build:
       context: ./backend
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile-dev
     environment:
       - DEBUG=1
     command: bash bootstrap-dev.sh

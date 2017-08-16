@@ -57,7 +57,7 @@ Checkins
     </section>
   {% else %}
     <p class="text-center">Sorry. No checkins found.</p>
-    <p class="text-center">Try adding one with the <span class="badge badge-primary">+ New</span> button.</p>
+    <p class="text-center">Try adding one with the <a href="{% url 'checkin_add' %}" class="badge badge-primary">+ New</a> button.</p>
   {% endif %}
 </div>
 
