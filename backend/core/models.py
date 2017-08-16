@@ -120,6 +120,14 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
             return self.student_set.order_by('-date').all()
 
     @property
+    def unassigned_students(self):
+        if self.role == 'DA':
+            return Student.objects.filter(district=self.district, teacher=None).order_by('last_name').all()
+        # school admins and teachers
+        else:
+            return Student.objects.filter(school=self.school, teacher=None).order_by('last_name').all()
+
+    @property
     def schools(self):
         return School.objects.all().filter(members=self)
 
