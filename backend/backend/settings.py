@@ -50,7 +50,7 @@ if DEBUG:
     ALLOWED_HOSTS = []
 else:
     # domain set here, server_server.py, and nginx config
-    ALLOWED_HOSTS = ['.allhere.co']
+    ALLOWED_HOSTS = ['.allhere.co', '104.236.78.22']
 
 if DEBUG:
     USE_X_FORWARDED_HOST = True
