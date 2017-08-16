@@ -1,5 +1,5 @@
-from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError
-from .models import MyUser, CheckIn, Student
+from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError, HiddenInput
+from .models import MyUser, CheckIn, Student, School, District
 
 
 class CheckInForm(ModelForm):
@@ -68,3 +68,19 @@ class StudentForm(ModelForm):
     class Meta:
         model = Student
         fields = ['student_id', 'first_name', 'last_name', 'language', 'email', 'grade', 'district', 'school', 'teacher']
+
+    def __init__(self, user, *args, **kwargs):
+        super(StudentForm, self).__init__(*args, **kwargs)
+        # District admins can view teachers and students of distrct
+        # School admins can view teachers and students of school
+        # Teachers can view their students and cannot change the teacher field
+        if user.is_district_admin:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(district=user.district), empty_label=None)
+            self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(district=user.district), empty_label=None)
+        elif user.is_school_admin:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
+            self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(school=user.school), empty_label=None)
+        else:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
+            self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(id=user.id), empty_label=None)
+            

@@ -227,12 +227,13 @@ def student_add(request):
     Create new student
     """
     if request.method == 'POST':
-        form = StudentForm(request.POST)
+        form = StudentForm(request.user, request.POST)
+        form.district = request.user.district
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('students'))
     else:
-        form = StudentForm()
+        form = StudentForm(request.user)
     return render(request, 'core/student_edit.html', {
         'form': form,
         'error_message': [error for error in form.non_field_errors()],
@@ -246,12 +247,12 @@ def student_edit(request, id):
     """
     student = get_object_or_404(Student, pk=id)
     if request.method == 'POST':
-        form = StudentForm(request.POST, instance=student)
+        form = StudentForm(request.user, request.POST, instance=student)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('students'))
     else:
-        form = StudentForm(instance=student)
+        form = StudentForm(request.user, instance=student)
     return render(request, 'core/student_edit.html', {
         'form': form,
         'view': 'edit',
