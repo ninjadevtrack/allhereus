@@ -164,9 +164,27 @@ def checkin_edit(request, id):
             return redirect('checkins')
 
     return render(request, 'core/checkin_edit.html', {
+        'checkin': checkin,
         'form': form,
         'error_message': [error for error in form.non_field_errors()],
     })
+
+
+@login_required
+def checkin_delete(request, id):
+    """
+    Delete an individual checkin
+    """
+    checkin = get_object_or_404(CheckIn, pk=id)
+
+    # 403 if user is not allowed
+    has_checkin_permission(checkin, request.user)
+
+    if request.method == 'POST':
+        checkin.delete()
+        return redirect('checkins')
+
+    return render(request, 'core/checkin_delete.html', {'checkin': checkin})
 
 
 @login_required

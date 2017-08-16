@@ -287,7 +287,7 @@ class CheckIn(CommonInfo):
         return reverse('checkin', args=[self.id])
 
     def __str__(self):
-        return f'Check-in via {self.status} regarding {self.student} by {self.teacher} on {self.date}'
+        return f'Check-in on {self.student} by {self.teacher} at {self.date}'
 
 
 class District(CommonInfo):
