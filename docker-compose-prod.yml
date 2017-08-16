@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  nginx:
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - django-files:/var/app/django/static
+    depends_on:
+      - web
+  db:
+    image: postgres:9
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+  web:
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-prod
+    env_file:
+      - .env
+    command: bash bootstrap-prod.sh
+    volumes:
+      - django-files:/var/app/django/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+volumes:
+  pgdata:
+    driver: local
+  django-files:
+    driver: local
