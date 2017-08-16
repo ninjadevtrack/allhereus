@@ -98,7 +98,53 @@ ul {
                 How successful was the recent check-in you had with your mentee?
               {% endif %}
             </label>
-            {{ form.success_score }}
+
+            <div class="d-none">
+              {{ form.success_score }}
+            </div>
+
+            <div class="btn-group" data-toggle="buttons">
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="1" checked>1
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="2" checked>2
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="3" checked>3
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="4" checked>4
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="5" checked>5
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="6" checked>6
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="7" checked>7
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="8" checked>8
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="9" checked>9
+              </label>
+
+              <label class="btn btn-info">
+                <input type="radio" name="radio-success-score" id="" autocomplete="off" value="10" checked>10
+              </label>
+
           </div>
 
         </div>
@@ -148,5 +194,20 @@ ul {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
 <script>
 $('input[name="date"]').datepicker({ format: 'm/dd/yyyy' });
+
+// not es5
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('input[name="radio-success-score"]').forEach(x => {
+    const slider = document.querySelector('#id_success_score')
+    if (x.value === slider.value) {
+      x.click()
+    }
+    x.onchange = event => {
+      const value = event.target.value
+      document.querySelector('#id_success_score').value = value
+    }
+  })
+})
+
 </script>
 {% endblock %}
