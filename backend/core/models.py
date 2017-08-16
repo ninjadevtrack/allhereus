@@ -138,13 +138,13 @@ class Student(CommonInfo):
     These are entities, not application users.
     """
     student_id = models.CharField(
-        verbose_name='Student ID',
+        verbose_name='Student ID', null=True, blank=True,
         max_length=255, help_text='School identifier for student.')
     is_active = models.BooleanField(
         default=True, help_text='Designates that this student should be considered active.',)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    language = models.CharField(max_length=255, help_text="Student/family's spoken language.",)
+    language = models.CharField(max_length=255, null=True, blank=True, help_text="Student/family's spoken language.",)
     email = models.EmailField(
         max_length=255,
         null=True,
