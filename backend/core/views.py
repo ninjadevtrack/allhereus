@@ -298,8 +298,7 @@ def students_unassigned(request):
                 student.teacher = request.user
                 student.save()
             return HttpResponseRedirect(reverse('students'))
-    students = Student.objects.order_by('last_name').filter(teacher=None).all()
-    # students = Student.objects.order_by('last_name').filter(teacher=request.user).all()
+    students = request.user.unassigned_students
     return render(request, 'core/students_unassigned.html', {'students': students, 'error_message': errors})
 
 
