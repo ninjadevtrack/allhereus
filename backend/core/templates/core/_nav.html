@@ -15,7 +15,7 @@
       </li>
       {% url 'checkins' as checkins_url %}
       <li class="nav-item {% if request.get_full_path == checkins_url %} active {% endif %}">
-        <a class="nav-link" href="{{ checkins_url }}">Checkins</a>
+        <a class="nav-link" href="{{ checkins_url }}">Check-ins</a>
       </li>
       {% url 'students' as students_url %}
       <li class="nav-item {% if request.get_full_path == students_url %} active {% endif %}">

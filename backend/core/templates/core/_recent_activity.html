@@ -3,7 +3,7 @@
     <h4 class="card-title">Recent Activity</h4>
     <ul class="list-group list-group-flush">
       {% for checkin in checkins %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">Checkin for {{ checkin.student }} at {{ checkin.date }}</li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">Check-in for {{ checkin.student }} at {{ checkin.date }}</li>
       {% endfor %}
       {% if not checkins %}
       <p class="text-center">No recent activity to display.</p>
