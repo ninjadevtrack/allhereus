@@ -46,6 +46,9 @@ class CheckInForm(ModelForm):
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(pk=user.id), empty_label=None)
             self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(teacher=user), empty_label=None)
 
+        self.fields['info_learned'].widget.attrs['rows'] = 2
+        self.fields['info_better'].widget.attrs['rows'] = 2
+
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
