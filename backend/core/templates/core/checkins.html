@@ -56,8 +56,8 @@ Check-ins
       <a href="{% url 'checkins_csv' %}" class="btn btn-light" name="export">Export to CSV</a>
     </section>
   {% else %}
-    <p class="text-center">Sorry. No check-ins found.</p>
-    <p class="text-center">Try adding one with the <a href="{% url 'checkin_add' %}" class="badge badge-primary">+ New</a> button.</p>
+    <p class="text-center">Let's log a check-in!</p>
+    <p class="text-center">Click <a href="{% url 'checkin_add' %}" class="badge badge-primary">+ New</a> now!</p>
   {% endif %}
 </div>
 

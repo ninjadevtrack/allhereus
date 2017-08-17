@@ -10,7 +10,7 @@ body:before {
   height: 100%;
 
   display: block;
-  background-image: url(../../static/core/header.jpg);
+  /*background-image: url(../../static/core/header.jpg);*/
 
   filter: blur(5px);
   /* bodge to make the blur not have a white border */
@@ -19,4 +19,8 @@ body:before {
 
 .lg-shadow {
   box-shadow: 0 16px 32px 0 rgba(62,57,107,0.28), 0 0 0 transparent;
+}
+
+.card {
+  min-width: 450px;
 }
