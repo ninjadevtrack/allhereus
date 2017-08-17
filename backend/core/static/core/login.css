@@ -10,7 +10,7 @@ body:before {
   height: 100%;
 
   display: block;
-  background-image: url(../../static/core/header.jpg);
+  /*background-image: url(../../static/core/header.jpg);*/
 
   filter: blur(5px);
   /* bodge to make the blur not have a white border */
