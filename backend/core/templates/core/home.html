@@ -72,7 +72,7 @@
       <div class="card mb-4">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center pb-2">
-            <h4 class="card-title">Recent Checkins</h4>
+            <h4 class="card-title">Recent Check-ins</h4>
             <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
           </div>
           {% if recent_checkins %}
@@ -80,17 +80,17 @@
             {% for checkin in recent_checkins %}
             <li class="list-group-item">
               <a href="{% url 'checkin' checkin.id %}">
-                Checkin for {{ checkin.student }} by {{ checkin.teacher }} at ({{ checkin.date }})
+                Check-in for {{ checkin.student }} by {{ checkin.teacher }} at ({{ checkin.date }})
               </a>
             </li>
             {% endfor %}
           </ul>
           {% else %}
-          <p class="text-center">No recent checkins to display.</p>
+          <p class="text-center">No recent check-ins to display.</p>
           {% endif %}
         </div>
         <div class="card-footer">
-          Displaying <b>{{ recent_checkins | length }}</b> of <b>{{ total }}</b> total checkins, <a class="mt-2 " href="{% url 'checkins' %}">view all checkins</a>.
+          Displaying <b>{{ recent_checkins | length }}</b> of <b>{{ total }}</b> total check-ins, <a class="mt-2 " href="{% url 'checkins' %}">view all check-ins</a>.
         </div>
       </div>
     </div>
