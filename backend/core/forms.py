@@ -13,24 +13,19 @@ class CheckInForm(ModelForm):
                   'mode', 'notify_school_admin', 'success_score',
                   'info_learned', 'info_better']
 
-    # TODO Hotfix 8/17/2017 Note: form not submiting
-    # seeing error "User has no attribute 'require'"
+    def clean(self):
+        cleaned_data = super(CheckInForm, self).clean()
+        teacher = cleaned_data.get("teacher")
+        student = cleaned_data.get("student")
 
-    # def clean(self):
-    #     cleaned_data = super(CheckInForm, self).clean()
-    #     teacher = cleaned_data.get("teacher")
-    #     student = cleaned_data.get("student")
-
-    #     # Basic validation of relationships
-    #     # We should enforce this more on the model side
-    #     if self.user.is_district_admin:
-    #         if teacher.district != self.user.district or student.district != self.user.district:
-    #             raise ValidationError("Teacher/student districts must match.")
-    #     elif self.user.is_school_admin:
-    #         if teacher.school != self.user.school or student.school != self.user.school:
-    #             raise ValidationError("Teacher/student schools must match.")
-    #     else:
-    #         self.fields['teacher'] = self.user
+        # Basic validation of relationships
+        # We should enforce this more on the model side
+        if self.user.is_district_admin:
+            if teacher.district != self.user.district or student.district != self.user.district:
+                raise ValidationError("Teacher/student districts must match.")
+        elif self.user.is_school_admin:
+            if teacher.school != self.user.school or student.school != self.user.school:
+                raise ValidationError("Teacher/student schools must match.")
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
