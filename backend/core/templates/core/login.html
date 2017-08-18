@@ -8,35 +8,37 @@
   </head>
   <body>
     <div class="d-flex h-100">
-      <div class="container col-md-6 col-lg-3">
+      <div class="container">
 
         <section class="d-flex mt-4 mb-2 justify-content-center">
           <img src="{% static 'core/logo_allhere_blue.png' %}" alt="AllHere" />
         </section>
 
+        <div class="d-flex justify-content-center ml-auto mr-auto">
+
         <div class="card lg-shadow">
 
-          <div class="card-header">
+          <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="mb-0">Login</h3>
+            <a href="mailto:joanna@allhere.co?subject=Account Request" class="">Need an account?</a>
           </div>
 
           <div class="card-body">
 
-            <form method="POST" action"{% url 'login' %}" class="form">
+            <form method="POST" action"{% url 'login' %}" class="mb-0">
               {% csrf_token %}
 
               <div class="form-group">
                 <label for="{{ form.username.html_name }}">Email</label>
-                <input id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" placeholder="email" type="email" class="form-control" required>
+                <input id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" placeholder="h.potter@hogwarts.edu" type="email" class="form-control" required>
               </div>
 
               <div class="form-group">
                 <label for="{{ form.password.html_name }}">Password</label>
-                <input id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="{{ form.password.html_name }}" type="password" class="form-control" required>
+                <input id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="Password" type="password" class="form-control" required>
 
                 <p class="text-muted">
-                  <!-- <a href="{% url 'forgot_password' %}">Forgot Password?</a> -->
-                  <a href="mailto:joanna@allhere.co?subject=I forgot my password"> Unable to log in or forgot password?</a>
+                  <a href="{% url 'password_reset' %}">Forgot Password?</a>
                 </p>
 
               </div>
@@ -49,7 +51,7 @@
                 <p class="text-danger">{{ error }}</p>
               {% endfor %}
 
-              <section class="d-flex align-items-center justify-content-between">
+              <section>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Log in</button>
               </section>
 
@@ -57,6 +59,9 @@
 
           </div>
         </div>
+
+</div>
+
       </div>
     </div>
   </body>
