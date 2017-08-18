@@ -2,7 +2,7 @@
 {% load static i18n %}
 {% block title %}Checkins{% endblock %}
 
-{% block css %}    
+{% block css %}
 <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet">
 {% endblock %}
 
@@ -21,7 +21,7 @@
 </div>
 
 
-<table id="checkins_datatable" class="table table-hover display" cellspacing="0" width="100%">
+<table id="checkins_datatable" class="table table-hover display table-responsive" cellspacing="0" width="100%">
   <thead>
     <tr>
       <th>Date</th>
@@ -30,7 +30,7 @@
       <th># Feedback</th>
       <th>Actions</th>
     </tr>
-  </thead>     
+  </thead>
   <tbody>
     {% for check in object_list %}
       <tr>
