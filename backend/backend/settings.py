@@ -167,6 +167,9 @@ SITE_ID = 1
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/app/django/static'
+# cache busting.
+# See https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#manifeststaticfilesstorage
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 LOGGING = {
     'version': 1,
