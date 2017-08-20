@@ -22,5 +22,5 @@ body:before {
 }
 
 .logo {
-  height: 75px;
+  max-height: 5rem;
 }
