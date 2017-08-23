@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+from django.conf.global_settings import DATETIME_INPUT_FORMATS
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -152,15 +154,26 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
 SITE_ID = 1
+
+# custom datetime format: 4/6/1968 5:30 PM
+DATETIME_FORMAT = 'n/j/Y g:i A'
+
+# Add custom input formats
+DATETIME_INPUT_FORMATS += [
+    # 8/1/2006 2:05 PM
+    '%-m/%-d/%Y %I:%M %p',
+    # 8/1/2006 2:05 PM
+    '%m/%d/%Y %I:%M %p',
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -197,6 +210,10 @@ LOGGING = {
         }
     },
     'loggers': {
+        '': {
+            'level': 'INFO',
+            'handlers': ['console'],
+        },
         'django.db.backends': {
             'level': 'ERROR',
             'handlers': ['console'],

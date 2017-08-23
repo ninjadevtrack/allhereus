@@ -103,8 +103,7 @@ def checkins_add(request):
     """
 
     if request.method == 'GET':
-        date = datetime.now()
-        form = CheckInForm(request.user, initial={'date': date.strftime('%-m/%d/%Y')})
+        form = CheckInForm(request.user)
     else:
         form = CheckInForm(request.user, request.POST)
         # If data is valid, proceeds to create a new CheckIn and redirect the user
