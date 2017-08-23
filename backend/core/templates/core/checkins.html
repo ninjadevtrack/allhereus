@@ -31,20 +31,12 @@ Check-ins
         {% for checkin in checkins %}
           <tr>
             <th scope="row">
-              <a href="{% url 'checkin' checkin.id %}">{{ checkin.date }}</a>
+              <a href="{% url 'checkin' checkin.id %}">{{ checkin.date | date:"DATE_FORMAT" }}</a>
             </th>
-            <td>
-              <a href="mailto:{{ checkin.teacher.email }}">{{ checkin.teacher.name }}</a>
-            </td>
-            <td>
-              {% if checkin.student.email %}
-                <a href="mailto:{{ checkin.student.email }}">{{ checkin.student.name }}</a>
-              {% else %}
-                {{ checkin.student.name }}
-              {% endif %}
-            </td>
-            <td>{{ checkin.info_learned | truncatechars:25 }}</td>
-            <td>{{ checkin.info_better | truncatechars:25 }}</td>
+            <td>{{ checkin.teacher.name }}</td>
+            <td>{{ checkin.student.name }}</td>
+            <td>{{ checkin.info_learned }}</td>
+            <td>{{ checkin.info_better }}</td>
             <td>
               <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-secondary btn-sm">Edit</a>
             </td>
