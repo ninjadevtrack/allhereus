@@ -4,6 +4,16 @@
 Check-ins
 {% endblock %}
 
+{% block css %}
+<style>
+  .table-row-date {
+    min-width: 8.5rem;
+  }
+  .table-row-text {
+    min-width: 20rem;
+  }
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="container">
@@ -30,13 +40,13 @@ Check-ins
       <tbody>
         {% for checkin in checkins %}
           <tr>
-            <th scope="row">
+            <th scope="row" class="table-row-date">
               <a href="{% url 'checkin' checkin.id %}">{{ checkin.date | date:"DATE_FORMAT" }}</a>
             </th>
             <td>{{ checkin.teacher.name }}</td>
             <td>{{ checkin.student.name }}</td>
-            <td>{{ checkin.info_learned }}</td>
-            <td>{{ checkin.info_better }}</td>
+            <td class="table-row-text">{{ checkin.info_learned }}</td>
+            <td class="table-row-text">{{ checkin.info_better }}</td>
             <td>
               <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-secondary btn-sm">Edit</a>
             </td>
