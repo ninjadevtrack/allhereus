@@ -18,7 +18,7 @@ ul {
 }
 </style>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -222,9 +222,13 @@ ul {
 {% endblock %}
 
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
+<script src="https://unpkg.com/flatpickr"></script>
 <script>
-$('input[name="date"]').datepicker({ format: 'm/dd/yyyy' });
+
+$('input[name="date"]').flatpickr({
+  dateFormat: 'n/j/Y h:i K',
+  enableTime: true,
+});
 
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('input[name="radio-success-score"]').forEach(function (x) {
