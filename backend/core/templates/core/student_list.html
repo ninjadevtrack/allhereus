@@ -40,9 +40,7 @@ Students
         <td>
           <a href="{{ student.url }}" class="text-dark">{{ student.student_id }}</a>
         </td>
-        <td>
-          <a href="mailto:{{ student.email | default_if_none:""}}" class="text-dark">{{ student.email | default_if_none:""}}</a>
-        </td>
+        <td>{{ student.email | default_if_none:""}}</td>
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
         <td>
           <div class="btn-group">
