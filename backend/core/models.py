@@ -211,7 +211,7 @@ class Student(CommonInfo):
         null=True,
         blank=True,
         help_text='Contact email for parent or guardian.',
-    ) 
+    )
 
     @property
     def url(self):
@@ -267,7 +267,8 @@ class CheckIn(CommonInfo):
         choices=(
             ('P', 'Phone'),
             ('V', 'Visit'),
-            ('I', 'In-Person')
+            ('I', 'In-Person'),
+            ('E', 'Email')
         ),
         blank=False,
         help_text='Mode of communication for check-in.',
