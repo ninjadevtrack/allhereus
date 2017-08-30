@@ -201,7 +201,7 @@ class Student(CommonInfo):
 
     district = models.ForeignKey('District')
     school = models.ForeignKey('School')
-    teacher = models.ForeignKey('MyUser', null=True, blank=True)
+    teacher = models.ForeignKey('MyUser', null=True, blank=True, on_delete=models.SET_NULL)
 
     parent_first_name = models.CharField(max_length=255, null=True, blank=True)
     parent_last_name = models.CharField(max_length=255, null=True, blank=True)
