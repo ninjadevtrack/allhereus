@@ -68,7 +68,21 @@ class ProfileForm(ModelForm):
 class StudentForm(ModelForm):
     class Meta:
         model = Student
-        fields = ['student_id', 'first_name', 'last_name', 'language', 'email', 'grade', 'district', 'school', 'teacher']
+        fields = [
+            'student_id',
+            'first_name',
+            'last_name',
+            'language',
+            'email',
+            'grade',
+            'district',
+            'school',
+            'teacher',
+            'parent_first_name',
+            'parent_last_name',
+            'phone',
+            'parent_email',
+        ]
 
     def __init__(self, user, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)

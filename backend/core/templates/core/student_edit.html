@@ -27,9 +27,11 @@ Editing Student
         {% endif %}
         {% csrf_token %}
 
+        <h4>Student</h4>
+
           <div class="form-row">
             <div class="form-group col-md-4">
-              <label for="{{ form.first_name.id_for }}" class="col-form-label">{{ form.first_name.label }} *</label>
+              <label for="{{ form.first_name.id_for }}" class="col-form-label">{{ form.first_name.label }} {% if form.first_name.field.required %} * {% endif %}</label>
               <input id="{{ form.first_name.id_for_label }}" name="{{ form.first_name.html_name }}" type="text" value="{{ form.first_name.value | default_if_none:'' }}" placeholder="Adrian" class="form-control{% if form.first_name.errors %} is-invalid{% endif %}" {% if form.first_name.field.required %} required {% endif %}/>
               {% if form.first_name.errors %}
               <div class="invalid-feedback">
@@ -41,7 +43,7 @@ Editing Student
             </div>
 
             <div class="form-group col-md-4">
-              <label for="{{ form.last_name.id_for }}" class="col-form-label">{{ form.last_name.label }} *</label>
+              <label for="{{ form.last_name.id_for }}" class="col-form-label">{{ form.last_name.label }}{% if form.last_name.field.required %} * {% endif %}</label>
               <input id="{{ form.last_name.id_for_label }}" name="{{ form.last_name.html_name }}" type="text" value="{{ form.last_name.value | default_if_none:'' }}" placeholder="Smith" class="form-control {% if form.last_name.errors %} is-invalid {% endif %}" {% if form.last_name.field.required %} required {% endif %}/>
               {% if form.last_name.errors %}
               <div class="invalid-feedback">
@@ -59,7 +61,7 @@ Editing Student
             <input id="district" name="district" type="hidden" value="{{ request.user.district.id | default_if_none:'' }}" placeholder="{{ request.user.district.title }}" />
 
             <div class="form-group col-md-4">
-              <label for="{{ form.school.id_for }}" class="col-form-label">{{ form.school.label }} *</label>
+              <label for="{{ form.school.id_for }}" class="col-form-label">{{ form.school.label }}{% if form.school.field.required %} * {% endif %}</label>
               <select name="{{ form.school.html_name }}" id="{{ form.school.id_for_label }}" class="form-control {% if form.school.errors %} is-invalid {% endif %}" {% if form.school.field.required %} required {% endif %}>
                 {% for id, name in form.school.field.choices %}
                   {% if id == form.school.value %}
@@ -82,7 +84,7 @@ Editing Student
             </div>
 
             <div class="form-group col-md-4">
-              <label for="{{ form.teacher.id_for }}" class="col-form-label">{{ form.teacher.label }} *</label>
+              <label for="{{ form.teacher.id_for }}" class="col-form-label">{{ form.teacher.label }}{% if form.teacher.field.required %} * {% endif %}</label>
               <select name="{{ form.teacher.html_name }}" id="{{ form.teacher.id_for_label }}" class="form-control {% if form.teacher.errors %} is-invalid {% endif %}" {% if form.teacher.field.required %} required {% endif %}>
                 {% for id, name in form.teacher.field.choices %}
                   {% if id == form.teacher.value %}
@@ -105,7 +107,7 @@ Editing Student
             </div>
 
             <div class="form-group col-md-4">
-              <label for="{{ form.grade.id_for }}" class="col-form-label">{{ form.grade.label }}</label>
+              <label for="{{ form.grade.id_for }}" class="col-form-label">{{ form.grade.label }}{% if form.grade.field.required %} * {% endif %}</label>
               <select name="{{ form.grade.html_name }}" id="{{ form.grade.id_for_label }}" class="form-control {% if form.grade.errors %} is-invalid {% endif %}" {% if form.grade.field.required %} required {% endif %}>
                 {% for id, grade in form.grade.field.choices %}
                   {% if id == form.grade.value %}
@@ -132,7 +134,7 @@ Editing Student
           <div class="form-row">
 
             <div class="form-group col-md-4">
-              <label for="{{ form.email.id_for }}" class="col-form-label">{{ form.email.label }}</label>
+              <label for="{{ form.email.id_for }}" class="col-form-label">{{ form.email.label }}{% if form.email.field.required %} * {% endif %}</label>
               <input id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" type="email" value="{{ form.email.value | default_if_none:'' }}" placeholder="student@example.com" class="form-control {% if form.email.errors %} is-invalid {% endif %}" {% if form.email.field.required %} required {% endif %}/>
               {% if form.email.errors %}
               <div class="invalid-feedback">
@@ -144,7 +146,7 @@ Editing Student
             </div>
 
             <div class="form-group col-md-4">
-              <label for="{{ form.student_id.id_for }}" class="col-form-label">{{ form.student_id.label }}</label>
+              <label for="{{ form.student_id.id_for }}" class="col-form-label">{{ form.student_id.label }}{% if form.school_id.field.required %} * {% endif %}</label>
               <input id="{{ form.student_id.id_for_label }}" name="{{ form.student_id.html_name }}" type="text" value="{{ form.student_id.value | default_if_none:'' }}" placeholder="0987-6540-3210" class="form-control {% if form.student_id.errors %} is-invalid {% endif %}" {% if form.student_id.field.required %} required {% endif %}/>
               {% if form.student_id.errors %}
               <div class="invalid-feedback">
@@ -156,7 +158,7 @@ Editing Student
             </div>
 
             <div class="form-group col-md-4">
-              <label for="{{ form.language.id_for }}" class="col-form-label">{{ form.language.label }}</label>
+              <label for="{{ form.language.id_for }}" class="col-form-label">{{ form.language.label }}{% if form.language.field.required %} * {% endif %}</label>
               <input id="{{ form.language.id_for_label }}" name="{{ form.language.html_name }}" type="text" value="{{ form.language.value | default_if_none:'' }}" placeholder="English" class="form-control {% if form.language.errors %} is-invalid {% endif %}" {% if form.language.field.required %} required {% endif %}/>
               {% if form.language.errors %}
               <div class="invalid-feedback">
@@ -169,6 +171,61 @@ Editing Student
 
 
           </div>
+          <h4>Contact</h4>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="{{ form.parent_first_name.id_for }}" class="col-form-label text-capitalize">{{ form.parent_first_name.label }} {% if form.parent_first_name.field.required %} * {% endif %}</label>
+              <input id="{{ form.parent_first_name.id_for_label }}" name="{{ form.parent_first_name.html_name }}" type="text" value="{{ form.parent_first_name.value | default_if_none:'' }}" placeholder="Hadrian" class="form-control{% if form.parent_first_name.errors %} is-invalid{% endif %}" {% if form.parent_first_name.field.required %} required {% endif %}/>
+              {% if form.parent_first_name.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.parent_first_name.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.parent_last_name.id_for }}" class="col-form-label text-capitalize">{{ form.parent_last_name.label }} {% if form.parent_last_name.field.required %} * {% endif %}</label>
+              <input id="{{ form.parent_last_name.id_for_label }}" name="{{ form.parent_last_name.html_name }}" type="text" value="{{ form.parent_last_name.value | default_if_none:'' }}" placeholder="Smith" class="form-control {% if form.parent_last_name.errors %} is-invalid {% endif %}" {% if form.parent_last_name.field.required %} required {% endif %}/>
+              {% if form.parent_last_name.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.parent_last_name.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="{{ form.phone.id_for }}" class="col-form-label text-capitalize">{{ form.phone.label }} {% if form.phone.field.required %} * {% endif %}</label>
+              <input id="{{ form.phone.id_for_label }}" name="{{ form.phone.html_name }}" type="tel" value="{{ form.phone.value | default_if_none:'' }}" placeholder="123-456-7890" class="form-control {% if form.phone.errors %} is-invalid {% endif %}" {% if form.phone.field.required %} required {% endif %}/>
+              {% if form.phone.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.phone.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="{{ form.parent_email.id_for }}" class="col-form-label text-capitalize">{{ form.parent_email.label }} {% if form.parent_email.field.required %} * {% endif %}</label>
+              <input id="{{ form.parent_email.id_for_label }}" name="{{ form.parent_email.html_name }}" type="text" value="{{ form.parent_email.value | default_if_none:'' }}" placeholder="h.smith@example.com" class="form-control{% if form.parent_email.errors %} is-invalid{% endif %}" {% if form.parent_email.field.required %} required {% endif %}/>
+              {% if form.parent_email.errors %}
+              <div class="invalid-feedback">
+              {% for error in form.parent_email.errors %}
+                {{ error }}
+              {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
           {% if view != 'edit' %}
           <button type="submit" class="btn btn-primary">Create Student</button>
           {% else %}

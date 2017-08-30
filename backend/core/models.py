@@ -205,13 +205,13 @@ class Student(CommonInfo):
 
     parent_first_name = models.CharField(max_length=255, null=True, blank=True)
     parent_last_name = models.CharField(max_length=255, null=True, blank=True)
-    phone =  models.CharField(max_length=25, null=True, blank=True)
+    phone = models.CharField(max_length=25, null=True, blank=True)
     parent_email = models.EmailField(
         max_length=255,
         null=True,
         blank=True,
         help_text='Contact email for parent or guardian.',
-    ) 
+    )
 
     @property
     def url(self):
