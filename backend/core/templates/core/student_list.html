@@ -3,7 +3,14 @@
 {% block title %}
 Students
 {% endblock %}
-
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+<style>
+  table.dataTable {
+  border-collapse: collapse !important;
+}
+</style>
+{% endblock %}
 {% load humanize %}
 {% block content %}
 <div class="container">
@@ -15,7 +22,7 @@ Students
     </div>
   </div>
 
-  <table class="table table-striped table-responsive">
+  <table class="table table-striped table-responsive"  data-order='[[ 0, "asc" ]]'>
     <thead>
       <tr>
         <th>#</th>
@@ -24,7 +31,7 @@ Students
         <th>School ID</th>
         <th>Email</th>
         <th>Last Check-in</th>
-        <th>Options</th>
+        <th data-orderable="false">Options</th>
       </tr>
     </thead>
     <tbody>
@@ -57,4 +64,16 @@ Students
 
   <p class="text-muted">Showing <b>{{ students | length | apnumber }}</b> of <b>{{ student_total | apnumber}}</b> student{{ student_total | pluralize }}.</p>
 </div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('table').DataTable({
+        "paging":   false,
+        "info":     false,
+    });
+} );
+</script>
 {% endblock %}
