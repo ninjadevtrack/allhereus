@@ -267,7 +267,7 @@ def students(request):
     """
     students = request.user.students.order_by('last_name')
     return render(request, 'core/student_list.html', {
-        'students': students[:TABLE_DISPLAY_LIMIT],
+        'students': students,
         'student_total': len(students),
     })
 
