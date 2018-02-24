@@ -17,7 +17,7 @@ Check-in
           <h4 class="card-title">Details</h4>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Date:</b> {{ checkin.date }}</li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Teacher:</b> {{ checkin.teacher }}/li>
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Teacher:</b> {{ checkin.teacher }}</li>
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Student:</b> {{ checkin.student }}</li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <b>Mode:</b> {% if checkin.get_mode_display %}{{ checkin.get_mode_display }} {% else %} <span class="text-muted">No mode was entered for this field.</span>{% endif %}</li>
