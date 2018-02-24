@@ -47,7 +47,7 @@ Check-ins
       <tbody>
         {% for checkin in checkins %}
           <tr>
-            <th scope="row" class="table-row-date">
+            <th scope="row" class="table-row-date" data-order="{{ checkin.date.timestamp }}">
               <a href="{% url 'checkin' checkin.id %}">{{ checkin.date | date:"DATE_FORMAT" }}</a>
             </th>
             <td>{{ checkin.teacher.name }}</td>
