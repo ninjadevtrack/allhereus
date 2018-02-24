@@ -5,8 +5,8 @@
     <title>
       {% block title %}Hello{% endblock %} | AllHere
     </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     {% load static %}
+    <link rel="stylesheet" href="{% static 'core/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'core/main.css' %}">
     {% block css %}
     {% endblock %}
@@ -28,7 +28,7 @@
     <footer class="footer">
       <div class="container d-flex justify-content-between">
         <span class="text-muted">β v0.1.0 | <a href="{% url 'privacy' %}">Privacy Policy</a></span>
-        <span class="text-muted">AllHere ※ 2017</span>
+        <span class="text-muted">AllHere ※ 2018</span>
       </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
