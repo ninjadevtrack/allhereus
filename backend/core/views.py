@@ -123,7 +123,7 @@ def has_checkin_permission(checkin, user):
         raise PermissionDenied("Checkin is not in your district")
     if checkin.school != user.school and not user.is_district_admin:
         raise PermissionDenied("Checkin is not in your school")
-    if checkin.teacher != user and not user.is_school_admin:
+    if checkin.teacher != user and not user.is_school_admin and not user.is_district_admin:
         raise PermissionDenied("Checkin is not in yours")
 
 
