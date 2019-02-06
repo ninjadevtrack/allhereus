@@ -6,13 +6,15 @@ services:
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data/
+    ports:
+     - "5432:5432"
   web:
     restart: always
     build:
       context: ./backend
       dockerfile: Dockerfile-dev
     environment:
-      - DEBUG=1
+      DEBUG: '1'
     command: bash bootstrap-dev.sh
     volumes:
       - ./backend:/var/app

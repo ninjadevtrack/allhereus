@@ -27,6 +27,10 @@ if os.getenv('DEBUG') == '1':
 else:
     DEBUG = False
 
+
+print(os.getenv('DEBUG'))
+print(DEBUG)
+
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
     SECRET_KEY = '-*r3lafkk9c+#*m%cu2(rn_9n*g=q2zkmvt6dxsq5w&uvr@7cq'
@@ -49,7 +53,7 @@ RAVEN_CONFIG = {
 }
 
 if DEBUG:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['platform.allhere.co']
 else:
     # domain set here, server_server.py, and nginx config
     ALLOWED_HOSTS = ['.allhere.co', '104.236.78.22']
@@ -231,3 +235,13 @@ LOGGING = {
         },
     },
 }
+
+if DEBUG:
+    del LOGGING['loggers']['raven']
+    del LOGGING['loggers']['sentry.errors']
+    del LOGGING['handlers']['sentry']
+    del LOGGING['root']
+    LOGGING['root'] = {
+        'level': 'WARNING',
+        'handlers': ['console'],
+    }
