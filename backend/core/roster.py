@@ -11,7 +11,6 @@ import time
 import ednudge_api
 from ednudge_api.rest import ApiException
 from pprint import pprint
-from ednudge_client import auth
 
 from .models import District
 import logging
@@ -43,7 +42,7 @@ class Roster:
         self.config.debug=True
         self.config.api_key['Authorization']=token
         self.config.api_key_prefix['Authorization']='Bearer'
-        self.api_instance = ednudge_api.DefaultApi(ednudge_api.ApiClient(self.config))        
+        self.api_instance = ednudge_api.RosterApiApi(ednudge_api.ApiClient(self.config))        
 
     def login(self):
         params = {
