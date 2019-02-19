@@ -70,6 +70,29 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     # if True, a user can edit membership
     is_manager = models.BooleanField(default=False)
 
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled.',)
+    ednudge_person_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the Person.'
+    )
+    ednudge_person_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The Person Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_person_type = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge Person Type.'
+    )
+
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -144,6 +167,17 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.get_full_name()
 
+class TeacherManager(MyUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role='T')
+
+class Teacher(MyUser):
+
+    class Meta:
+        proxy = True
+
+    objects = TeacherManager()
+
 
 class CommonInfo(models.Model):
     """Abstract model for storing common model info"""
@@ -212,6 +246,23 @@ class Student(CommonInfo):
         blank=True,
         help_text='Contact email for parent or guardian.',
     )
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled.',)
+    ednudge_learner_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the learner.'
+    )
+    ednudge_learner_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The Learner Local Id.  This field is sourced from EdNudge.'
+    )
+
 
     @property
     def url(self):
@@ -335,6 +386,22 @@ class District(CommonInfo):
     custom_text_info_learned = models.TextField(null=True, blank=True)
     custom_text_info_better = models.TextField(null=True, blank=True)
 
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this district.',)
+    ednudge_district_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the district.'
+    )
+    ednudge_district_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The District Local Id.  This field is sourced from EdNudge.'
+    )
+
     def __str__(self):
         return self.name
 
@@ -354,5 +421,139 @@ class School(CommonInfo):
 
     district = models.ForeignKey(District)
 
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_school_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the school.'
+    )
+    ednudge_school_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The School Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_district_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the district.'
+    )
+
     def __str__(self):
         return self.name
+
+class Section(CommonInfo):
+    """A time when Teachers deliver instruction to Students
+
+    Section must be associated with _one_ District
+    Section must be associated with _one_ School
+    """
+    name = models.CharField(max_length=255)
+    term_name = models.CharField(max_length=255)
+    term_start_date = models.DateField()
+    term_end_date = models.DateField()
+    period = models.CharField(max_length=255)
+    subject = models.CharField(max_length=255)
+
+    district = models.ForeignKey(District)
+    school = models.ForeignKey(School)
+
+    teachers = models.ManyToManyField(MyUser, through="SectionTeacher")
+    students = models.ManyToManyField(Student, through="SectionStudent")
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_section_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the section.',
+    )
+    ednudge_section_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The Section Local Id.  This field is sourced from EdNudge.'
+    )
+
+    def __str__(self):
+        return self.name
+
+class SectionTeacher(CommonInfo):
+    """Pairs a Teacher to a Section
+
+    SectionTeacher must be associated with _one_ Section
+    SectionTeacher must be associated with _one_ Teacher
+    """
+
+    section = models.ForeignKey(Section)
+    teacher = models.ForeignKey(MyUser)
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_enrollment_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the enrollment.'
+    )
+    ednudge_section_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+    ednudge_person_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+
+    def __str__(self):
+        return "section_id: {}, teacher_id: {}".format(self.section.id, self.teacher.id)
+
+class SectionStudent(CommonInfo):
+    """Pairs a Student to a Section
+
+    SectionStudent must be associated with _one_ Section
+    SectionStudent must be associated with _one_ Student
+    """
+
+    section = models.ForeignKey(Section)
+    student = models.ForeignKey(Student)
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_enrollment_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the enrollment.'
+    )
+    ednudge_section_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+    ednudge_person_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+
+    def __str__(self):
+        return "section_id: {}, student_id: {}".format(self.section.id, self.student.id)
+
+# TODO: add uniqueness constraint on section
+# TODO: add uniqueness constraint on sectionteacher
+# TODO: add uniqueness constraint on sectionStudent

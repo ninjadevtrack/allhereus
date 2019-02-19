@@ -32,7 +32,7 @@ class Roster:
     ednudge_api_url = ""
 
     def __init__(self, ednudge_host):
-        self.ednudge_host = 'https://{}'.format(ednudge_host)
+        self.ednudge_host = 'http://{}'.format(ednudge_host)
         self.ednudge_api_url='{}/{}/'.format(self.ednudge_host, "api/v1")
         logger.debug("ednudge_host=%s ednudge_api_url=%s", self.ednudge_host, self.ednudge_api_url)
 
@@ -49,7 +49,7 @@ class Roster:
             "grant_type": "password",
             "client_id": "not implemented",
             "client_secret": "not implemented",
-            "email": USER_EMAIL,
+            "username": USER_EMAIL,
             "password": USER_PASSWORD
         }
 
@@ -72,14 +72,61 @@ class Roster:
         logger.debug('token: {}'.format(token))
         return token
 
-    def get_districts(self):
+    def ednudge_get_districts(self):
         data = None
         try:
             data = self.api_instance.api_v1_districts_get()
             logger.debug("EdNudge Districts: {}".format(data.data))
         except ApiException as e:
             logger.exception("Exception when calling DefaultApi->api_v1_districts_get: %s\n" % e)
+        return data
 
-        ah_districts = District.objects.values_list()
-        print(ah_districts)
+    def ednudge_get_schools(self):
+        data = None
+        try:
+            data = self.api_instance.api_v1_schools_get()
+            logger.debug("EdNudge Schools: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_schools_get: %s\n" % e)
+        return data
 
+    def ednudge_get_sections(self, district_id):
+        data = None
+        try:
+            data = self.api_instance.api_v1_districts_id_sections_get(district_id)
+            logger.debug("EdNudge Sections: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_districts_id_sections_get: %s\n" % e)
+        return data
+
+    def ednudge_get_enrollments(self, district_id):
+        data = None
+        try:
+            data = self.api_instance.api_v1_districts_id_enrollments_get(district_id)
+            logger.debug("EdNudge Enrollments: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_districts_id_enrollments_get: %s\n" % e)
+        return data
+
+    def ednudge_get_learners(self, district_id):
+        data = None
+        try:
+            data = self.api_instance.api_v1_districts_id_learners_get(district_id, limit=11000)
+            #data = self.api_instance.api_v1_learners_get()
+            logger.debug("EdNudge Learners: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_districts_id_learners_get: %s\n" % e)
+        return data
+
+    def ednudge_get_instructors(self, district_id):
+        data = None
+        try:
+            data = self.api_instance.api_v1_districts_id_instructors_get(district_id, limit=20000)
+            #data = self.api_instance.api_v1_instructors_get()
+            logger.debug("EdNudge Instructors: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_districts_id_instructors_get: %s\n" % e)
+        return data
+
+    def get_api_instance(self):
+        return self.api_instance
