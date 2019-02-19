@@ -554,6 +554,3 @@ class SectionStudent(CommonInfo):
     def __str__(self):
         return "section_id: {}, student_id: {}".format(self.section.id, self.student.id)
 
-# TODO: add uniqueness constraint on section
-# TODO: add uniqueness constraint on sectionteacher
-# TODO: add uniqueness constraint on sectionStudent

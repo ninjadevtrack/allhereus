@@ -106,8 +106,7 @@ for en in eenrollments:
                 ednudge_section_id = en.section_id,
                 ednudge_person_id = en.person_id   
             )
-
-    
+ 
     if en.person_type == "instructor":
         print("instructor")
         st_roster_action = "N"
@@ -147,6 +146,17 @@ for en in eenrollments:
             # Get the en_instructor so that we're not working with a list
             en_instructor = en_instructor[0]
 
+            # Ensure instructor's email is unique
+            instructor_email = en_instructor.email
+            try:
+                test = MyUser.objects.get(email=instructor_email)
+            except MyUser.DoesNotExist:
+                # yo("Found a user with the same email address.  Skipping..... {}".format(test))
+                # TODO: uncomment ```continue```
+                #continue
+                yo("Creating a fake email address and continuing....")
+                instructor_email = "noemail-{}@allhere.com".format(en_instructor.id)
+
             yo("Found en_instructor:{}".format(en_instructor))
             school = School.objects.get(
                 ednudge_is_enabled = True,
@@ -158,8 +168,8 @@ for en in eenrollments:
             )
             ah_teacher = MyUser.objects.create(
                 ednudge_is_enabled = True,
-                ednudge_pereson_id = en_learner.id,
-                ednudge_person_local_id = en_learner.local_id,
+                ednudge_person_id = en_instructor.id,
+                ednudge_person_local_id = en_instructor.local_id,
                 ednudge_person_type = en.person_type,
 
                 school = school,
@@ -167,26 +177,27 @@ for en in eenrollments:
 
                 role = 'T',
 
-                first_name = en_learner.first_name,
-                last_name = en_learner.last_name,
+                first_name = en_instructor.first_name,
+                last_name = en_instructor.last_name,
 
-                email = en_learner.email
+                email = instructor_email
             )
-            yo("Created Student: {}".format(ah_student))
+            yo("Created Teacher: {} with email: {}".format(ah_teacher, ah_teacher.email))
 
-        if sl_roster_action == "C":
+        if st_roster_action == "C":
             yo("en:{}".format(en))
             ah_section = Section.objects.get(
                 ednudge_is_enabled = True,
                 ednudge_section_id = en.section_id)
             yo("ah_section:{}".format(ah_section))
-            ah_student = ah_student
 
-            ah_sectionstudent = SectionStudent.objects.create(
+            ah_sectionteacher = SectionTeacher.objects.create(
                 section = ah_section,
-                student = ah_student,
+                teacher = ah_teacher,
                 ednudge_is_enabled = True,
                 ednudge_enrollment_id = en.id,
                 ednudge_section_id = en.section_id,
                 ednudge_person_id = en.person_id   
             )
+
+            yo("ah_sectionteacher: {}".format(ah_sectionteacher))
