@@ -248,18 +248,22 @@ class Student(CommonInfo):
     )
 
     ednudge_is_enabled = models.BooleanField(
-        default=False, help_text='Designates whether EdNudge integration is enabled.',)
+        default=False, 
+        editable=False,
+        help_text='Designates whether EdNudge integration is enabled.')
     ednudge_learner_id = models.CharField(
         max_length=255,
         null=True,
         blank=True,
         unique=True,
+        editable=False,
         help_text='The EdNudge internal system-generated identifier for the learner.'
     )
     ednudge_learner_local_id = models.CharField(
         max_length=255,
         null=True,
         blank=True,
+        editable=False,
         help_text='The Learner Local Id.  This field is sourced from EdNudge.'
     )
 
@@ -387,18 +391,22 @@ class District(CommonInfo):
     custom_text_info_better = models.TextField(null=True, blank=True)
 
     ednudge_is_enabled = models.BooleanField(
-        default=False, help_text='Designates whether EdNudge integration is enabled for this district.',)
+        default=False, 
+        editable=False,
+        help_text='Designates whether EdNudge integration is enabled for this district.')
     ednudge_district_id = models.CharField(
         max_length=255,
         null=True,
         blank=True,
         unique=True,
+        editable=False,
         help_text='The EdNudge internal system-generated identifier for the district.'
     )
     ednudge_district_local_id = models.CharField(
         max_length=255,
         null=True,
         blank=True,
+        editable=False,
         help_text='The District Local Id.  This field is sourced from EdNudge.'
     )
 
@@ -422,24 +430,29 @@ class School(CommonInfo):
     district = models.ForeignKey(District)
 
     ednudge_is_enabled = models.BooleanField(
-        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+        default=False, 
+        editable=False,
+        help_text='Designates whether EdNudge integration is enabled for this entity.')
     ednudge_school_id = models.CharField(
         max_length=255,
         null=True,
         blank=True,
         unique=True,
+        editable=False,
         help_text='The EdNudge internal system-generated identifier for the school.'
     )
     ednudge_school_local_id = models.CharField(
         max_length=255,
         null=True,
         blank=True,
+        editable=False,
         help_text='The School Local Id.  This field is sourced from EdNudge.'
     )
     ednudge_district_id = models.CharField(
         max_length=255,
         null=True,
         blank=True,
+        editable=False,
         help_text='The EdNudge internal system-generated identifier for the district.'
     )
 
