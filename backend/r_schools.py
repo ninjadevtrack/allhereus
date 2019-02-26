@@ -22,6 +22,12 @@ for es in eschools:
             ednudge_is_enabled=True,
             ednudge_school_id=es.id)
         logging.debug("Found AllHere School for EdNudge Id=%s", es.id)
+
+        if ahs.ednudge_merkleroot == es.merkleroot:
+            roster_action = "N"
+        else:
+            roster_action = "U"
+        
     except School.DoesNotExist:
         ahs = None
         roster_action="C"
@@ -36,8 +42,15 @@ for es in eschools:
             district                = ahd,
             ednudge_school_id       = es.id,
             ednudge_school_local_id = es.local_id,
-            name                    = es.school_name         
+            name                    = es.school_name,
+            ednudge_merkleroot      = es.merkleroot        
         )
+
+    if roster_action == "U":
+        logging.debug("Updating AllHere School for EdNudge school_id=%s, district_id=%s", es.id, es.district_id)
+        ahs.name = es.school_name
+        ahs.ednudge_merkleroot = es.merkleroot
+        ahs.save(update_fields=['name', 'ednudge_merkleroot'])
 
     yo("ahs: {}".format(ahs))
 

@@ -91,6 +91,13 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         blank=True,
         help_text='The EdNudge Person Type.'
     )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
 
 
     USERNAME_FIELD = 'email'
@@ -266,6 +273,13 @@ class Student(CommonInfo):
         editable=False,
         help_text='The Learner Local Id.  This field is sourced from EdNudge.'
     )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
 
 
     @property
@@ -409,6 +423,13 @@ class District(CommonInfo):
         editable=False,
         help_text='The District Local Id.  This field is sourced from EdNudge.'
     )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
 
     def __str__(self):
         return self.name
@@ -455,6 +476,13 @@ class School(CommonInfo):
         editable=False,
         help_text='The EdNudge internal system-generated identifier for the district.'
     )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
 
     def __str__(self):
         return self.name
@@ -492,6 +520,13 @@ class Section(CommonInfo):
         null=True,
         blank=True,
         help_text='The Section Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
     )
 
     def __str__(self):
