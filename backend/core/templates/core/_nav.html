@@ -23,6 +23,9 @@
         <a class="nav-link" href="{{ students_url }}">Students</a>
       </li>
     {% endif %}
+      <li class="nav-item {% if request.get_full_path == support %} active {% endif %}">
+        <a class="nav-link" href="{% url 'support' %}">Help</a>
+      </li>
     </ul>
     <ul class="navbar-nav">
     {% if request.user.is_authenticated %}
