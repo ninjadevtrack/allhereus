@@ -31,7 +31,7 @@ for ed in edistricts:
             ednudge_is_enabled  = True,
             ednudge_district_id = ed.id,
             ednudge_district_local_id    = ed.local_id,
-            name                = ed.name         
+            name                = ed.name
         )
 
     #yo("ahd: {}".format(ahd))

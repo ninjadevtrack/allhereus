@@ -1,1 +1,1 @@
-export EDNUDGE_API_HOST=ace0f2ad.ngrok.io
+export EDNUDGE_API_HOST=3.93.153.40

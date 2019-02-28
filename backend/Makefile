@@ -1,5 +1,5 @@
 EDNUDGE_API_HOST := $(shell cat scripts/set_ednudge_api_host.sh | cut -d '=' -f2)
-EDNUDGE_API_URL := https://${EDNUDGE_API_HOST}
+EDNUDGE_API_URL := http://${EDNUDGE_API_HOST}
 
 all: help
 

@@ -563,6 +563,13 @@ class SectionTeacher(CommonInfo):
         blank=True,
         help_text='The EdNudge internal system-generated identifier for the section.'
     )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
 
     def __str__(self):
         return "section_id: {}, teacher_id: {}".format(self.section.id, self.teacher.id)
@@ -597,6 +604,13 @@ class SectionStudent(CommonInfo):
         null=True,
         blank=True,
         help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
     )
 
     def __str__(self):

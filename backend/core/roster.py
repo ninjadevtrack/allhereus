@@ -81,10 +81,10 @@ class Roster:
             logger.exception("Exception when calling DefaultApi->api_v1_districts_get: %s\n" % e)
         return data
 
-    def ednudge_get_schools(self):
+    def ednudge_get_schools(self, district_id):
         data = None
         try:
-            data = self.api_instance.api_v1_schools_get()
+            data = self.api_instance.api_v1_districts_id_schools_get(district_id)
             logger.debug("EdNudge Schools: {}".format(data.data))
         except ApiException as e:
             logger.exception("Exception when calling DefaultApi->api_v1_schools_get: %s\n" % e)
