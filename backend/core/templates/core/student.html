@@ -33,11 +33,11 @@ Student
             {% if student.teacher %}
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Teacher:</b> {{ student.teacher }}</li>
             {% endif %}
-            {% if student.district %}
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>District:</b> {{ student.district }}</li>
-            {% endif %}
             {% if student.school %}
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>School:</b> {{ student.school }}</li>
+            {% endif %}
+            {% if student.district %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>District:</b> {{ student.district }}</li>
             {% endif %}
             {% if student.grade %}
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Grade:</b> {{ student.grade }}</li>
