@@ -54,6 +54,7 @@ Students
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
         <td>
           <div class="btn-group">
+            <a href="{% url 'student_checkin_add' student.pk %}" class="btn btn-success btn-sm">Add</a>
             <a href="{{ student.url }}" class="btn btn-secondary btn-sm">View</a>
             <a href="{% url 'student_edit' student.id %}" class="btn btn-info btn-sm">Edit</a>
           </div>
