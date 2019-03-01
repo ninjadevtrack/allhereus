@@ -103,9 +103,9 @@ def checkins_add(request):
     """
 
     if request.method == 'GET':
-        form = CheckInForm(request.user)
+        form = CheckInForm(request.user, None)
     else:
-        form = CheckInForm(request.user, request.POST)
+        form = CheckInForm(request.user, None, request.POST)
         # If data is valid, proceeds to create a new CheckIn and redirect the user
         if form.is_valid():
             form.save()
@@ -155,9 +155,9 @@ def checkin_edit(request, id):
     has_checkin_permission(checkin, request.user)
 
     if request.method == 'GET':
-        form = CheckInForm(request.user, instance=checkin)
+        form = CheckInForm(request.user, None, instance=checkin)
     else:
-        form = CheckInForm(request.user, request.POST, instance=checkin)
+        form = CheckInForm(request.user, None, request.POST, instance=checkin)
         if form.is_valid():
             form.save()
             return redirect('checkins')
@@ -300,6 +300,17 @@ def students_unassigned(request):
             return HttpResponseRedirect(reverse('students'))
     students = request.user.unassigned_students
     return render(request, 'core/students_unassigned.html', {'students': students, 'error_message': errors})
+
+@login_required
+def student_checkin_add(request, id):
+    """
+    create a new checkin
+    """
+    student = get_object_or_404(Student, pk=id)
+    form = CheckInForm(request.user, student)
+    return render(request, 'core/checkin_edit.html', {
+        'form': form
+    })
 
 
 @login_required

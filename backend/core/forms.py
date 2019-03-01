@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError
+from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError, CharField
 from .models import MyUser, CheckIn, Student, School
 
 
@@ -27,7 +27,7 @@ class CheckInForm(ModelForm):
             if teacher.school != self.user.school or student.school != self.user.school:
                 raise ValidationError("Teacher/student schools must match.")
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, student, *args, **kwargs):
         self.user = user
         super(CheckInForm, self).__init__(*args, **kwargs)
         # District admins can view teachers and students of distrct
@@ -44,6 +44,9 @@ class CheckInForm(ModelForm):
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(pk=user.id), empty_label=None)
             self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(teacher=user), empty_label=None)
 
+        if student is not None:
+            self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(pk=student.id), empty_label=None)
+        
         self.fields['info_learned'].widget.attrs['rows'] = 2
         self.fields['info_better'].widget.attrs['rows'] = 2
 
