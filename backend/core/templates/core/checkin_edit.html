@@ -103,21 +103,10 @@ ul {
               <p class="text-danger">{{ error }}</p>
             {% endfor %}
           </div>
-          <div class="form-group d-flex flex-column col-md-5">
+
+          <div class="form-group col-md-6">
             <label for="{{ form.mode.html_name }}">Format:</label>
-            <div class="btn-group" data-toggle="buttons">
-              {% for val, text in form.mode.field.choices %}
-                {% if form.mode.value == val %}
-                <label class="btn btn-light active">
-                  <input type="radio" name="{{ form.mode.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}" checked>{{ text }}
-                </label>
-                {% else %}
-                <label class="btn btn-light">
-                  <input type="radio" name="{{ form.mode.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}">{{ text }}
-                </label>
-                {% endif %}
-              {% endfor %}
-            </div>
+            {{ form.mode }}
             {% for error in form.mode.errors %}
               <p class="text-danger">{{ error }}</p>
             {% endfor %}
@@ -181,7 +170,6 @@ ul {
               </div>
               <div class="ml-2 text-muted">Extremely Successful</div>
             </div>
-
         </div>
 
         <div class="form-group col-md-12">
