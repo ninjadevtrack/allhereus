@@ -15,7 +15,7 @@ EDNUDGE_HOST="3.93.153.40"
 
 r=roster.Roster(EDNUDGE_HOST)
 
-district_id='nudge:district:cjsj43flx0000g7i51mnj3zs2'
+district_id='nudge:district:cjsqe220m0000u7i5a1itgtjb'
 
 en_learners = r.ednudge_get_learners(district_id)
 en_instructors = r.ednudge_get_instructors(district_id)
@@ -240,6 +240,23 @@ for en in eenrollments:
             sectionteacher_roster_action = "C"
 
         if sectionteacher_roster_action == "C":
+            logging.debug("Creating AllHere SectionTeacher for EdNudge enrollment_id=%s,person_id=%s", en.id, en.person_id)
+            ah_section = Section.objects.get(
+                ednudge_is_enabled = True,
+                ednudge_section_id = en.section_id)
+            yo("ah_section:{}".format(ah_section))
+
+            ah_sectionteacher = SectionTeacher.objects.create(
+                section = ah_section,
+                teacher = ah_teacher,
+                ednudge_is_enabled = True,
+                ednudge_enrollment_id = en.id,
+                ednudge_section_id = en.section_id,
+                ednudge_person_id = en.person_id,
+                ednudge_merkleroot = en.merkleroot
+            )
+        
+        if sectionteacher_roster_action == "U":
             logging.debug("Updating AllHere SectionTeacher for EdNudge enrollment_id=%s,person_id=%s", en.id, en.person_id)
             ah_section = Section.objects.get(
                 ednudge_is_enabled = True,
@@ -252,4 +269,4 @@ for en in eenrollments:
             ah_sectionteacher.ednudge_merkleroot = en.merkleroot
             ah_sectionteacher.save(update_fields=['ednudge_merkleroot'])
 
-            yo("ah_sectionteacher: {}".format(ah_sectionteacher))
+        yo("ah_sectionteacher: {}".format(ah_sectionteacher))

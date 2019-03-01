@@ -70,14 +70,14 @@ class RSections:
 
 
 if __name__ == '__main__':
-    district_id = 'd:39761370-c5bb-41e8-88a3-10d6d21ffbd7'
+    district_id = 'nudge:district:cjsqe220m0000u7i5a1itgtjb'
     yo("i'm main!")
     rs = RSections()
     rs.r_sections(district_id)
 
 yo("__name__={}".format(__name__))
 
-district_id = 'nudge:district:cjsj43flx0000g7i51mnj3zs2'
+district_id = 'nudge:district:cjsqe220m0000u7i5a1itgtjb'
 yo("i'm main!")
 rs = RSections()
 rs.r_sections(district_id)
