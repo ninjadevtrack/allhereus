@@ -218,10 +218,12 @@ for en in eenrollments:
             )
 
         if teacher_roster_action == "U":
-            logging.debug("Creating AllHere MyUser for EdNudge Instructor Id=%s", en_instructor.id)
+            logging.debug("Updating AllHere MyUser for EdNudge Instructor Id=%s", en_instructor.id)
             ah_teacher.first_name = en_instructor.first_name
             ah_teacher.last_name = en_instructor.last_name
-            ah_teacher.save(update_fields=['first_name','last_name'])
+            ah_teacher.ednudge_merkleroot = en_instructor.merkleroot
+            ah_teacher.save(update_fields=['ednudge_merkleroot',
+                'first_name','last_name'])
 
         # Sync the SectionTeacher
         sectionteacher_roster_action = "N"
