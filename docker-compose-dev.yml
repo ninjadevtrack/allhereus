@@ -14,7 +14,12 @@ services:
       context: ./backend
       dockerfile: Dockerfile-dev
     environment:
-      DEBUG: '1'
+      - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=
+      - DB_PORT=5432
     command: bash bootstrap-dev.sh
     volumes:
       - ./backend:/var/app

@@ -53,7 +53,7 @@ RAVEN_CONFIG = {
 }
 
 if DEBUG:
-    ALLOWED_HOSTS = ['platform.allhere.co']
+    ALLOWED_HOSTS = ['platform.allhere.co','.eksdev.nonprod.allhere.co']
 else:
     # domain set here, server_server.py, and nginx config
     ALLOWED_HOSTS = ['.allhere.co', '104.236.78.22']
@@ -126,10 +126,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
