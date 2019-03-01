@@ -38,7 +38,11 @@ ul {
   <div class="row">
     <div class="col">
       <div class="mb-4">
-      <form method="post">
+      {% if checkin.id is None %}
+      <form method="post" action="{% url 'checkin_add' %}">
+      {% else %}
+      <form method="post" action="{% url 'checkin_edit' checkin.id %}">
+      {% endif %}
         {% csrf_token %}
 
         <div class="form-group">
@@ -226,23 +230,24 @@ ul {
 <script src="https://unpkg.com/flatpickr"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
 <script>
-
 $('input[name="date"]').flatpickr({
   dateFormat: 'n/j/Y h:i K',
-  enableTime: true,
+  enableTime: true
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('input[name="radio-success-score"]').forEach(function (x) {
-    var slider = document.querySelector('#id_success_score');
-    if (x.value === slider.value) {
-      x.click();
-    }
-    x.onchange = function (event) {
-      var value = event.target.value;
-      document.querySelector('#id_success_score').value = value;
-    };
-  });
+document.addEventListener('DOMContentLoaded', function() {
+  document
+    .querySelectorAll('input[name="radio-success-score"]')
+    .forEach(function(x) {
+      var slider = document.querySelector('#id_success_score');
+      if (x.value === slider.value) {
+        x.click();
+      }
+      x.onchange = function(event) {
+        var value = event.target.value;
+        document.querySelector('#id_success_score').value = value;
+      };
+    });
 });
 
 $('select').selectize();
