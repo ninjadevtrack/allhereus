@@ -4,6 +4,8 @@
 
 # Are tests updated?
 
-# How to I test it?
+# Did you test it?
+
+# How do I test it?
 
 # Where should the reviewer start?
