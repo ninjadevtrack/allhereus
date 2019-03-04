@@ -86,19 +86,7 @@ ul {
         <div class="form-row">
           <div class="form-group d-flex flex-column col-md-7 col-lg-6">
             <label for="{{ form.status.html_name }}">Status:</label>
-            <div class="btn-group overflow-auto" data-toggle="buttons">
-              {% for val, text in form.status.field.choices %}
-                {% if form.status.value == val %}
-                <label class="btn btn-light active">
-                  <input type="radio" name="{{ form.status.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}" checked>{{ text }}
-                </label>
-                {% else %}
-                <label class="btn btn-light">
-                  <input type="radio" name="{{ form.status.html_name }}" id="option{{ forloop.counter }}" autocomplete="off" value="{{ val }}">{{ text }}
-                </label>
-                {% endif %}
-              {% endfor %}
-            </div>
+            {{form.status}}
             {% for error in form.status.errors %}
               <p class="text-danger">{{ error }}</p>
             {% endfor %}
