@@ -15,7 +15,7 @@ EDNUDGE_HOST="3.93.153.40"
 
 r=roster.Roster(EDNUDGE_HOST)
 
-district_id='nudge:district:cjsqe220m0000u7i5a1itgtjb'
+district_id = District.objects.get(ednudge_district_local_id='8888').ednudge_district_id
 
 en_learners = r.ednudge_get_learners(district_id)
 en_instructors = r.ednudge_get_instructors(district_id)

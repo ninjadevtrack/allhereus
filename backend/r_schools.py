@@ -13,7 +13,7 @@ def yo(text):
 logging.getLogger().setLevel(logging.DEBUG)
 r=roster.Roster(EDNUDGE_HOST)
 
-district_id = 'nudge:district:cjsqe220m0000u7i5a1itgtjb'
+district_id = District.objects.get(ednudge_district_local_id='8888').ednudge_district_id
 
 eschools = r.ednudge_get_schools(district_id).data
 
