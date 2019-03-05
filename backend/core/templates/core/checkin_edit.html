@@ -120,56 +120,10 @@ ul {
                 How successful was the recent check-in you had with your mentee?
               {% endif %}
             </label>
-
-            <div class="d-none">
+            <div class="col-md-4">
               {{ form.success_score }}
             </div>
-            <div class="d-flex align-items-center overflow-auto">
-              <div class="mr-2 text-muted">Not at All Successful</div>
-              <div class="btn-group" data-toggle="buttons">
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="1" checked>1
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="2" checked>2
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="3" checked>3
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="4" checked>4
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="5" checked>5
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="6" checked>6
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="7" checked>7
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="8" checked>8
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="9" checked>9
-                </label>
-
-                <label class="btn btn-light">
-                  <input type="radio" name="radio-success-score" id="" autocomplete="off" value="10" checked>10
-                </label>
-              </div>
-              <div class="ml-2 text-muted">Extremely Successful</div>
-            </div>
+          </div>
         </div>
 
         <div class="form-group col-md-12">
@@ -221,21 +175,6 @@ ul {
 $('input[name="date"]').flatpickr({
   dateFormat: 'n/j/Y h:i K',
   enableTime: true
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  document
-    .querySelectorAll('input[name="radio-success-score"]')
-    .forEach(function(x) {
-      var slider = document.querySelector('#id_success_score');
-      if (x.value === slider.value) {
-        x.click();
-      }
-      x.onchange = function(event) {
-        var value = event.target.value;
-        document.querySelector('#id_success_score').value = value;
-      };
-    });
 });
 
 $('select').selectize();
