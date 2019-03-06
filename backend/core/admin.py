@@ -113,7 +113,7 @@ class DisctrictAdmin(admin.ModelAdmin):
         SchoolInline,
         StudentInline,
     ]
-
+    
     class Meta:
         model = District
         fields = '__all__'

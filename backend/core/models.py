@@ -6,6 +6,13 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.urls import reverse
 
+class SoftDeleteInfo(models.Model):
+    """Abstract model for storing Soft Delete model info"""
+    is_deleted = models.BooleanField(default=False, db_column='is_deleted')
+    deleted_on = models.DateTimeField(null=True, blank=True, db_column='deleted_on')
+
+    class Meta:
+        abstract = True
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None, first_name=None, last_name=None):
@@ -30,7 +37,7 @@ class MyUserManager(BaseUserManager):
         return user
 
 
-class MyUser(AbstractBaseUser, PermissionsMixin):
+class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
     """Custom user model that only requires an email and password"""
     email = models.EmailField(unique=True)
 
@@ -147,7 +154,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         if self.role == 'SA':
             return Student.objects.filter(school=self.school).order_by('-date').all()
         else:
-            return self.student_set.order_by('-date').all()
+            return self.student_set.filter(is_deleted=False).order_by('-date').all()
 
     @property
     def unassigned_students(self):
@@ -195,7 +202,7 @@ class CommonInfo(models.Model):
         abstract = True
 
 
-class Student(CommonInfo):
+class Student(CommonInfo, SoftDeleteInfo):
     """Student
 
     These are entities, not application users.
@@ -385,7 +392,7 @@ class CheckIn(CommonInfo):
         return f'Check-in on {self.student} by {self.teacher} at {self.date}'
 
 
-class District(CommonInfo):
+class District(CommonInfo, SoftDeleteInfo):
     """Collection of users representing K12 district or university.
 
     Users/Students are associated with _one_ District
@@ -442,7 +449,7 @@ class District(CommonInfo):
         return self.name
 
 
-class School(CommonInfo):
+class School(CommonInfo, SoftDeleteInfo):
     """Collection of users within a District
 
     Schools can be associated with _one_ District
@@ -494,7 +501,7 @@ class School(CommonInfo):
     def __str__(self):
         return self.name
 
-class Section(CommonInfo):
+class Section(CommonInfo, SoftDeleteInfo):
     """A time when Teachers deliver instruction to Students
 
     Section must be associated with _one_ District
@@ -539,7 +546,7 @@ class Section(CommonInfo):
     def __str__(self):
         return self.name
 
-class SectionTeacher(CommonInfo):
+class SectionTeacher(CommonInfo, SoftDeleteInfo):
     """Pairs a Teacher to a Section
 
     SectionTeacher must be associated with _one_ Section
@@ -581,7 +588,7 @@ class SectionTeacher(CommonInfo):
     def __str__(self):
         return "section_id: {}, teacher_id: {}".format(self.section.id, self.teacher.id)
 
-class SectionStudent(CommonInfo):
+class SectionStudent(CommonInfo, SoftDeleteInfo):
     """Pairs a Student to a Section
 
     SectionStudent must be associated with _one_ Section
