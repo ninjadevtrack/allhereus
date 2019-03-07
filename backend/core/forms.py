@@ -46,7 +46,8 @@ class CheckInForm(ModelForm):
 
         if student is not None:
             self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(pk=student.id), empty_label=None)
-        
+
+        self.fields['success_score'] = TypedChoiceField([(x, x) for x in range(0, 11)])
         self.fields['info_learned'].widget.attrs['rows'] = 2
         self.fields['info_better'].widget.attrs['rows'] = 2
 
