@@ -13,6 +13,12 @@ services:
       dockerfile: Dockerfile-dev
     environment:
       - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=
+      - DB_PORT=5432
+      - ALLOWED_HOSTS=platform.allhere.co,.eksdev.nonprod.allhere.co,localhost
     command: bash bootstrap-dev.sh
     volumes:
       - ./backend:/var/app
