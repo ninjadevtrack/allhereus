@@ -16,5 +16,6 @@ python-dateutil==2.6.1
 pytz==2017.2
 PyYAML==3.12
 raven==6.1.0
+requests==2.21.0
 six==1.10.0
 watchdog==0.8.3
