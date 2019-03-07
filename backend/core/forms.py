@@ -59,7 +59,7 @@ class CheckInForm(ModelForm):
         for field_name in self.fields:
             field = self.fields.get(field_name)
             if field and isinstance(field, TypedChoiceField):
-                field.choices = field.choices[1:]
+                field.choices = [('', "Select one")] + field.choices[1:]
 
 
 class ProfileForm(ModelForm):
