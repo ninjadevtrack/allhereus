@@ -6,6 +6,7 @@ Check-ins
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css">
 <style>
   .table-row-date {
     min-width: 8.5rem;
@@ -24,6 +25,15 @@ Check-ins
   <div class="row pl-3 d-flex justify-content-between align-items-center">
     <h1 class="mt-3 mb-3">Check-ins</h1>
     <div class="d-flex justify-content-between align-items-center">
+       <div class="col-md-4 mr-2">
+          <select name="student" id="student">
+            <option value="all" selected>All</option>
+
+            {% for checkin in checkins %}
+              <option value="{{checkin.student.name}}">{{ checkin.student.name | truncatechars:41 }}</option>
+            {% endfor %}
+          </select>
+        </div>
       <input id="search" class="form-control mr-2" type="search" placeholder="search...">
       <div class="btn-group">
         <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
@@ -79,7 +89,15 @@ Check-ins
 
 {% block js %}
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
 <script>
+  $.fn.dataTable.ext.search.push(
+      function( settings, data, dataIndex ) {
+        var student = $('#student').val();
+        if (student == 'all') return true;
+        return student == data[2];
+      }
+  );
   $(document).ready(function() {
     var table = $('table').DataTable({
         "paging":   false,
@@ -90,6 +108,10 @@ Check-ins
     var search = document.querySelector('#search');
     search.addEventListener('keyup', function () {
       table.search(search.value).draw();
+    })
+    $('select').selectize();
+    $("#student").bind('change', function(){
+      table.draw();
     })
 } );
 </script>
