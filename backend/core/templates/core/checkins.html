@@ -1,12 +1,13 @@
 {% extends "core/base.html" %}
-
+{% load static %}
 {% block title %}
 Check-ins
 {% endblock %}
 
 {% block css %}
+<link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css">
 <style>
   .table-row-date {
     min-width: 8.5rem;
@@ -16,7 +17,10 @@ Check-ins
   }
   table.dataTable {
   border-collapse: collapse !important;
-}
+  }
+  .clickable {
+    cursor: pointer;
+  }
 </style>
 {% endblock %}
 {% block content %}
@@ -25,16 +29,27 @@ Check-ins
   <div class="row pl-3 d-flex justify-content-between align-items-center">
     <h1 class="mt-3 mb-3">Check-ins</h1>
     <div class="d-flex justify-content-between align-items-center">
-       <div class="col-md-4 mr-2">
-          <select name="student" id="student">
-            <option value="all" selected>All</option>
-
-            {% for checkin in checkins %}
-              <option value="{{checkin.student.name}}">{{ checkin.student.name | truncatechars:41 }}</option>
-            {% endfor %}
-          </select>
+      <div class="col-md-3 clickable">
+        <div class='right-inner-addon date datepicker'>
+          <img  class="date-icon" onclick="changeFromDate()" src="{% static 'core/calendar.svg' %}"/>
+          <input id="from" name="from" type="text" class="form-control">
         </div>
-      <input id="search" class="form-control mr-2" type="search" placeholder="search...">
+      </div>
+      <div class="col-md-3 clickable">
+        <div class='right-inner-addon text-danger' data-date-format="yyyy-mm-dd">
+          <img  onclick="changeToDate()" src="{% static 'core/calendar.svg' %}"/>
+          <input id="to" name="to" type="text" class="form-control"/>
+        </div>
+      </div>
+      <div class="col-md-3 mr-2">
+        <select name="student" id="student">
+          <option value="all" selected>All</option>
+          {% for checkin in checkins %}
+            <option value="{{checkin.student.name}}">{{ checkin.student.name | truncatechars:41 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <input id="search" class="form-control mr-2 col-md-2" type="search" placeholder="search...">
       <div class="btn-group">
         <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
         <a href="{% url 'checkins_csv' %}" class="btn btn-light" name="export">Export to CSV</a>
@@ -90,14 +105,62 @@ Check-ins
 {% block js %}
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
+<script src="https://unpkg.com/flatpickr"></script>
 <script>
   $.fn.dataTable.ext.search.push(
-      function( settings, data, dataIndex ) {
-        var student = $('#student').val();
-        if (student == 'all') return true;
-        return student == data[2];
-      }
+    function( settings, data, dataIndex ) {
+      var student = $('#student').val();
+      if (student == 'all') return true;
+      return student == data[2];
+    }
   );
+  $.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+      var from = $('#from').val();
+      var to = $('#to').val();
+      if((from == '') && (to =='')) return true;
+      
+      var date = new Date(data[0].replace(/(<([^>]+)>)/ig,""));
+      if(from == '') return date.getTime() <= toDate.getTime();
+      var fromDate = new Date(from.substring(3,6) + from.substring(0,3) + from.substring(6));
+    
+      if(to == '') return date.getTime() >= fromDate.getTime();
+      var toDate = new Date(to.substring(3,6) + to.substring(0,3) + to.substring(6));
+
+      if(fromDate.getTime() > date.getTime()) return false;
+      if(toDate.getTime() < date.getTime()) return false;
+      return true;
+    }
+  );
+
+  function onChangeDate() {
+    var _from = $('#from').val();
+    var _to = $('#to').val();
+    var from = _from.substring(6)+_from.substring(0,2) + _from.substring(3,5)
+    var to = _to.substring(6)+_to.substring(0,2) + _to.substring(3,5)
+    if(_from == '' || _to == '' || from <= to) {
+      if($('#from').hasClass('is-invalid')) {
+        $("#from").removeClass('is-invalid')
+      }
+      if($('#to').hasClass('is-invalid')) {
+        $("#to").removeClass('is-invalid')
+      }
+    } else {
+      if(!$('#form').hasClass('is-invalid')) {
+        $("#from").addClass('is-invalid')
+      }
+      if(!$('#to').hasClass('is-invalid')) {
+        $("#to").addClass('is-invalid')
+      }
+    }
+  }
+
+  function changeFromDate() {
+    $("#from").trigger('focus');
+  }
+  function changeToDate() {
+    $("#to").trigger('focus');
+  }
   $(document).ready(function() {
     var table = $('table').DataTable({
         "paging":   false,
@@ -105,14 +168,35 @@ Check-ins
         "searching": true,
         "dom": 't',
     });
+    $('input[name="from"]').flatpickr({
+      dateFormat: 'd/m/Y',
+      enableTime: false
+    });
+    $('input[name="to"]').flatpickr({
+      dateFormat: 'd/m/Y',
+      enableTime: false
+    });
+
     var search = document.querySelector('#search');
     search.addEventListener('keyup', function () {
       table.search(search.value).draw();
     })
+
     $('select').selectize();
     $("#student").bind('change', function(){
+
+    var from = document.querySelector('#from');
+    from.addEventListener('change', function () {
+      onChangeDate();
       table.draw();
-    })
-} );
+    });
+    
+    var to = document.querySelector('#to');
+    to.addEventListener('change', function () {
+      onChangeDate();
+      table.draw();
+    });
+  });
+});
 </script>
 {% endblock %}

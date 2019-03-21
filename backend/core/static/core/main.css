@@ -32,6 +32,22 @@
   overflow: auto;
 }
 
+.right-inner-addon {
+  position: relative;
+}
+
+.right-inner-addon input{
+  padding-right: 30px;
+}
+
+.right-inner-addon img{
+
+position:absolute;
+right: 0px;
+padding: 7px 7px;
+border-left: solid 1px #ced4da;
+}
+
 
 /* https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
 /* Sticky footer styles
