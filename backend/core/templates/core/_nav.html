@@ -22,6 +22,12 @@
       <li class="nav-item {% if request.get_full_path == students_url %} active {% endif %}">
         <a class="nav-link" href="{{ students_url }}">Students</a>
       </li>
+      {% url 'reports' as reports_url %}
+      {% if request.user.is_superuser %}
+      <li class="nav-item {% if request.get_full_path == reports %} active {% endif %}">
+        <a class="nav-link" href="{{ reports_url }}">Reports</a>
+      </li>
+      {% endif %}
     {% endif %}
       <li class="nav-item {% if request.get_full_path == support %} active {% endif %}">
         <a class="nav-link" href="{% url 'support' %}">Help</a>

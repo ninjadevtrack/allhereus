@@ -48,7 +48,9 @@ padding: 7px 7px;
 border-left: solid 1px #ced4da;
 }
 
-
+.clickable {
+  cursor: pointer;
+}
 /* https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
 /* Sticky footer styles
 -------------------------------------------------- */

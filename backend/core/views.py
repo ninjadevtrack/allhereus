@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import CheckIn, Student
 from .forms import CheckInForm, ProfileForm, StudentForm
-
+from django.contrib.auth.decorators import user_passes_test
 TABLE_DISPLAY_LIMIT = 100
 
 
@@ -312,6 +312,14 @@ def student_checkin_add(request, id):
         'form': form
     })
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def reports(request):
+    """
+    displays report
+    """
+    students = Student.objects.all().only("id", "first_name", "last_name")
+    return render(request, 'core/report.html', {"students": students})
 
 @login_required
 def teams(request):
