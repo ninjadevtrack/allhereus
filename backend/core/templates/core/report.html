@@ -1,0 +1,104 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}
+Check-in
+{% endblock %}
+{% block css %}
+<style>
+ul {
+  list-style: none;
+}
+
+.btn-light.active, .btn-light:active, .show>.btn-light.dropdown-toggle {
+  background-image: none;
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css">
+{% endblock %}
+{% block content %}
+<form>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="form-group col-md-6 clickable">
+        <div class='right-inner-addon date datepicker' data-date-format="yyyy-mm-dd">
+          <img onclick="changeFromDate()"src="{% static 'core/calendar.svg' %}"/>
+          <input id="from"  name="from" type="text" class="form-control" required>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 clickable">
+      	<div class='right-inner-addon text-danger' data-date-format="yyyy-mm-dd">
+          <img  onclick="changeToDate()" src="{% static 'core/calendar.svg' %}"/>
+  	      <input id="to" name="to" type="text" class="form-control" required/>
+     		</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-4">
+      	<select name="studnet" required>
+          <option value="">Select student</option>
+          <option value="all">All</option>
+          {% for student in students %} 
+            <option value="{{student.id}}">{{student.first_name}} {{student.last_name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-4">
+        <select name="studnet" required>
+          <option value="">Select type</option>
+          <option value="status">Status</option>
+          <option value="mode">Format</option>
+          <option value="format">Score</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-4">
+      <button type="submit" class="btn btn-secondary btn-lg">Generate Report</button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block js %}
+<script src="https://unpkg.com/flatpickr"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
+<script>
+$('input[name="from"]').flatpickr({
+  dateFormat: 'n/j/Y h:i K',
+  enableTime: true
+});
+$('input[name="to"]').flatpickr({
+  dateFormat: 'n/j/Y h:i K',
+  enableTime: true
+});
+ function changeFromDate() {
+    $("#from").trigger('focus');
+  }
+  function changeToDate() {
+    $("#to").trigger('focus');
+  }
+function checkDate(id) {
+  if ($('#'+id).val() == '') {
+    $('#'+id).addClass('is-invalid')
+    return false;
+  } else {
+    $('#'+id).removeClass('is-invalid')
+  }
+  return true;
+};
+$('form').submit(function() {
+    return checkDate('from') && checkDate('to');
+});
+$('select').selectize();
+</script>
+{% endblock %}
