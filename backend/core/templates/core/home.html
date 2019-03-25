@@ -59,6 +59,16 @@
         </div>
       </div>
     </div>
+    {% if request.user.role == 'T' and request.user.is_superuser %}
+      <div class="col-md-4 col-lg-3">
+        <div class="card text-center pb-4 mb-4">
+          <div class="card-block d-flex flex-column align-items-center justify-content-center">
+             <img src="{% static 'core/reports.svg' %}" class="m-4 dark-gray-fill" alt="Add Check-in"/>
+            <a href="{% url 'reports' %}" class="btn btn-outline-primary">Reports</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </div>
 
   {% if request.user.role == 'T' %}
