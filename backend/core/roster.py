@@ -15,11 +15,6 @@ from pprint import pprint
 from .models import District
 import logging
 
-USER_EMAIL="chris.whiteley@billboard.net"
-USER_PASSWORD="1234567890"
-EDNUDGE_PROTOCOL="https"
-
-EDNUDGE_PORT="443"
 EDNUDGE_API_VERSION="api/v1"
 
 logger = logging.getLogger(__name__)
@@ -31,12 +26,13 @@ class Roster:
     ednudge_host = ""
     ednudge_api_url = ""
 
-    def __init__(self, ednudge_host):
-        self.ednudge_host = 'http://{}'.format(ednudge_host)
-        self.ednudge_api_url='{}/{}/'.format(self.ednudge_host, "api/v1")
+    def __init__(self, ednudge_host, username, password):
+        self.ednudge_host = ednudge_host
+        ednudge_api_version=EDNUDGE_API_VERSION
+        self.ednudge_api_url=f"{self.ednudge_host}/{ednudge_api_version}/"
         logger.debug("ednudge_host=%s ednudge_api_url=%s", self.ednudge_host, self.ednudge_api_url)
 
-        token = self.login()
+        token = self.login(username, password)
         self.config = ednudge_api.Configuration()
         self.config.host = self.ednudge_host
         self.config.debug=True
@@ -44,13 +40,13 @@ class Roster:
         self.config.api_key_prefix['Authorization']='Bearer'
         self.api_instance = ednudge_api.RosterApiApi(ednudge_api.ApiClient(self.config))        
 
-    def login(self):
+    def login(self, username, password):
         params = {
             "grant_type": "password",
             "client_id": "not implemented",
             "client_secret": "not implemented",
-            "username": USER_EMAIL,
-            "password": USER_PASSWORD
+            "username": username,
+            "password": password
         }
 
         token = ""

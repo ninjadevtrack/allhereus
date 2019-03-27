@@ -1,15 +1,18 @@
 from core import roster
 from core.models import District
-
+import os
 import logging
 
-EDNUDGE_HOST="18.221.122.128"
+EDNUDGE_HOST=os.getenv('EDNUDGE_API_URL')
+EDNUDGE_USERNAME=os.getenv('EDNUDGE_USERNAME')
+EDNUDGE_PASSWORD=os.getenv('EDNUDGE_PASSWORD')
+
 
 def yo(text):
     print("***YO: {}".format(text))
 
 logging.getLogger().setLevel(logging.DEBUG)
-r=roster.Roster(EDNUDGE_HOST)
+r=roster.Roster(EDNUDGE_HOST, EDNUDGE_USERNAME, EDNUDGE_PASSWORD)
 edistricts = r.ednudge_get_districts().data
 
 for ed in edistricts:

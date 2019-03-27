@@ -1,9 +1,13 @@
 from core import roster
 from core.models import District, School, Student, StudentDailyAttendance
-
+import os
 import logging
 
-EDNUDGE_HOST="18.221.122.128"
+
+EDNUDGE_HOST=os.getenv('EDNUDGE_API_URL')
+EDNUDGE_USERNAME=os.getenv('EDNUDGE_USERNAME')
+EDNUDGE_PASSWORD=os.getenv('EDNUDGE_PASSWORD')
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 def yo(text):
@@ -12,7 +16,7 @@ def yo(text):
 class RAttendance:
 
     def r_attendance(self, district_id):
-        r=roster.Roster(EDNUDGE_HOST)
+        r=roster.Roster(EDNUDGE_HOST, EDNUDGE_USERNAME, EDNUDGE_PASSWORD)
         eattendance = r.ednudge_get_dailyattendance(district_id).data
         for ea in eattendance:
             yo("dailyattendance_id:{}".format(ea.id))

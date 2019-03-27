@@ -2,18 +2,19 @@ from core.models import *
 
 import logging
 
+import os
 
 def yo(text):
     print("***YO: {}".format(text))
-
 
 logging.getLogger().setLevel(logging.DEBUG)
 
 # TODO: specify the district ID
 from core import roster
-EDNUDGE_HOST="18.221.122.128"
-
-r=roster.Roster(EDNUDGE_HOST)
+EDNUDGE_HOST=os.getenv('EDNUDGE_API_URL')
+EDNUDGE_USERNAME=os.getenv('EDNUDGE_USERNAME')
+EDNUDGE_PASSWORD=os.getenv('EDNUDGE_PASSWORD')
+r=roster.Roster(EDNUDGE_HOST,EDNUDGE_USERNAME,EDNUDGE_PASSWORD)
 
 district_id = District.objects.get(ednudge_district_local_id='8888').ednudge_district_id
 
