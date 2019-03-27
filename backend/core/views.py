@@ -10,9 +10,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import CheckIn, Student
 from .forms import CheckInForm, ProfileForm, StudentForm
+from functools import cmp_to_key
 from django.contrib.auth.decorators import user_passes_test
-TABLE_DISPLAY_LIMIT = 100
 
+TABLE_DISPLAY_LIMIT = 100
 
 @login_required
 def home(request):
@@ -86,13 +87,25 @@ def profile_edit(request):
     })
 
 
+
 @login_required
 def checkins(request):
     """
     list all the checkins for teacher
     """
-
-    context = {'checkins': request.user.checkins}
+    def student_sort(a, b):
+        if a.name < b.name:
+            return -1
+        if a.name == b.name:
+            return 0
+        return 1
+    checkins = request.user.checkins
+    students = []
+    for checkin in checkins:
+        if checkin.student not in students:
+            students.append(checkin.student)
+    students.sort(key=cmp_to_key(student_sort))
+    context = {'checkins': checkins, 'students': students}
     return render(request, 'core/checkins.html', context)
 
 
