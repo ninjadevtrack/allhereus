@@ -27,10 +27,6 @@ if os.getenv('DEBUG') == '1':
 else:
     DEBUG = False
 
-
-print(os.getenv('DEBUG'))
-print(DEBUG)
-
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
     SECRET_KEY = '-*r3lafkk9c+#*m%cu2(rn_9n*g=q2zkmvt6dxsq5w&uvr@7cq'
