@@ -42,6 +42,7 @@ Student
             {% if student.grade %}
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Grade:</b> {{ student.grade }}</li>
             {% endif %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Total Absences:</b> {{ student.total_absences | default_if_none:"No Data Available" }}</li>
             {% if student.last_checkin %}
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Last Check-in:</b> <a href="{{ student.last_checkin.url }}">{{ student.last_checkin.date | naturaltime }}</a></li>
             {% endif %}

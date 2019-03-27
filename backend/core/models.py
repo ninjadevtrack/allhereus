@@ -254,6 +254,13 @@ class Student(CommonInfo):
         help_text='Contact email for parent or guardian.',
     )
 
+    total_absences = models.PositiveSmallIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+        help_text='Total number of absences since the beginning of the school year.',
+    )
+
     ednudge_is_enabled = models.BooleanField(
         default=False, 
         editable=False,

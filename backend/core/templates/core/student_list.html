@@ -33,6 +33,7 @@ Students
         <th>Last Name</th>
         <th>School ID</th>
         <th>Email</th>
+        <th>Total Absences</th>
         <th>Last Check-in</th>
         <th data-orderable="false">Options</th>
       </tr>
@@ -51,6 +52,7 @@ Students
           <a href="{{ student.url }}" class="text-dark">{{ student.student_id }}</a>
         </td>
         <td>{{ student.email | default_if_none:""}}</td>
+        <td>{{ student.total_absences | default_if_none:"ND"}}</td>
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
         <td>
           <div class="btn-group">
@@ -65,7 +67,8 @@ Students
     </tbody>
   </table>
 
-  <p class="text-muted">Showing <b>{{ students | length | apnumber }}</b> of <b>{{ student_total | apnumber}}</b> student{{ student_total | pluralize }}.</p>
+  <p class="text-muted">Showing <b>{{ students | length | apnumber }}</b> of <b>{{ student_total | apnumber}}</b> student{{ student_total | pluralize }}.<br />
+  <b>ND</b> - Indicates that there is no data available.</p>
 </div>
 {% endblock %}
 

@@ -85,6 +85,7 @@ for en in eenrollments:
                 grade = en_learner.grade_level,
                 school = school,
                 district = district,
+                total_absences = en_learner.year_to_date_absences,
                 ednudge_merkleroot = en_learner.merkleroot
             )
             yo("Created Student: {}".format(ah_student))
@@ -96,10 +97,11 @@ for en in eenrollments:
             ah_student.language = en_learner.home_language
             ah_student.email = en_learner.email
             ah_student.grade = en_learner.grade_level
+            ah_student.total_absences = en_learner.year_to_date_absences
             ah_student.ednudge_merkleroot = en_learner.merkleroot
             ah_student.save(update_fields=[
                 'first_name', 'last_name', 'language',
-                'email','grade'])
+                'email','grade', 'total_absences', 'ednudge_merkleroot'])
 
         # Sync the SectionStudent
         sectionstudent_roster_action = "N"
