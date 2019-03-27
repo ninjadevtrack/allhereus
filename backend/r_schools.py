@@ -3,7 +3,7 @@ from core.models import District, School
 
 import logging
 
-EDNUDGE_HOST="3.93.153.40"
+EDNUDGE_HOST="18.221.122.128"
 
 def yo(text):
     print("***YO: {}".format(text))

@@ -616,3 +616,52 @@ class SectionStudent(CommonInfo):
     def __str__(self):
         return "section_id: {}, student_id: {}".format(self.section.id, self.student.id)
 
+class StudentDailyAttendance(CommonInfo):
+    """Pairs a Student to a Section
+
+    SectionStudent must be associated with _one_ Section
+    SectionStudent must be associated with _one_ Student
+    """
+
+    school = models.ForeignKey(School)
+    student = models.ForeignKey(Student)
+
+    date = models.DateTimeField(default=timezone.now, help_text='Date of attendance mark.')
+
+    mark = models.CharField(
+        max_length=1,
+        choices=(
+            ('a', 'absent'),
+            ('t', 'tardy'),
+            ('p', 'present'),
+        ),
+        blank=False,
+        help_text='Attendance Mark.',
+    )
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_dailyattendance_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the dailyattendance.',
+    )
+    ednudge_dailyattendance_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The dailyattendance Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
+    def __str__(self):
+        return "student_id: {}, school_id: {}, date: {}, mark: {}".format(
+            self.student.id, self.school.id, self.date, self.mark)

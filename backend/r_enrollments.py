@@ -11,7 +11,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 # TODO: specify the district ID
 from core import roster
-EDNUDGE_HOST="3.93.153.40"
+EDNUDGE_HOST="18.221.122.128"
 
 r=roster.Roster(EDNUDGE_HOST)
 
@@ -82,7 +82,7 @@ for en in eenrollments:
                 last_name = en_learner.last_name,
                 language = en_learner.home_language,
                 email = en_learner.email,
-                grade = en_learner.grade,
+                grade = en_learner.grade_level,
                 school = school,
                 district = district,
                 ednudge_merkleroot = en_learner.merkleroot
@@ -95,7 +95,7 @@ for en in eenrollments:
             ah_student.last_name = en_learner.last_name
             ah_student.language = en_learner.home_language
             ah_student.email = en_learner.email
-            ah_student.grade = en_learner.grade
+            ah_student.grade = en_learner.grade_level
             ah_student.ednudge_merkleroot = en_learner.merkleroot
             ah_student.save(update_fields=[
                 'first_name', 'last_name', 'language',

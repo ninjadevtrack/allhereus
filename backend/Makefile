@@ -1,5 +1,8 @@
 EDNUDGE_API_HOST := $(shell cat scripts/set_ednudge_api_host.sh | cut -d '=' -f2)
 EDNUDGE_API_URL := http://${EDNUDGE_API_HOST}
+REPO := registry.gitlab.com
+IMAGE_NAME := allhere/platform_v1/web
+IMAGE_TAG := v$(shell git rev-parse --short HEAD)
 
 all: help
 
@@ -9,13 +12,27 @@ help: ## Prints help for targets with comments
 ednudge-print-env-vars: ## Prints out whatever ENV vars we need for ednudge
 	@echo "${EDNUDGE_API_URL}"
 
-generate: ## Generates the EdNudge Python SDK using swagger-codegen
+ednudge-sdk-generate: ## Generates the EdNudge Python SDK using swagger-codegen
 	@echo "Generating the EdNudge SDK using $(EDNUDGE_API_URL)"
 	@bash ./scripts/ednudge_sdk_gen.sh $(EDNUDGE_API_URL)
 
-install: ## Runs setup.y install for the ednudge python SDK
+ednudge-sdk-install: ## Runs setup.y install for the ednudge python SDK
 	@echo "Running setup.py install for ednudge SDK"
 	@bash ./scripts/ednudge_sdk_python_install.sh
 
-clean-old-sdks: ## Deletes all ednudge-sdk-python_*
+ednudge-sdk-clean-old: ## Deletes all ednudge-sdk-python_*
 	@bash ./scripts/ednudge_sdk_clean_old.sh y
+
+
+docker-build: ## Builds the Dockerfile-prod image
+	@echo "Building $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG)"
+	docker build -t $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) -f Dockerfile-prod .
+
+docker-publish: ## Pushes the image to gitlab
+	@echo "Pushing $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) and latest"
+	docker tag $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) $(REPO)/$(IMAGE_NAME):latest
+	docker push $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) 
+	docker push $(REPO)/$(IMAGE_NAME):latest
+	docker image rm -f $(REPO)/$(IMAGE_NAME):latest
+	docker image rm -f $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG)
+
