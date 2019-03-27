@@ -10,8 +10,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import CheckIn, Student
 from .forms import CheckInForm, ProfileForm, StudentForm
+from xhtml2pdf import pisa
+import io
+from django.template import Context
+from django.template.loader import get_template
 from functools import cmp_to_key
 from django.contrib.auth.decorators import user_passes_test
+from datetime import datetime
 
 TABLE_DISPLAY_LIMIT = 100
 
@@ -208,11 +213,25 @@ def checkins_csv(request):
 
     writer = csv.writer(response)
 
-    writer.writerow(['date', 'teacher', 'student', 'status', 'visit type',
-                     'info learned', 'info better', 'success score'])
+    writer.writerow(['Date', 'teacher', 'Student', 'Status', 'Format',
+                     'Info learned', 'Info better', 'Success score'])
 
-    checkins = request.user.checkins
-    for checkin in checkins:
+    student = request.GET.get('student','')
+    from_date = request.GET.get('from','')
+    to_date = request.GET.get('to','')
+    student_checkins = request.user.checkins
+    if student != 'all':
+        student_checkins = [checkin for checkin in request.user.checkins if checkin.student.name == student]
+
+    from_date_checkins = student_checkins
+    if from_date != '':
+        from_date_checkins = [checkin for checkin in student_checkins if checkin.date.date() >= datetime.strptime(from_date, '%m/%d/%Y').date()]
+    
+    to_date_checkins = from_date_checkins
+    if to_date != '':
+        to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
+
+    for checkin in to_date_checkins:
         writer.writerow([checkin.date, checkin.teacher, checkin.student,
                          checkin.get_status_display(), checkin.get_mode_display(),
                          checkin.info_learned, checkin.info_better,
@@ -220,6 +239,40 @@ def checkins_csv(request):
 
     return response
 
+def render_to_pdf(template_src, context_dict):
+    template = get_template(template_src)
+    context = context_dict
+    html  = template.render(context)
+    result = io.BytesIO()
+    pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return HttpResponse('We had some errors<pre>%s</pre>' % escape(html))
+
+@login_required
+def checkins_pdf(request):
+    student = request.GET.get('student','')
+    from_date = request.GET.get('from','')
+    to_date = request.GET.get('to','')
+    student_checkins = request.user.checkins
+    if student != 'all':
+        student_checkins = [checkin for checkin in request.user.checkins if checkin.student.name == student]
+
+    from_date_checkins = student_checkins
+    if from_date != '':
+        from_date_checkins = [checkin for checkin in student_checkins if checkin.date.date() >= datetime.strptime(from_date, '%m/%d/%Y').date()]
+    
+    to_date_checkins = from_date_checkins
+    if to_date != '':
+        to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
+    
+    return render_to_pdf(
+        'core/pdf_template.html',
+        {
+            'pagesize':'A4',
+            'checkins': to_date_checkins,
+        }
+    )
 
 @login_required
 def student(request, id):

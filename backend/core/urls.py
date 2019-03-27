@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'checkins/(?P<id>[0-9]+)/edit', views.checkin_edit, name='checkin_edit'),
     url(r'checkins/(?P<id>[0-9]+)/delete', views.checkin_delete, name='checkin_delete'),
     url(r'checkins.csv', views.checkins_csv, name='checkins_csv'),
+    url(r'checkins.pdf', views.checkins_pdf, name='checkins_pdf'),
 
     url(r'students/$', views.students, name='students'),
     url(r'students/add', views.student_add, name='student_add'),
