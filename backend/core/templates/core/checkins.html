@@ -42,8 +42,8 @@ Check-ins
       <div class="col-md-3 mr-2">
         <select name="student" id="student">
           <option value="all" selected>All</option>
-          {% for checkin in checkins %}
-            <option value="{{checkin.student.name}}">{{ checkin.student.name | truncatechars:41 }}</option>
+          {% for student in students %}
+            <option value="{{student.name}}">{{ student.name | truncatechars:41 }}</option>
           {% endfor %}
         </select>
       </div>
