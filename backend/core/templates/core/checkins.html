@@ -63,20 +63,7 @@ Check-ins
           </div>
         </div>
       </div>
-      <div class="col-md-3 mr-2">
-        <select name="student" id="student">
-          <option value="all" selected>All</option>
-          {% for student in students %}
-            <option value="{{student.name}}">{{ student.name | truncatechars:41 }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <input id="search" class="form-control mr-2 col-md-2" type="search" placeholder="search...">
-      <div class="btn-group">
-        <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
-        <a href="{% url 'checkins_csv' %}" class="btn btn-light" name="export">Export to CSV</a>
-      </div>
-    </div>
+    </form>
   </div>
 
   {% if checkins %}
