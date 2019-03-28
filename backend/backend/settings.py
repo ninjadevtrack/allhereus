@@ -67,12 +67,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+#    'django.contrib.staticfiles',
     'django.contrib.humanize',
     'core.apps.CoreConfig',
     'django.contrib.sites',
     'raven.contrib.django.raven_compat',
 ]
+if DEBUG:
+    INSTALLED_APPS.append('django.contrib.staticfiles')
 
 MIDDLEWARE = [
     'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
@@ -180,11 +182,14 @@ DATETIME_INPUT_FORMATS += [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/var/app/django/static'
-# cache busting.
-# See https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+if DEBUG:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = '/var/app/django/static'
+    # cache busting.
+    # See https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#manifeststaticfilesstorage
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+else:
+    STATIC_URL = os.getenv('DJANGO_STATIC_URL')
 
 LOGGING = {
     'version': 1,

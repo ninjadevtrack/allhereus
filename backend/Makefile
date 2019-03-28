@@ -3,6 +3,7 @@ EDNUDGE_API_URL := http://${EDNUDGE_API_HOST}
 REPO := registry.gitlab.com
 IMAGE_NAME := allhere/platform_v1/web
 IMAGE_TAG := v$(shell git rev-parse --short HEAD)
+DJANGO_STATIC_BUCKET := "a05-allherestatic-837582"
 
 all: help
 
@@ -36,3 +37,7 @@ docker-publish: ## Pushes the image to gitlab
 	docker image rm -f $(REPO)/$(IMAGE_NAME):latest
 	docker image rm -f $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG)
 
+django-static-publish: ## runs python manage.py collectstatic then pushes it to s3
+	@echo "running collectstatic then pushing to s3://$(DJANGO_STATIC_BUCKET)/static/$(IMAGE_TAG)/"
+	docker-compose -f ../docker-compose-dev.yml exec web python manage.py collectstatic
+	aws s3 sync ./django/ s3://$(DJANGO_STATIC_BUCKET)/static/$(IMAGE_TAG)/
