@@ -50,6 +50,9 @@ RAVEN_CONFIG = {
 
 ALLOWED_HOSTS = [x for x in os.getenv('ALLOWED_HOSTS').split(',')]
 
+if os.getenv('ALLOWED_CIDR_NETS'):
+    ALLOWED_CIDR_NETS = [os.getenv('ALLOWED_CIDR_NETS')]
+
 if DEBUG:
     USE_X_FORWARDED_HOST = True
 
@@ -81,6 +84,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+if os.getenv('ALLOWED_CIDR_NETS'):
+    MIDDLEWARE.insert(0, 'allow_cidr.middleware.AllowCIDRMiddleware')
 
 # Point to custom user model
 AUTH_USER_MODEL = 'core.MyUser'
