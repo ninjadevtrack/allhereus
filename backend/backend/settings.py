@@ -48,11 +48,7 @@ RAVEN_CONFIG = {
     'dsn': os.getenv('SENTRY_DSN'),
 }
 
-if DEBUG:
-    ALLOWED_HOSTS = ['platform.allhere.co','.eksdev.nonprod.allhere.co']
-else:
-    # domain set here, server_server.py, and nginx config
-    ALLOWED_HOSTS = ['.allhere.co', '104.236.78.22']
+ALLOWED_HOSTS = [x for x in os.getenv('ALLOWED_HOSTS').split(',')]
 
 if DEBUG:
     USE_X_FORWARDED_HOST = True
