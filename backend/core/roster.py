@@ -53,7 +53,6 @@ class Roster:
 
         try:
             endpoint = '{}login'.format(self.ednudge_api_url)
-            my_json = json.dumps(params)
             r = requests.post(endpoint, json=params)
             r.raise_for_status()
             logger.debug('response: {}'.format(r.text))
@@ -132,6 +131,15 @@ class Roster:
             logger.debug("EdNudge DailyAttendance: {}".format(data.data))
         except ApiException as e:
             logger.exception("Exception when calling DefaultApi->api_v1_districts_id_daily_attendance_get: %s\n" % e)
+        return data
+
+    def ednudge_get_guardians(self, district_id):
+        data = None
+        try:
+            data = self.api_instance.api_v1_districts_id_guardians_get(district_id)
+            logger.debug(f"EdNudge Guardians: {data.data}")
+        except ApiException as e:
+            logger.exception(f"Exception when calling DefaultApi->api_v1_districts_id_guardians_get: {e}\n")
         return data
 
     def get_api_instance(self):
