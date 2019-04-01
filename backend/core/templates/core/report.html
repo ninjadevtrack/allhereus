@@ -74,19 +74,53 @@ ul {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
 <script>
 $('input[name="from"]').flatpickr({
-  dateFormat: 'n/j/Y h:i K',
-  enableTime: true
+  dateFormat: 'm/d/Y',
+  enableTime: false
 });
 $('input[name="to"]').flatpickr({
-  dateFormat: 'n/j/Y h:i K',
-  enableTime: true
+  dateFormat: 'm/d/Y',
+  enableTime: false
 });
- function changeFromDate() {
-    $("#from").trigger('focus');
+
+function changeFromDate() {
+  $("#from").trigger('focus');
+}
+function changeToDate() {
+  $("#to").trigger('focus');
+}
+
+function onChangeDate() {
+  var _from = $('#from').val();
+  var _to = $('#to').val();
+  var from = new Date(_from)
+  var to = new Date(_to)
+  if(_from == '' || _to == '' || from.getTime() <= to.getTime()) {
+    if($('#from').hasClass('is-invalid')) {
+      $("#from").removeClass('is-invalid')
+    }
+    if($('#to').hasClass('is-invalid')) {
+      $("#to").removeClass('is-invalid')
+    }
+  } else {
+    if(!$('#form').hasClass('is-invalid')) {
+      $("#from").addClass('is-invalid')
+    }
+    if(!$('#to').hasClass('is-invalid')) {
+      $("#to").addClass('is-invalid')
+    }
   }
-  function changeToDate() {
-    $("#to").trigger('focus');
-  }
+}
+
+var from = document.querySelector('#from');
+from.addEventListener('change', function () {
+  onChangeDate();
+});
+
+var to = document.querySelector('#to');
+to.addEventListener('change', function () {
+  onChangeDate();
+});
+
 function checkDate(id) {
   if ($('#'+id).val() == '') {
     $('#'+id).addClass('is-invalid')

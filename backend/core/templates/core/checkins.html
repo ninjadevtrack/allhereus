@@ -131,10 +131,10 @@ Check-ins
       
       var date = new Date(data[0].replace(/(<([^>]+)>)/ig,""));
       if(from == '') return date.getTime() <= toDate.getTime();
-      var fromDate = new Date(from.substring(3,6) + from.substring(0,3) + from.substring(6));
+      var fromDate = new Date(from);
     
       if(to == '') return date.getTime() >= fromDate.getTime();
-      var toDate = new Date(to.substring(3,6) + to.substring(0,3) + to.substring(6));
+      var toDate = new Date(to);
 
       if(fromDate.getTime() > date.getTime()) return false;
       if(toDate.getTime() < date.getTime()) return false;
@@ -145,9 +145,9 @@ Check-ins
   function onChangeDate() {
     var _from = $('#from').val();
     var _to = $('#to').val();
-    var from = _from.substring(6)+_from.substring(0,2) + _from.substring(3,5)
-    var to = _to.substring(6)+_to.substring(0,2) + _to.substring(3,5)
-    if(_from == '' || _to == '' || from <= to) {
+    var from = new Date(_from)
+    var to = new Date(_to)
+    if(_from == '' || _to == '' || from.getTime() <= to.getTime()) {
       if($('#from').hasClass('is-invalid')) {
         $("#from").removeClass('is-invalid')
       }
@@ -182,35 +182,37 @@ Check-ins
         "searching": true,
         "dom": 't',
     });
-    $('input[name="from"]').flatpickr({
-      dateFormat: 'd/m/Y',
-      enableTime: false
-    });
-    $('input[name="to"]').flatpickr({
-      dateFormat: 'd/m/Y',
-      enableTime: false
-    });
-
-    var search = document.querySelector('#search');
-    search.addEventListener('keyup', function () {
-      table.search(search.value).draw();
-    })
-
-    $('select').selectize();
-    $("#student").bind('change', function(){
 
     var from = document.querySelector('#from');
     from.addEventListener('change', function () {
       onChangeDate();
       table.draw();
-    });
+    }, false);
     
+    var search = document.querySelector('#search');
+    search.addEventListener('keyup', function () {
+      table.search(search.value).draw();
+    }, false)
+
     var to = document.querySelector('#to');
     to.addEventListener('change', function () {
       onChangeDate();
       table.draw();
+    }, false);
+
+    $('input[name="from"]').flatpickr({
+      dateFormat: 'm/d/Y',
+      enableTime: false
     });
-  });
+    $('input[name="to"]').flatpickr({
+      dateFormat: 'm/d/Y',
+      enableTime: false
+    });
+
+    $('select').selectize();
+    $("#student").bind('change', function(){
+      table.draw();
+    });
 });
 </script>
 {% endblock %}
