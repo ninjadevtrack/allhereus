@@ -39,11 +39,19 @@ else:
 
 district_id = District.objects.get(ednudge_district_local_id=district_local_id).ednudge_district_id
 
-en_learners = r.ednudge_get_learners(district_id)
-en_instructors = r.ednudge_get_instructors(district_id)
+#en_learners = r.ednudge_get_learners(district_id)
+#en_instructors = r.ednudge_get_instructors(district_id)
 
-eenrollments = r.ednudge_get_enrollments(district_id).data
-
+eenrollments=[]
+skip=0
+limit = 1
+chunk = r.ednudge_get_enrollments(district_id, skip, limit)
+while len(chunk.data) > 0:
+    eenrollments.append(chunk.data)
+    skip += limit
+    chunk = r.ednudge_get_enrollments(district_id, skip, limit)
+    logging.debug(f"chunk:{chunk}")
+sys.exit()
 esections = r.ednudge_get_sections(district_id).data
 
 for en in eenrollments:
