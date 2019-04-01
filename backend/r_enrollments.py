@@ -1,3 +1,18 @@
+import os, sys
+
+proj_path = "/var/app/"
+# This is so Django knows where to find stuff.
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
+sys.path.append(proj_path)
+
+# This is so my local_settings.py gets loaded.
+os.chdir(proj_path)
+
+# This is so models get loaded.
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
+
 from core.models import *
 
 import logging
@@ -16,7 +31,13 @@ EDNUDGE_USERNAME=os.getenv('EDNUDGE_USERNAME')
 EDNUDGE_PASSWORD=os.getenv('EDNUDGE_PASSWORD')
 r=roster.Roster(EDNUDGE_HOST,EDNUDGE_USERNAME,EDNUDGE_PASSWORD)
 
-district_id = District.objects.get(ednudge_district_local_id='8888').ednudge_district_id
+if len(sys.argv) != 2:
+    print(f"Usage: {sys.argv[0]} $district_local_id")
+    sys.exit()
+else:
+    district_local_id = sys.argv[1]
+
+district_id = District.objects.get(ednudge_district_local_id=district_local_id).ednudge_district_id
 
 en_learners = r.ednudge_get_learners(district_id)
 en_instructors = r.ednudge_get_instructors(district_id)

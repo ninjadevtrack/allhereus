@@ -1,3 +1,17 @@
+import os, sys
+
+proj_path = "/var/app/"
+# This is so Django knows where to find stuff.
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
+sys.path.append(proj_path)
+
+# This is so my local_settings.py gets loaded.
+os.chdir(proj_path)
+
+# This is so models get loaded.
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
 from core import roster
 from core.models import District, School, Student
 import os
@@ -43,6 +57,12 @@ class RGuardians:
                     logging.debug(f"Updated student_id={astudent.id} with guadian_id={eg.id}")
 
 if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} $district_local_id")
+        sys.exit()
+    else:
+        district_local_id = sys.argv[1]
+
     district_id = District.objects.get(ednudge_district_local_id='8888').ednudge_district_id
     yo("i'm main!")
     rs = RGuardians()
