@@ -32,6 +32,7 @@ Students
         <th>First Name</th>
         <th>Last Name</th>
         <th>Student ID</th>
+        <th>Grade</th>
         <th>Email</th>
         <th>Last Check-in</th>
         <th data-orderable="false">Options</th>
@@ -49,6 +50,9 @@ Students
         </td>
         <td>
           <a href="{{ student.url }}" class="text-dark">{{ student.student_id }}</a>
+        </td>
+        <td>
+          <a href="{{ student.url }}" class="text-dark">{{ student.grade }}</a>
         </td>
         <td>{{ student.email | default_if_none:""}}</td>
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
