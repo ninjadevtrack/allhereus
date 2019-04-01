@@ -106,7 +106,7 @@ class Roster:
     def ednudge_get_learners(self, district_id):
         data = None
         try:
-            data = self.api_instance.api_v1_districts_id_learners_get(district_id, limit=11000)
+            data = self.api_instance.api_v1_districts_id_learners_get(district_id, limit=24000)
             #data = self.api_instance.api_v1_learners_get()
             logger.debug("EdNudge Learners: {}".format(data.data))
         except ApiException as e:

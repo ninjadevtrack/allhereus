@@ -31,6 +31,31 @@ EDNUDGE_USERNAME=os.getenv('EDNUDGE_USERNAME')
 EDNUDGE_PASSWORD=os.getenv('EDNUDGE_PASSWORD')
 r=roster.Roster(EDNUDGE_HOST,EDNUDGE_USERNAME,EDNUDGE_PASSWORD)
 
+def get_grade(val):
+    val = val.lower()
+    map = {
+        'pre-kindergarten':'PK',
+        'kindergarten':'K',
+        '1': '1',
+        '2': '2',
+        '3': '3',
+        '4': '4',
+        '5': '5',
+        '6': '6',
+        '7': '7',
+        '8': '8',
+        '9': '9',
+        '10': '10',
+        '11': '11',
+        '12': '12',
+        'other': 'O'
+    }
+    try:
+        return map[val]
+    except KeyError:
+        return 'O'
+    
+
 if len(sys.argv) != 2:
     print(f"Usage: {sys.argv[0]} $district_local_id")
     sys.exit()
@@ -39,19 +64,20 @@ else:
 
 district_id = District.objects.get(ednudge_district_local_id=district_local_id).ednudge_district_id
 
-#en_learners = r.ednudge_get_learners(district_id)
-#en_instructors = r.ednudge_get_instructors(district_id)
+en_learners = r.ednudge_get_learners(district_id)
+en_instructors = r.ednudge_get_instructors(district_id)
 
 eenrollments=[]
 skip=0
-limit = 1
+limit = 2000
 chunk = r.ednudge_get_enrollments(district_id, skip, limit)
 while len(chunk.data) > 0:
-    eenrollments.append(chunk.data)
+    eenrollments = eenrollments + chunk.data
     skip += limit
     chunk = r.ednudge_get_enrollments(district_id, skip, limit)
     logging.debug(f"chunk:{chunk}")
-sys.exit()
+
+logging.debug(f"eenrollments has {len(eenrollments)} elements")
 esections = r.ednudge_get_sections(district_id).data
 
 for en in eenrollments:
@@ -112,7 +138,7 @@ for en in eenrollments:
                 last_name = en_learner.last_name,
                 language = en_learner.home_language,
                 email = en_learner.email,
-                grade = en_learner.grade_level,
+                grade = get_grade(en_learner.grade_level),
                 school = school,
                 district = district,
                 total_absences = en_learner.year_to_date_absences,
@@ -126,7 +152,7 @@ for en in eenrollments:
             ah_student.last_name = en_learner.last_name
             ah_student.language = en_learner.home_language
             ah_student.email = en_learner.email
-            ah_student.grade = en_learner.grade_level
+            ah_student.grade = get_grade(en_learner.grade_level)
             ah_student.total_absences = en_learner.year_to_date_absences
             ah_student.ednudge_merkleroot = en_learner.merkleroot
             ah_student.save(update_fields=[
