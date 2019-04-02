@@ -56,25 +56,34 @@ def get_grade(val):
         return 'O'
     
 
-if len(sys.argv) != 2:
-    print(f"Usage: {sys.argv[0]} $district_local_id")
-    sys.exit()
-else:
+if len(sys.argv) == 3:
     district_local_id = sys.argv[1]
+    school_local_id = sys.argv[2]
+elif len(sys.argv) == 2:
+    district_local_id = sys.argv[1]
+    school_local_id=None
+else:
+    print(f"Usage: {sys.argv[0]} $district_local_id $school_local_id")
+    sys.exit()
+
 
 district_id = District.objects.get(ednudge_district_local_id=district_local_id).ednudge_district_id
 
+en_schools = r.ednudge_get_schools(district_id).data
+en_school = [x for x in en_schools if x.local_id == school_local_id]
+school_id = en_school[0].id
+logging.debug(f"school_id: {school_id}")
 en_learners = r.ednudge_get_learners(district_id)
 en_instructors = r.ednudge_get_instructors(district_id)
 
 eenrollments=[]
 skip=0
 limit = 2000
-chunk = r.ednudge_get_enrollments(district_id, skip, limit)
+chunk = r.ednudge_get_enrollments(district_id, skip, limit, school_id)
 while len(chunk.data) > 0:
     eenrollments = eenrollments + chunk.data
     skip += limit
-    chunk = r.ednudge_get_enrollments(district_id, skip, limit)
+    chunk = r.ednudge_get_enrollments(district_id, skip, limit, school_id)
     logging.debug(f"chunk:{chunk}")
 
 logging.debug(f"eenrollments has {len(eenrollments)} elements")
