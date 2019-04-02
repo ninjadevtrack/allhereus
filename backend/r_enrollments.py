@@ -68,11 +68,14 @@ else:
 
 
 district_id = District.objects.get(ednudge_district_local_id=district_local_id).ednudge_district_id
-
-en_schools = r.ednudge_get_schools(district_id).data
-en_school = [x for x in en_schools if x.local_id == school_local_id]
-school_id = en_school[0].id
-logging.debug(f"school_id: {school_id}")
+if school_local_id:
+    en_schools = r.ednudge_get_schools(district_id).data
+    en_school = [x for x in en_schools if x.local_id == school_local_id]
+    school_id = en_school[0].id
+    logging.debug(f"ENROLLMENTS for district={district_local_id} for school_id:{school_id}")
+else:
+    school_id=None
+    logging.debug(f"ENROLLMENTS for distrcit={district_local_id} for ALL schools")
 en_learners = r.ednudge_get_learners(district_id)
 en_instructors = r.ednudge_get_instructors(district_id)
 
