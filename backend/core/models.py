@@ -8,8 +8,17 @@ from django.urls import reverse
 
 class SoftDeleteInfo(models.Model):
     """Abstract model for storing Soft Delete model info"""
-    is_deleted = models.BooleanField(default=False, db_column='is_deleted')
-    deleted_on = models.DateTimeField(null=True, blank=True, db_column='deleted_on')
+    is_deleted = models.BooleanField(
+        default=False, 
+        db_column='is_deleted',
+        help_text='Soft delete indicator flag - When true the record is no longer visible on the front end though data is retained in case it was deleted my mistake.'
+        )
+    deleted_on = models.DateTimeField(
+        null=True, 
+        blank=True, 
+        db_column='deleted_on',
+        help_text='Soft delete timestamp - The date and time when the record was soft deleted.  This should be empty when is_deleted is False.'
+        )
 
     class Meta:
         abstract = True
