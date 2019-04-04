@@ -125,7 +125,7 @@ def has_checkin_permission(checkin, user):
         raise PermissionDenied("Checkin is not in your school")
     if checkin.teacher != user and not user.is_school_admin and not user.is_district_admin:
         test = user.students.filter(id=checkin.student.id)
-        if test == None:
+        if len(test) == 0:
             raise PermissionDenied("Checkin is not in yours")
 
 

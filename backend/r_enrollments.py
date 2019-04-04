@@ -302,7 +302,22 @@ for en in eenrollments:
                 ednudge_is_enabled = True,
                 ednudge_enrollment_id=en.id
             )
-            if ah_sectionteacher.ednudge_merkleroot == en.merkleroot:
+            if (
+                ah_sectionteacher.ednudge_merkleroot == en.merkleroot and
+                en.deleted_at != "" and
+                ah_sectionteacher.is_deleted == False
+            ):
+                sectionteacher_roster_action = "D"
+            elif (
+                ah_sectionteacher.ednudge_merkleroot == en.merkleroot and
+                en.deleted_at == "" and
+                ah_sectionteacher.is_deleted == True
+            ):
+                sectionteacher_roster_action = "UD"
+            elif (
+                ah_sectionteacher.ednudge_merkleroot == en.merkleroot and
+                en.deleted_at == ""
+            ):
                 sectionteacher_roster_action = "N"
             else:
                 sectionteacher_roster_action = "U"
@@ -340,5 +355,25 @@ for en in eenrollments:
             #ah_sectionteacher.ednudge_end_date = en.end_date
             ah_sectionteacher.ednudge_merkleroot = en.merkleroot
             ah_sectionteacher.save(update_fields=['ednudge_merkleroot'])
+
+        if sectionteacher_roster_action == "D":
+            logging.debug("Soft Deleting AllHere SectionTeacher for EdNudge enrollment_id=%s,person_id=%s", en.id, en.person_id)
+            ah_section = Section.objects.get(
+                ednudge_is_enabled = True,
+                ednudge_section_id = en.section_id)
+            logging.debug("ah_section:{}".format(ah_section))
+
+            ah_sectionteacher.is_deleted = True
+            ah_sectionteacher.save(update_fields=['is_deleted'])
+
+        if sectionteacher_roster_action == "UD":
+            logging.debug("Soft UnDeleting AllHere SectionTeacher for EdNudge enrollment_id=%s,person_id=%s", en.id, en.person_id)
+            ah_section = Section.objects.get(
+                ednudge_is_enabled = True,
+                ednudge_section_id = en.section_id)
+            logging.debug("ah_section:{}".format(ah_section))
+
+            ah_sectionteacher.is_deleted = False
+            ah_sectionteacher.save(update_fields=['is_deleted'])
 
         yo("ah_sectionteacher: {}".format(ah_sectionteacher))

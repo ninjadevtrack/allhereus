@@ -166,8 +166,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
         else:
             if self.ednudge_is_enabled:
                 student_ids = []
-                for section in self.section_set.all():
-                    for student in section.students.all():
+                for section in self.section_set.filter(sectionteacher__is_deleted=False):
+                    for student in section.students.filter(sectionstudent__is_deleted=False):
                         test = [s for s in student_ids if s == student.id]
                         if test:
                             next
