@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from core.models import MyUser, Student, CheckIn, District, School
+from core.models import MyUser, Student, CheckIn, District, School, Section, SectionStudent, SectionTeacher
 
 
 # https://github.com/django/django/blob/a96b981d84367fd41b1df40adf3ac9ca71a741dd/django/contrib/auth/forms.py#L64-L150
@@ -76,7 +76,8 @@ class UserAdmin(BaseUserAdmin):
         # ('Organization Info', {'fields': ('district', 'school', 'team',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                     'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'last_updated', 'date_joined')})
+        ('Important dates', {'fields': ('last_login', 'last_updated', 'date_joined')}),
+        ('Soft deletes', {'fields': ('is_deleted', 'deleted_on')})
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -91,12 +92,30 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'is_staff', 'district')
+    list_display = ('district','school','last_name','first_name','email', 'is_staff', 'is_deleted')
     list_filter = ('is_superuser', 'is_staff', 'is_active', 'groups')
-    search_fields = ('email',)
+    search_fields = ('email','district__name')
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
+class StudentAdmin(admin.ModelAdmin):
+    model = Student
+
+    fieldsets = (
+        ('Personal Info', 
+            {'fields': 
+                ('student_id','is_active','first_name', 'last_name',
+                'language','email','grade','total_absences')}),
+        ('Organization Info', {'fields': ('district', 'school','teacher')}),
+        ('Guardians Info', {'fields': 
+            ('parent_first_name', 'parent_last_name','phone','parent_email')}),
+        ('Soft deletes', {'fields': ('is_deleted', 'deleted_on')})
+    )
+
+    list_display = ('district','school','teacher','last_name','first_name','email', 'is_active','is_deleted')
+    list_filter = ('is_active', 'is_deleted')
+    search_fields = ('last_name','first_name','district__name','school__name')
+    ordering = ('district__name','school__name','last_name','first_name')
 
 class SchoolInline(admin.StackedInline):
     model = School
@@ -113,6 +132,11 @@ class DisctrictAdmin(admin.ModelAdmin):
         SchoolInline,
         StudentInline,
     ]
+
+    list_display = ('name','is_deleted')
+    list_filter = ('is_deleted',)
+    search_fields = ('name',)
+    ordering = ('name',)
     
     class Meta:
         model = District
@@ -120,14 +144,89 @@ class DisctrictAdmin(admin.ModelAdmin):
 
 
 class SchoolAdmin(admin.ModelAdmin):
+    list_display = ('district','name','is_deleted')
+    list_filter = ('is_deleted',)
+    search_fields = ('district__name','name')
+    ordering = ('district__name','name')
 
     class Meta:
         model = School
         fields = '__all__'
 
+class SectionStudentInline(admin.TabularInline):
+    model = SectionStudent
+    
+    # Since these are all ednudge-manageed, disable the ability to add/delete
+    def has_add_permission(self, request, obj=None):
+        return False
+    can_delete = False
+
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj.ednudge_is_enabled:
+            return 0
+        else:    
+            return 1
+
+    fields = ['student','ednudge_enrollment_id','is_deleted']
+    readonly_fields = ['student','ednudge_is_enabled','ednudge_person_id','ednudge_enrollment_id','ednudge_section_id',]
+    ordering = ('student__last_name','student__first_name',)
+
+class SectionTeacherInline(admin.TabularInline):
+    model = SectionTeacher
+    
+    # Since these are all ednudge-manageed, disable the ability to add/delete
+    def has_add_permission(self, request, obj=None):
+        return False
+    can_delete = False
+
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj.ednudge_is_enabled:
+            return 0
+        else:    
+            return 1
+
+    fields = ['teacher','ednudge_enrollment_id','is_deleted']
+    readonly_fields = ['teacher','ednudge_is_enabled','ednudge_person_id','ednudge_enrollment_id','ednudge_section_id',]
+    ordering = ('teacher__last_name','teacher__first_name',)
+
+
+class SectionAdmin(admin.ModelAdmin):
+    class Meta:
+        model = Section
+
+    inlines = [
+        SectionTeacherInline,
+        SectionStudentInline,
+    ]
+
+    list_display = ('district', 'school', 'name', 'is_deleted',)
+    list_filter = ('is_deleted',)
+    search_fields = ('district__name','school__name', 'name')
+    ordering = ('district__name','school__name','name')
+
+    fieldsets = (
+        ('Section Info', {
+            'fields': (
+                'name','subject','period',
+                'term_name','term_start_date', 'term_end_date',
+                )}),
+        ('Organization Info', {'fields': ('district', 'school',)}),
+        ('Soft deletes', {
+            'classes': ('collapse',),
+            'fields': ('is_deleted', 'deleted_on')}),
+        ('Ednudge Integration', {
+            'classes': ('collapse',),
+            'fields': (
+                'ednudge_is_enabled', 'ednudge_section_id',
+                'ednudge_section_local_id', 'ednudge_merkleroot')}),
+    )
+
+    readonly_fields = ['ednudge_is_enabled','ednudge_section_id', 'ednudge_section_local_id', 'ednudge_merkleroot']
+
 
 admin.site.register(MyUser, UserAdmin)
-admin.site.register(Student)
+admin.site.register(Student, StudentAdmin)
 admin.site.register(CheckIn)
 admin.site.register(District, DisctrictAdmin)
 admin.site.register(School, SchoolAdmin)
+admin.site.register(Section, SectionAdmin)

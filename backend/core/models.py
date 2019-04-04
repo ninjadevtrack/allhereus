@@ -154,7 +154,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
         if self.role == 'SA':
             return CheckIn.objects.filter(student__school=self.school).order_by('-date').all()
         else:
-            return CheckIn.objects.filter(student__in=self.student_set.all()).order_by('-date').all()
+            #return CheckIn.objects.filter(student__in=self.student_set.all()).order_by('-date').all()
+            return CheckIn.objects.filter(student__in=self.students).order_by('-date').all()
 
     @property
     def students(self):
@@ -163,7 +164,19 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
         if self.role == 'SA':
             return Student.objects.filter(school=self.school).order_by('-date').all()
         else:
-            return self.student_set.filter(is_deleted=False).order_by('-date').all()
+            if self.ednudge_is_enabled:
+                student_ids = []
+                for section in self.section_set.all():
+                    for student in section.students.all():
+                        test = [s for s in student_ids if s == student.id]
+                        if test:
+                            next
+                        else:
+                            student_ids.append(student.id)   
+                students = Student.objects.filter(id__in=student_ids)
+                return students
+            else:
+                return self.student_set.filter(is_deleted=False).order_by('last_name', 'first_name').all()
 
     @property
     def unassigned_students(self):

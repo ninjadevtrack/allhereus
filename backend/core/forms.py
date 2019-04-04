@@ -42,7 +42,8 @@ class CheckInForm(ModelForm):
         else:
             self.fields['teacher'].widget.attrs['disabled'] = True
             self.fields['teacher'] = ModelChoiceField(queryset=MyUser.objects.filter(pk=user.id), empty_label=None)
-            self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(teacher=user), empty_label=None)
+            #self.fields['student'] = ModelChoiceField(queryset=Student.objects.filter(teacher=user), empty_label=None)
+            self.fields['student'] = ModelChoiceField(queryset=user.students, empty_label=None)
 
         self.fields['info_learned'].widget.attrs['rows'] = 2
         self.fields['info_better'].widget.attrs['rows'] = 2
