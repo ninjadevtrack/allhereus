@@ -46,6 +46,13 @@ Student
             {% if student.last_checkin %}
             <li class="list-group-item d-flex justify-content-between align-items-center"><b>Last Check-in:</b> <a href="{{ student.last_checkin.url }}">{{ student.last_checkin.date | naturaltime }}</a></li>
             {% endif %}
+            {% if student.support_team.all %}
+            <li class="list-group-item d-flex justify-content-between">
+                <b>Student Support Team:</b> 
+                <ul>{% for member in student.support_team.values %}
+                  <li class="d-flex justify-content-between align-items-center">{{ member.first_name }} {{ member.last_name }}</li>{% endfor %}</ul>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>

@@ -334,6 +334,23 @@ class Student(CommonInfo, SoftDeleteInfo):
     def last_checkin(self):
         return self.checkins.first()
 
+    @property
+    def support_team(self):
+        if self.ednudge_is_enabled:
+            teacher_ids = []
+            for section in self.section_set.all():
+                for teacher in section.teachers.all():
+                    test = [t for t in teacher_ids if t == teacher.id]
+                    if test:
+                        next
+                    else:
+                        teacher_ids.append(teacher.id)
+            teachers = Teacher.objects.filter(id__in=teacher_ids)
+            return teachers
+        else:
+            return self.teacher
+
+
     def __str__(self):
         return self.name
 
