@@ -199,7 +199,7 @@ class SectionAdmin(admin.ModelAdmin):
         SectionStudentInline,
     ]
 
-    list_display = ('district', 'school', 'name', 'is_deleted',)
+    list_display = ('district', 'school', 'ednudge_section_local_id','name', 'is_deleted',)
     list_filter = ('is_deleted',)
     search_fields = ('district__name','school__name', 'name')
     ordering = ('district__name','school__name','name')
