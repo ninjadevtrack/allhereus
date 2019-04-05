@@ -17,12 +17,9 @@ from django.template.loader import get_template
 from functools import cmp_to_key, reduce
 from django.contrib.auth.decorators import user_passes_test
 from datetime import datetime
-<<<<<<< HEAD
 from operator import or_
 
-=======
 from django.contrib.humanize.templatetags.humanize import naturaltime
->>>>>>> implement pdf/csv export for students
 TABLE_DISPLAY_LIMIT = 100
 
 @login_required
