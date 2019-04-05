@@ -52,7 +52,7 @@ Students
           <a href="{{ student.url }}" class="text-dark">{{ student.student_id }}</a>
         </td>
         <td>
-          <a href="{{ student.url }}" class="text-dark">{{ student.grade }}</a>
+          <a href="{{ student.url }}" class="text-dark">{{ student.grade | default_if_none:"ND" }}</a>
         </td>
         <td>{{ student.email | default_if_none:""}}</td>
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
@@ -70,7 +70,8 @@ Students
     </tbody>
   </table>
 
-  <p class="text-muted">Showing <b>{{ students | length | apnumber }}</b> of <b>{{ student_total | apnumber}}</b> student{{ student_total | pluralize }}.</p>
+  <p class="text-muted">Showing <b>{{ students | length | apnumber }}</b> of <b>{{ student_total | apnumber}}</b> student{{ student_total | pluralize }}.<br />
+    <b>ND</b> - Indicates that there is no data available.</p>
 </div>
 {% endblock %}
 
