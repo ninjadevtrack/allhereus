@@ -32,6 +32,8 @@ urlpatterns = [
     url(r'students/unassigned', views.students_unassigned, name='students_unassigned'),
     url(r'students/(?P<id>[0-9]+)/$', views.student, name='student'),
     url(r'students/(?P<id>[0-9]+)/edit', views.student_edit, name='student_edit'),
+    url(r'students.csv', views.students_csv, name='students_csv'),
+    url(r'students.pdf', views.students_pdf, name='students_pdf'),
 
     url(r'students/(?P<id>[0-9]+)/checkin/add', views.student_checkin_add, name='student_checkin_add'),
     url(r'reports/$', views.reports, name='reports'),

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-
+from django.db.models import Q
 from .models import CheckIn, Student
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import user_passes_test
 from datetime import datetime
 from operator import or_
 
+from django.contrib.humanize.templatetags.humanize import naturaltime
 TABLE_DISPLAY_LIMIT = 100
 
 @login_required
@@ -326,7 +327,7 @@ def checkins_pdf(request):
         to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
 
     return render_to_pdf(
-        'core/pdf_template.html',
+        'core/pdf_checkins_template.html',
         {
             'pagesize':'A4',
             'checkins': to_date_checkins,
@@ -436,6 +437,62 @@ def student_checkin_add(request, id):
     return render(request, 'core/checkin_edit.html', {
         'form': form
     })
+
+@login_required
+def students_csv(request):
+    response = HttpResponse(content_type='text/csv')
+
+    filename = f'AllHere Students Archive {datetime.now()}'
+    response['Content-Disposition'] = f'attachment; filename="{ filename }.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow(['First Name', 'Last Name', 'Student ID', 'Grade', 'Email',
+                     'Last Check-in'])
+
+    search = request.GET.get('search','')
+    students = request.user.students.order_by('last_name') \
+    .filter(
+            Q(first_name__icontains=search) | 
+            Q(last_name__icontains=search) |
+            Q(student_id__icontains=search) |
+            Q(grade__icontains=search) |
+            Q(email__icontains=search)
+        )
+    for student in students:
+        writer.writerow([student.first_name, student.last_name, student.student_id, student.grade, student.email, student.last_checkin.date.date()])
+    return response
+
+
+@login_required
+def students_pdf(request):
+    response = HttpResponse(content_type='text/csv')
+
+    filename = f'AllHere Students Archive {datetime.now()}'
+    response['Content-Disposition'] = f'attachment; filename="{ filename }.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow(['First Name', 'Last Name', 'Student ID', 'Grade', 'Email',
+                     'Last Check-in'])
+
+    search = request.GET.get('search','')
+    students = request.user.students.order_by('last_name') \
+    .filter(
+            Q(first_name__icontains=search) | 
+            Q(last_name__icontains=search) |
+            Q(student_id__icontains=search) |
+            Q(grade__icontains=search) |
+            Q(email__icontains=search)
+        )
+    
+    return render_to_pdf(
+        'core/pdf_students_template.html',
+        {
+            'pagesize':'A4',
+            'students': students,
+        }
+    )
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
