@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-
+from django.db.models import Q
 from .models import CheckIn, Student
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
@@ -454,12 +454,15 @@ def students_csv(request):
                      'Last Check-in'])
 
     search = request.GET.get('search','')
-    students = request.user.students.order_by('last_name')
-    filtered_students = []
+    students = request.user.students.order_by('last_name') \
+    .filter(
+            Q(first_name__icontains=search) | 
+            Q(last_name__icontains=search) |
+            Q(student_id__icontains=search) |
+            Q(grade__icontains=search) |
+            Q(email__icontains=search)
+        )
     for student in students:
-        if search in student.first_name or search in student.last_name or search in student.student_id or search in str(student.grade) or search in naturaltime(student.last_checkin.date):
-            filtered_students.append(student)
-    for student in filtered_students:
         writer.writerow([student.first_name, student.last_name, student.student_id, student.grade, student.email, student.last_checkin.date.date()])
     return response
 
@@ -477,17 +480,20 @@ def students_pdf(request):
                      'Last Check-in'])
 
     search = request.GET.get('search','')
-    students = request.user.students.order_by('last_name')
-    filtered_students = []
-    for student in students:
-        if search in student.first_name or search in student.last_name or search in student.student_id or search in str(student.grade) or search in naturaltime(student.last_checkin.date):
-            filtered_students.append(student)
+    students = request.user.students.order_by('last_name') \
+    .filter(
+            Q(first_name__icontains=search) | 
+            Q(last_name__icontains=search) |
+            Q(student_id__icontains=search) |
+            Q(grade__icontains=search) |
+            Q(email__icontains=search)
+        )
     
     return render_to_pdf(
         'core/pdf_students_template.html',
         {
             'pagesize':'A4',
-            'students': filtered_students,
+            'students': students,
         }
     )
 
