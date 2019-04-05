@@ -1,6 +1,6 @@
 import csv
 from datetime import datetime
-
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -14,9 +14,10 @@ from xhtml2pdf import pisa
 import io
 from django.template import Context
 from django.template.loader import get_template
-from functools import cmp_to_key
+from functools import cmp_to_key, reduce
 from django.contrib.auth.decorators import user_passes_test
 from datetime import datetime
+from operator import or_
 
 TABLE_DISPLAY_LIMIT = 100
 
@@ -215,11 +216,40 @@ def checkins_csv(request):
 
     writer.writerow(['Date', 'teacher', 'Student', 'Status', 'Format',
                      'Info learned', 'Info better', 'Success score'])
-
+                     
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
     to_date = request.GET.get('to','')
-    student_checkins = request.user.checkins
+    search = request.GET.get('search', '')
+    
+    status_choices= (
+            ('C', 'Completed'),
+            ('U', 'Unreachable'),
+            ('M', 'Left Message'),
+        )
+    status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
+    mode_choices=(
+            ('P', 'Phone'),
+            ('V', 'Visit'),
+            ('I', 'In-Person'), 
+            ('E', 'Email')
+        )
+    modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
+
+    checkins = request.user.checkins \
+        .filter(
+            Q(teacher__first_name__icontains=search) |
+            Q(teacher__last_name__icontains=search) |
+            Q(student__first_name__icontains=search) |
+            Q(student__first_name__icontains=search) |
+            Q(student__school__name__icontains=search) |
+            Q(info_learned__icontains=search) |
+            Q(info_better__icontains=search) |
+            reduce(or_, [Q(mode__icontains=q) for q in modes]) |
+            reduce(or_, [Q(status__icontains=q) for q in status])
+        )
+
+    student_checkins = checkins
     if student != 'all':
         student_checkins = [checkin for checkin in request.user.checkins if checkin.student.name == student]
 
@@ -230,6 +260,7 @@ def checkins_csv(request):
     to_date_checkins = from_date_checkins
     if to_date != '':
         to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
+
 
     for checkin in to_date_checkins:
         writer.writerow([checkin.date, checkin.teacher, checkin.student,
@@ -254,7 +285,35 @@ def checkins_pdf(request):
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
     to_date = request.GET.get('to','')
-    student_checkins = request.user.checkins
+    search = request.GET.get('search', '')
+    
+    status_choices= (
+            ('C', 'Completed'),
+            ('U', 'Unreachable'),
+            ('M', 'Left Message'),
+        )
+    status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
+    mode_choices=(
+            ('P', 'Phone'),
+            ('V', 'Visit'),
+            ('I', 'In-Person'), 
+            ('E', 'Email')
+        )
+    modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
+
+    checkins = request.user.checkins \
+        .filter(
+            Q(teacher__first_name__icontains=search) |
+            Q(teacher__last_name__icontains=search) |
+            Q(student__first_name__icontains=search) |
+            Q(student__first_name__icontains=search) |
+            Q(student__school__name__icontains=search) |
+            Q(info_learned__icontains=search) |
+            Q(info_better__icontains=search) |
+            reduce(or_, [Q(mode__icontains=q) for q in modes]) |
+            reduce(or_, [Q(status__icontains=q) for q in status])
+        )
+    student_checkins = checkins
     if student != 'all':
         student_checkins = [checkin for checkin in request.user.checkins if checkin.student.name == student]
 
@@ -265,7 +324,7 @@ def checkins_pdf(request):
     to_date_checkins = from_date_checkins
     if to_date != '':
         to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
-    
+
     return render_to_pdf(
         'core/pdf_template.html',
         {
