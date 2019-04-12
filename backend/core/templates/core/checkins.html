@@ -181,7 +181,13 @@ Check-ins
         "info":     false,
         "searching": true,
         "dom": 't',
-    });
+        "columnDefs": [
+          { 
+            "searchable": false, 
+            "targets": 0
+          }
+        ]
+      });
 
     var from = document.querySelector('#from');
     from.addEventListener('change', function () {
