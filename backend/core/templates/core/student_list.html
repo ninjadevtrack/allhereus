@@ -95,6 +95,16 @@ Students
         "info":     false,
         "searching": true,
         "dom": 't',
+        "columnDefs": [
+          {
+            "searchable": false,
+            "targets": 0 
+          },
+          {
+            "searchable": false,
+            "targets": 6
+          }
+        ]
     });
     var search = document.querySelector('#search');
     search.addEventListener('keyup', function () {
