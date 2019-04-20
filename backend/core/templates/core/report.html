@@ -21,7 +21,7 @@ ul {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css">
 {% endblock %}
 {% block content %}
-<form>
+<form action={% url 'reports-chart' %} target="_blank">
   <div class="container mt-5">
     <div class="row">
       <div class="form-group col-md-6 clickable">
@@ -41,7 +41,7 @@ ul {
     </div>
     <div class="row">
       <div class="col-md-6 mt-4">
-      	<select name="studnet" required>
+      	<select name="student" required>
           <option value="">Select student</option>
           <option value="all">All</option>
           {% for student in students %} 
@@ -52,11 +52,11 @@ ul {
     </div>
     <div class="row">
       <div class="col-md-6 mt-4">
-        <select name="studnet" required>
+        <select name="type" required>
           <option value="">Select type</option>
           <option value="status">Number of Interventions by Status</option>
           <option value="mode">Percent of Intervention by Format</option>
-          <option value="format">Number of Interventions by Number Score</option>
+          <option value="score">Number of Interventions by Number Score</option>
         </select>
       </div>
     </div>

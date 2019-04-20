@@ -16,7 +16,7 @@ from django.template import Context
 from django.template.loader import get_template
 from functools import cmp_to_key, reduce
 from django.contrib.auth.decorators import user_passes_test
-from datetime import datetime
+from datetime import datetime, timedelta
 from operator import or_
 
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -333,6 +333,39 @@ def checkins_pdf(request):
             'checkins': to_date_checkins,
         }
     )
+
+
+@login_required
+def reports_in_chart(request):
+    checkins = request.user.checkins
+    from_date = request.GET.get('from', '')
+    to_date = request.GET.get('to', '')
+    student = request.GET.get('student', 'all')
+    student_name = "All Students"
+
+    intervention_type = request.GET.get('type','')
+    if student != 'all':
+        checkins = request.user.checkins.filter(student__id=student)
+        student_name = Student.objects.get(pk=student).name
+    from_date_checkins = checkins
+    if from_date != '':
+        from_date_checkins = checkins.filter(date__gte=datetime.strptime(from_date, '%m/%d/%Y').date())
+
+    to_date_checkins = from_date_checkins
+    if to_date != '':
+        to_date_checkins = from_date_checkins.filter(date__lt=datetime.strptime(to_date, '%m/%d/%Y').date() + timedelta(days=1))
+
+    if intervention_type == 'status':
+        complete = to_date_checkins.filter(status='C').count()
+        unreachable = to_date_checkins.filter(status='U').count()
+        left_message = to_date_checkins.filter(status='M').count()
+
+        return render(request, 'core/intervention_report.html', \
+            { 'complete': complete, 'unreachable': unreachable, 'left_message': left_message, \
+            'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
+
+    return HttpResponse("This feature is coming.")
+
 
 @login_required
 def student(request, id):

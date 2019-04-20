@@ -37,6 +37,7 @@ urlpatterns = [
 
     url(r'students/(?P<id>[0-9]+)/checkin/add', views.student_checkin_add, name='student_checkin_add'),
     url(r'reports/$', views.reports, name='reports'),
+    url(r'reports-chart/$', views.reports_in_chart, name='reports-chart'),
     url(r'teams/$', views.teams, name='teams'),
     url(r'teams/(?P<id>[0-9]+)/', views.team, name='team'),
 
