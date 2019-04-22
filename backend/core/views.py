@@ -371,6 +371,16 @@ def reports_in_chart(request):
         return render(request, 'core/intervention_report_by_score.html', \
             { 'scores' : scores, 'student_name': student_name, 'from_time':from_date, 'to_time': to_date })
 
+    if intervention_type == 'mode':
+        phone = to_date_checkins.filter(mode='P').count()
+        visit = to_date_checkins.filter(mode='V').count()
+        in_person = to_date_checkins.filter(mode='I').count()
+        email = to_date_checkins.filter(mode='E').count()
+
+        return render(request, 'core/intervention_report_by_format.html', \
+            { 'phone': phone, 'visit': visit, 'in_person': in_person, 'email': email, \
+            'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
+
         
 
     return HttpResponse("This feature is coming.")
