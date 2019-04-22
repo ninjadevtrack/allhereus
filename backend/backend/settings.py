@@ -27,6 +27,8 @@ if os.getenv('DEBUG') == '1':
 else:
     DEBUG = False
 
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
     SECRET_KEY = '-*r3lafkk9c+#*m%cu2(rn_9n*g=q2zkmvt6dxsq5w&uvr@7cq'
@@ -191,6 +193,7 @@ if DEBUG:
 else:
     STATIC_URL = os.getenv('DJANGO_STATIC_URL')
 
+"""
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -245,6 +248,33 @@ if DEBUG:
     del LOGGING['handlers']['sentry']
     del LOGGING['root']
     LOGGING['root'] = {
-        'level': 'WARNING',
+        'level': LOGLEVEL,
         'handlers': ['console'],
     }
+"""
+
+LOGGING_CONFIG = None
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler'
+        },
+    },
+    'loggers': {
+        '': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'core': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'root': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
