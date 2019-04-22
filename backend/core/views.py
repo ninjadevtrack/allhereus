@@ -364,6 +364,15 @@ def reports_in_chart(request):
             { 'complete': complete, 'unreachable': unreachable, 'left_message': left_message, \
             'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
 
+    if intervention_type == 'score':
+        scores = [0] * 10
+        for i in range(10):
+            scores[i] = to_date_checkins.filter(success_score=i).count()
+        return render(request, 'core/intervention_report_by_score.html', \
+            { 'scores' : scores, 'student_name': student_name, 'from_time':from_date, 'to_time': to_date })
+
+        
+
     return HttpResponse("This feature is coming.")
 
 
