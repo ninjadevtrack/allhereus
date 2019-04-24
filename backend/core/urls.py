@@ -16,8 +16,8 @@ urlpatterns = [
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', auth_views.PasswordResetConfirmView.as_view(template_name='core/password_reset_confirm.html'), name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(template_name='core/password_reset_complete.html'), name='password_reset_complete'),
 
-    url(r'profile$', views.profile, name='profile'),
-    url(r'profile/edit', views.profile_edit, name='profile_edit'),
+    url(r'^profile$', views.profile, name='profile'),
+    url(r'^profile/edit', views.profile_edit, name='profile_edit'),
 
     url(r'checkins/$', views.checkins, name='checkins'),
     url(r'checkins/add', views.checkins_add, name='checkin_add'),
@@ -37,4 +37,11 @@ urlpatterns = [
 
     url(r'privacy', views.privacy, name='privacy'),
     url(r'support', views.support, name='support'),
+
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/$', views.staff_profile, name='staff_profile'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/edit$', views.staff_profile_edit, name='staff_profile_edit'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/$', views.home, name='staff_students'), # TODO: use view.staff_checkins per A2Dw-82
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/checkins/$', views.home, name='staff_checkins'), # TODO: use view.staff_checkins per A2Dw-85
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/password_set$', views.staff_password_set, name='staff_password_set'),
+
 ]

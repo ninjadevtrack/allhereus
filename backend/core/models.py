@@ -188,7 +188,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     @property
     def schools(self):
-        return School.objects.all().filter(members=self)
+        if self.role == 'DA':
+            return School.objects.all().filter(district=self.district)
+        else:
+            return School.objects.all().filter(members=self)
 
     @property
     def avatar_url(self):
@@ -539,6 +542,9 @@ class School(CommonInfo, SoftDeleteInfo):
 
     def __str__(self):
         return self.name
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
 
 class Section(CommonInfo, SoftDeleteInfo):
     """A time when Teachers deliver instruction to Students

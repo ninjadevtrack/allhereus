@@ -3,10 +3,11 @@ from datetime import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed
+from django.contrib.auth.forms import SetPasswordForm
 
 from .models import CheckIn, Student
 from .forms import CheckInForm, ProfileForm, StudentForm
@@ -59,7 +60,10 @@ def profile(request):
     displays user's info
     """
     context = {
-        'recent_checkins': request.user.checkins[:10],
+        'profile_url': reverse('profile'),
+        'edit_url': reverse('profile_edit'),
+        'checkin_count': request.user.checkins.count(),
+        'student_roster_count': request.user.students.count(),
         'user': request.user,
         'view': 'display',
     }
@@ -71,16 +75,21 @@ def profile_edit(request):
     """
     profile in editing state
     """
+    profile_kwargs = {'user': request.user, 'instance':request.user}
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=request.user)
+        form = ProfileForm(request.POST, **profile_kwargs)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('profile'))
     else:
-        form = ProfileForm(instance=request.user)
+        form = ProfileForm(**profile_kwargs)
     return render(request, 'core/profile_edit.html', {
-        'recent_checkins': request.user.checkins[:10],
+        'profile_url': reverse('profile'),
+        'edit_url': reverse('profile_edit'),
+        'checkin_count': request.user.checkins.count(),
+        'student_roster_count': request.user.students.count(),
+        'user': request.user,
         'form': form,
         'error_message': [error for error in form.non_field_errors()],
     })
@@ -333,3 +342,103 @@ def support(request):
     return the support page
     """
     return render(request, 'core/support.html')
+
+def district_admin_required(login_url=None, raise_exception=False):
+    """
+    Decorator for views that checks whether a user is a District Admin. If
+    not, redirects to the log-in page unless the raise_exception parameter
+    is True, in which case the PermissionDenied exception is raised.
+    """
+    def check_is_da(user):
+        # First check if the user belongs to the group
+        if user.is_district_admin:
+            return True
+        # In case the 403 handler should be called raise the exception
+        if raise_exception:
+            raise PermissionDenied("You must be a District Administrator to use this feature.")
+        # As the last resort, show the login form
+        return False
+    return user_passes_test(check_is_da, login_url=login_url)
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_profile(request, school_id, staff_id):
+    """
+    Display a staff's profile
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id)
+    staff_profile_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
+    profile_url = reverse('staff_profile', kwargs=staff_profile_kwargs)
+    edit_url = reverse("staff_profile_edit", kwargs=staff_profile_kwargs)
+
+    context = {
+        'profile_url': profile_url,
+        'edit_url': edit_url,
+        'checkin_count': staff.checkins.count(),
+        'student_roster_count': staff.students.count(),
+        'user': staff,
+        'view': 'display',
+    }
+    return render(request, 'core/profile.html', context)
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_profile_edit(request, school_id, staff_id):
+    """
+    staff_profile in editing state
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id)
+    staff_profile_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
+    profile_url = reverse('staff_profile', kwargs=staff_profile_kwargs)
+    edit_url = reverse('staff_profile_edit', kwargs=staff_profile_kwargs)
+    profile_kwargs = {'user': request.user, 'instance':staff}
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, **profile_kwargs)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(profile_url)
+    else:
+        form = ProfileForm(**profile_kwargs)
+    return render(request, 'core/profile_edit.html', {
+        'profile_url': profile_url,
+        'edit_url': edit_url,
+        'staff_password_set_url': reverse('staff_password_set', kwargs={
+            'school_id': school_id,
+            'staff_id': staff_id,
+        }),
+        'checkin_count': staff.checkins.count(),
+        'student_roster_count': staff.students.count(),
+        'user': staff,
+        'form': form,
+        'error_message': [error for error in form.non_field_errors()],
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_password_set(request, school_id, staff_id):
+    """
+    staff_profile in editing state
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is in the DA's schools
+    staff_profile_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
+    profile_url = reverse('staff_profile', kwargs=staff_profile_kwargs)
+    if not staff:
+        return HttpResponseForbidden()  # Just straight up forbid this request, looking fishy already!
+    if request.method == 'POST':
+        form = SetPasswordForm(staff, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(profile_url)
+    elif request.method == 'GET':
+        form = SetPasswordForm(staff)
+    else:
+        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
+    form.fields['new_password2'].label = 'Confirm New Password'
+    form.fields['new_password2'].longest = True
+    return render(request, 'core/password_change.html', {
+        'form': form,
+        'staff': staff,
+    })
