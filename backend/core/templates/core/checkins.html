@@ -123,6 +123,21 @@ Check-ins
       return student == data[2];
     }
   );
+
+  $.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+      console.log(data)
+      var search = $('#search').val();
+      if (search != '') {
+        for(var i = 1; i <= 7; i++) {
+          if(data[i].toLowerCase().includes(search.toLowerCase())) return true
+        }
+        return false;
+      }
+      return true;
+    }
+  );
+
   $.fn.dataTable.ext.search.push(
     function( settings, data, dataIndex ) {
       var from = $('#from').val();
@@ -130,7 +145,7 @@ Check-ins
       if((from == '') && (to =='')) return true;
       
       var date = new Date(data[0].replace(/(<([^>]+)>)/ig,""));
-      if(from == '') return date.getTime() <= toDate.getTime();
+      if(from == '') return date.getTime() <= new Date(to).getTime();
       var fromDate = new Date(from);
     
       if(to == '') return date.getTime() >= fromDate.getTime();
@@ -181,12 +196,6 @@ Check-ins
         "info":     false,
         "searching": true,
         "dom": 't',
-        "columnDefs": [
-          { 
-            "searchable": false, 
-            "targets": 0
-          }
-        ]
       });
 
     var from = document.querySelector('#from');
@@ -197,7 +206,7 @@ Check-ins
     
     var search = document.querySelector('#search');
     search.addEventListener('keyup', function () {
-      table.search(search.value).draw();
+      table.draw()
     }, false)
 
     var to = document.querySelector('#to');
