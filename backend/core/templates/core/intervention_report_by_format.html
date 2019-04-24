@@ -48,6 +48,7 @@
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         document.getElementById('save-pdf').addEventListener('click', function() {
             var doc = new jsPDF();
+            chart.setSelection([])
             doc.addImage(chart.getImageURI(), 12, 20);
             doc.save('Total # of Interventions Done by Status.pdf')
         }, false);

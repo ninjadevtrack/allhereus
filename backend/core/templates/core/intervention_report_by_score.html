@@ -51,6 +51,7 @@
         
       document.getElementById('save-pdf').addEventListener('click', function() {
             var doc = new jsPDF("p", "mm", 'a4');
+            chart.setSelection([]);
             doc.addImage(chart.getImageURI(), 0,30, 220, 150);
             doc.save('Total # of Interventions Done by Success Score.pdf')
         }, false);
