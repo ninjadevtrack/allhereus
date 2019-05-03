@@ -444,6 +444,8 @@ def students(request):
     List view of students
     """
     students = request.user.students.order_by('last_name')
+    for student in students:
+        student.teacher_checkins = student.checkins.filter(teacher=request.user).count()
     return render(request, 'core/student_list.html', {
         'students': students,
         'student_total': len(students),

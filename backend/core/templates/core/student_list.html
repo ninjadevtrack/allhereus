@@ -46,6 +46,7 @@ Students
         <th>Grade</th>
         <th>Email</th>
         <th>Last Check-in</th>
+        <th>Number Of CheckIns</th>
         <th data-orderable="false">Options</th>
       </tr>
     </thead>
@@ -67,6 +68,7 @@ Students
         </td>
         <td>{{ student.email | default_if_none:""}}</td>
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
+        <td><a href="">{{student.teacher_checkins}}</a></td>
         <td>
           <div class="btn-group">
             <a href="{% url 'student_checkin_add' student.pk %}" class="btn btn-success btn-sm">Add</a>
