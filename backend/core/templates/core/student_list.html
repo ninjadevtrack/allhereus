@@ -81,7 +81,7 @@ Students
         <td>{{ student.email | default_if_none:""}}</td>
         <td>{{ student.total_absences | default_if_none:"ND"}}</td>
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
-        <td><a href="">{{student.teacher_checkins}}</a></td>
+        <td>{{student.teacher_checkins}}</td>
         <td>
           <div class="btn-group">
             {% if not staff %}
