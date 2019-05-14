@@ -547,6 +547,9 @@ class School(CommonInfo, SoftDeleteInfo):
 
     def __str__(self):
         return self.name
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
 
     @property
     def staff(self):

@@ -1,7 +1,6 @@
 from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError
 from .models import MyUser, CheckIn, Student, School
 
-
 class CheckInForm(ModelForm):
     """Custom class to create/edit CheckIn"""
 
@@ -64,6 +63,21 @@ class ProfileForm(ModelForm):
     class Meta:
         model = MyUser
         fields = ['email', 'school', 'department', 'first_name', 'last_name', 'subject', 'grade']
+        exclude = ['district']
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        # District admins can view all schools in the district
+        # School admins can view only their school
+        # Teachers can view only their school
+        if user.is_district_admin and user.district is not None:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(district=user.district), empty_label=None)
+        elif user.is_school_admin and user.school is not None:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
+        elif user.school is not None:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.filter(id=user.school.id), empty_label=None)
+        else:
+            self.fields['school'] = ModelChoiceField(queryset=School.objects.none(), empty_label=None)
 
 
 class StudentForm(ModelForm):
