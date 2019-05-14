@@ -38,5 +38,8 @@ urlpatterns = [
     url(r'privacy', views.privacy, name='privacy'),
     url(r'support', views.support, name='support'),
 
-    url(r'schools/$', views.home, name='schools'), #TODO: change to views.schools once implemented
+    url(r'schools/$', views.schools, name='schools'),
+
+    url(r'schools/(?P<school_id>[0-9]+)/staff$', views.schools, name='staff'), #TODO: use views.staff once implemented by A2Dw-80
+
 ]

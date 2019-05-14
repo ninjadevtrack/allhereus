@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -333,3 +333,34 @@ def support(request):
     return the support page
     """
     return render(request, 'core/support.html')
+
+def district_admin_required(login_url=None, raise_exception=False):
+    """
+    Decorator for views that checks whether a user is a District Admin. If
+    not, redirects to the log-in page unless the raise_exception parameter
+    is True, in which case the PermissionDenied exception is raised.
+    """
+    def check_is_da(user):
+        # First check if the user belongs to the group
+        if user.is_district_admin:
+            return True
+        # In case the 403 handler should be called raise the exception
+        if raise_exception:
+            raise PermissionDenied("You must be a District Administrator to use this feature.")
+        # As the last resort, show the login form
+        return False
+    return user_passes_test(check_is_da, login_url=login_url) 
+
+@login_required
+@district_admin_required(raise_exception=True)
+def schools(request):
+    """
+    List view of schools
+    """
+    district = request.user.district
+    schools = request.user.schools.order_by('name')
+    return render(request, 'core/school_list.html', {
+        'district': district,
+        'schools': schools,
+        'schools_total': schools.count(),
+    })
