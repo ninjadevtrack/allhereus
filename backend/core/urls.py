@@ -19,18 +19,18 @@ urlpatterns = [
     url(r'^profile$', views.profile, name='profile'),
     url(r'^profile/edit', views.profile_edit, name='profile_edit'),
 
-    url(r'checkins/$', views.checkins, name='checkins'),
-    url(r'checkins/add', views.checkins_add, name='checkin_add'),
-    url(r'checkins/(?P<id>[0-9]+)/$', views.checkin, name='checkin'),
-    url(r'checkins/(?P<id>[0-9]+)/edit', views.checkin_edit, name='checkin_edit'),
-    url(r'checkins/(?P<id>[0-9]+)/delete', views.checkin_delete, name='checkin_delete'),
-    url(r'checkins.csv', views.checkins_csv, name='checkins_csv'),
+    url(r'^checkins/$', views.checkins, name='checkins'),
+    url(r'^checkins/add', views.checkins_add, name='checkin_add'),
+    url(r'^checkins/(?P<id>[0-9]+)/$', views.checkin, name='checkin'),
+    url(r'^checkins/(?P<id>[0-9]+)/edit', views.checkin_edit, name='checkin_edit'),
+    url(r'^checkins/(?P<id>[0-9]+)/delete', views.checkin_delete, name='checkin_delete'),
+    url(r'^checkins.csv', views.checkins_csv, name='checkins_csv'),
 
-    url(r'students/$', views.students, name='students'),
-    url(r'students/add', views.student_add, name='student_add'),
-    url(r'students/unassigned', views.students_unassigned, name='students_unassigned'),
-    url(r'students/(?P<id>[0-9]+)/$', views.student, name='student'),
-    url(r'students/(?P<id>[0-9]+)/edit', views.student_edit, name='student_edit'),
+    url(r'^students/$', views.students, name='students'),
+    url(r'^students/add', views.student_add, name='student_add'),
+    url(r'^students/unassigned', views.students_unassigned, name='students_unassigned'),
+    url(r'^students/(?P<id>[0-9]+)/$', views.student, name='student'),
+    url(r'^students/(?P<id>[0-9]+)/edit$', views.student_edit, name='student_edit'),
 
     url(r'teams/$', views.teams, name='teams'),
     url(r'teams/(?P<id>[0-9]+)/', views.team, name='team'),
@@ -38,10 +38,13 @@ urlpatterns = [
     url(r'privacy', views.privacy, name='privacy'),
     url(r'support', views.support, name='support'),
 
+    url(r'schools/$', views.schools, name='schools'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/$', views.staff, name='staff'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/$', views.staff_profile, name='staff_profile'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/edit$', views.staff_profile_edit, name='staff_profile_edit'),
-    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/$', views.home, name='staff_students'), # TODO: use view.staff_checkins per A2Dw-82
-    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/checkins/$', views.home, name='staff_checkins'), # TODO: use view.staff_checkins per A2Dw-85
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/checkins/$', views.staff, name='staff_checkins'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/password_set$', views.staff_password_set, name='staff_password_set'),
-
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/$', views.staff_students, name='staff_students'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/$', views.staff_student, name='staff_student'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/edit$', views.staff_student_edit, name='staff_student_edit'),
 ]

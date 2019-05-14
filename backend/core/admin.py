@@ -92,8 +92,8 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('district','school','last_name','first_name','email', 'is_staff', 'is_deleted')
-    list_filter = ('is_superuser', 'is_staff', 'is_active', 'groups')
+    list_display = ('district','school','last_name','first_name','email', 'role', 'is_staff', 'is_deleted')
+    list_filter = ('is_superuser', 'role', 'is_staff', 'is_active', 'groups')
     search_fields = ('email','district__name')
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
@@ -102,12 +102,12 @@ class StudentAdmin(admin.ModelAdmin):
     model = Student
 
     fieldsets = (
-        ('Personal Info', 
-            {'fields': 
+        ('Personal Info',
+            {'fields':
                 ('student_id','is_active','first_name', 'last_name',
                 'language','email','grade','total_absences')}),
         ('Organization Info', {'fields': ('district', 'school','teacher')}),
-        ('Guardians Info', {'fields': 
+        ('Guardians Info', {'fields':
             ('parent_first_name', 'parent_last_name','phone','parent_email')}),
         ('Soft deletes', {'fields': ('is_deleted', 'deleted_on')})
     )
@@ -117,27 +117,12 @@ class StudentAdmin(admin.ModelAdmin):
     search_fields = ('last_name','first_name','district__name','school__name')
     ordering = ('district__name','school__name','last_name','first_name')
 
-class SchoolInline(admin.StackedInline):
-    model = School
-    extra = 1
-
-
-class StudentInline(admin.StackedInline):
-    model = Student
-    extra = 1
-
-
 class DisctrictAdmin(admin.ModelAdmin):
-    inlines = [
-        SchoolInline,
-        StudentInline,
-    ]
-
     list_display = ('name','is_deleted')
     list_filter = ('is_deleted',)
     search_fields = ('name',)
     ordering = ('name',)
-    
+
     class Meta:
         model = District
         fields = '__all__'
@@ -155,7 +140,7 @@ class SchoolAdmin(admin.ModelAdmin):
 
 class SectionStudentInline(admin.TabularInline):
     model = SectionStudent
-    
+
     # Since these are all ednudge-manageed, disable the ability to add/delete
     def has_add_permission(self, request, obj=None):
         return False
@@ -164,7 +149,7 @@ class SectionStudentInline(admin.TabularInline):
     def get_extra(self, request, obj=None, **kwargs):
         if obj.ednudge_is_enabled:
             return 0
-        else:    
+        else:
             return 1
 
     fields = ['student','ednudge_enrollment_id','is_deleted']
@@ -173,7 +158,7 @@ class SectionStudentInline(admin.TabularInline):
 
 class SectionTeacherInline(admin.TabularInline):
     model = SectionTeacher
-    
+
     # Since these are all ednudge-manageed, disable the ability to add/delete
     def has_add_permission(self, request, obj=None):
         return False
@@ -182,7 +167,7 @@ class SectionTeacherInline(admin.TabularInline):
     def get_extra(self, request, obj=None, **kwargs):
         if obj.ednudge_is_enabled:
             return 0
-        else:    
+        else:
             return 1
 
     fields = ['teacher','ednudge_enrollment_id','is_deleted']

@@ -9,13 +9,13 @@ from django.urls import reverse
 class SoftDeleteInfo(models.Model):
     """Abstract model for storing Soft Delete model info"""
     is_deleted = models.BooleanField(
-        default=False, 
+        default=False,
         db_column='is_deleted',
         help_text='Soft delete indicator flag - When true the record is no longer visible on the front end though data is retained in case it was deleted my mistake.'
         )
     deleted_on = models.DateTimeField(
-        null=True, 
-        blank=True, 
+        null=True,
+        blank=True,
         db_column='deleted_on',
         help_text='Soft delete timestamp - The date and time when the record was soft deleted.  This should be empty when is_deleted is False.'
         )
@@ -160,9 +160,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
     @property
     def students(self):
         if self.role == 'DA':
-            return Student.objects.filter(district=self.district).order_by('-date').all()
+            return Student.objects.filter(district=self.district).order_by('last_name','first_name').all()
         if self.role == 'SA':
-            return Student.objects.filter(school=self.school).order_by('-date').all()
+            return Student.objects.filter(school=self.school).order_by('last_name','first_name').all()
         else:
             if self.ednudge_is_enabled:
                 student_ids = []
@@ -172,7 +172,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
                         if test:
                             next
                         else:
-                            student_ids.append(student.id)   
+                            student_ids.append(student.id)
                 students = Student.objects.filter(id__in=student_ids)
                 return students
             else:
@@ -188,7 +188,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     @property
     def schools(self):
-        if self.role == 'DA':
+        if self.is_district_admin:
             return School.objects.all().filter(district=self.district)
         else:
             return School.objects.all().filter(members=self)
@@ -205,6 +205,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     def __str__(self):
         return self.get_full_name()
+    
+    @property
+    def last_checkin(self):
+        return self.checkins.first()
+
 
 class TeacherManager(MyUserManager):
     def get_queryset(self):
@@ -294,7 +299,7 @@ class Student(CommonInfo, SoftDeleteInfo):
     )
 
     ednudge_is_enabled = models.BooleanField(
-        default=False, 
+        default=False,
         editable=False,
         help_text='Designates whether EdNudge integration is enabled.')
     ednudge_learner_id = models.CharField(
@@ -461,7 +466,7 @@ class District(CommonInfo, SoftDeleteInfo):
     custom_text_info_better = models.TextField(null=True, blank=True)
 
     ednudge_is_enabled = models.BooleanField(
-        default=False, 
+        default=False,
         editable=False,
         help_text='Designates whether EdNudge integration is enabled for this district.')
     ednudge_district_id = models.CharField(
@@ -507,7 +512,7 @@ class School(CommonInfo, SoftDeleteInfo):
     district = models.ForeignKey(District)
 
     ednudge_is_enabled = models.BooleanField(
-        default=False, 
+        default=False,
         editable=False,
         help_text='Designates whether EdNudge integration is enabled for this entity.')
     ednudge_school_id = models.CharField(
@@ -542,6 +547,10 @@ class School(CommonInfo, SoftDeleteInfo):
 
     def __str__(self):
         return self.name
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
+
     @property
     def staff(self):
         return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
