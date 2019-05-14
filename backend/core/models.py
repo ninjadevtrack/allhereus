@@ -188,7 +188,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     @property
     def schools(self):
-        return School.objects.all().filter(members=self)
+        if self.role == 'DA':
+            return School.objects.all().filter(district=self.district)
+        else:
+            return School.objects.all().filter(members=self)
 
     @property
     def avatar_url(self):
