@@ -353,6 +353,20 @@ def district_admin_required(login_url=None, raise_exception=False):
 
 @login_required
 @district_admin_required(raise_exception=True)
+def schools(request):
+    """
+    List view of schools
+    """
+    district = request.user.district
+    schools = request.user.schools.order_by('name')
+    return render(request, 'core/school_list.html', {
+        'district': district,
+        'schools': schools,
+        'schools_total': schools.count(),
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
 def staff(request, school_id):
     """
     List view of staff
@@ -367,14 +381,57 @@ def staff(request, school_id):
 
 @login_required
 @district_admin_required(raise_exception=True)
-def schools(request):
+def staff_students(request, school_id, staff_id):
     """
-    List view of schools
+    List view of staff students
     """
-    district = request.user.district
-    schools = request.user.schools.order_by('name')
-    return render(request, 'core/school_list.html', {
-        'district': district,
-        'schools': schools,
-        'schools_total': schools.count(),
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id)
+    students = staff.students.filter(school=school).order_by('last_name','first_name')
+    return render(request, 'core/student_list.html', {
+        'staff': staff,
+        'students': students,
+        'student_total': len(students),
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_student(request, school_id, staff_id, student_id):
+    """
+    Student detail view
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
+    student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
+    return render(request, 'core/student.html', {
+        'school': school,
+        'staff': staff,
+        'student': student,
+        'recent_checkins': student.checkins[:10]
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_student_edit(request, school_id, staff_id, student_id):
+    """
+    Edit existing student
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
+    student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
+    if request.method == 'POST':
+        form = StudentForm(request.user, request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('staff_students', kwargs={
+                'school_id': school_id, 'staff_id': staff_id}))
+    else:
+        form = StudentForm(request.user, instance=student)
+    return render(request, 'core/student_edit.html', {
+        'form': form,
+        'view': 'edit',
+        'school': school,
+        'staff': staff,
+        'student': student,
+        'error_message': [error for error in form.non_field_errors()],
     })
