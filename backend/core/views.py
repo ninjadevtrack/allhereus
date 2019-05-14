@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .models import CheckIn, Student
+from .models import CheckIn, Student, School
 from .forms import CheckInForm, ProfileForm, StudentForm
 
 TABLE_DISPLAY_LIMIT = 100
@@ -349,7 +349,21 @@ def district_admin_required(login_url=None, raise_exception=False):
             raise PermissionDenied("You must be a District Administrator to use this feature.")
         # As the last resort, show the login form
         return False
-    return user_passes_test(check_is_da, login_url=login_url) 
+    return user_passes_test(check_is_da, login_url=login_url)
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff(request, school_id):
+    """
+    List view of staff
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = school.staff.order_by('last_name','first_name')
+    return render(request, 'core/staff_list.html', {
+        'school': school,
+        'staff': staff,
+        'staff_total': staff.count(),
+    })
 
 @login_required
 @district_admin_required(raise_exception=True)

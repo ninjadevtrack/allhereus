@@ -205,6 +205,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     def __str__(self):
         return self.get_full_name()
+    
+    @property
+    def last_checkin(self):
+        return self.checkins.first()
+
 
 class TeacherManager(MyUserManager):
     def get_queryset(self):
@@ -542,6 +547,11 @@ class School(CommonInfo, SoftDeleteInfo):
 
     def __str__(self):
         return self.name
+
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
+
 
 class Section(CommonInfo, SoftDeleteInfo):
     """A time when Teachers deliver instruction to Students
