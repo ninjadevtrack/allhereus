@@ -25,22 +25,20 @@ EDNUDGE_PASSWORD=os.getenv('EDNUDGE_PASSWORD')
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-def yo(text):
-    print("***YO: {}".format(text))
-
 class RSections:
 
     def r_sections(self, district_id):
         r=roster.Roster(EDNUDGE_HOST, EDNUDGE_USERNAME, EDNUDGE_PASSWORD)
-        esections = r.ednudge_get_sections(district_id).data
+        limit = 2000
+        esections = r.ednudge_get_sections_all(district_id, limit)
         for es in esections:
-            yo("school_id:{}, section_id".format(es.school_id, es.id))
+            logging.debug(f"Section school_id:{es.school_id}, section_id: {es.id}")
             roster_action="N"
             try:
                 ahs = Section.objects.get(
                     ednudge_is_enabled=True,
                     ednudge_section_id=es.id)
-                logging.debug("Found AllHere Section for EdNudge Id=%s", es.id)
+                logging.debug(f"Found AllHere Section for EdNudge Id={es.id}")
 
                 if ahs.ednudge_merkleroot == es.merkleroot:
                     roster_action = "N"
@@ -49,9 +47,9 @@ class RSections:
             except Section.DoesNotExist:
                 ahs = None
                 roster_action="C"
-            
+
             if roster_action == "C":
-                logging.debug("Creating AllHere Section for EdNudge section_id=%s, district_id=%s", es.id, es.district_id)
+                logging.debug(f"Creating AllHere Section for EdNudge section_id={es.id}, district_id={es.district_id}")
 
                 ahd = District.objects.get(ednudge_is_enabled=True, ednudge_district_id=es.district_id)
                 ahschool = School.objects.get(ednudge_is_enabled=True, ednudge_school_id=es.school_id)
@@ -71,7 +69,7 @@ class RSections:
                 )
 
             if roster_action == "U":
-                logging.debug("Updating AllHere Section for EdNudge section_id=%s, district_id=%s", es.id, es.district_id)
+                logging.debug(f"Updating AllHere Section for EdNudge section_id={es.id}, district_id={es.district_id}")
                 ahs.name                    = es.section_name
                 ahs.term_name               = es.term_name
                 ahs.term_start_date         = es.term_start_date[0:10]
@@ -85,7 +83,7 @@ class RSections:
 
 
 
-            yo("ahs: {}".format(ahs))
+            logging.debug("ahs: {ahs}")
 
 
 if __name__ == '__main__':
@@ -96,12 +94,12 @@ if __name__ == '__main__':
         district_local_id = sys.argv[1]
 
     district_id = District.objects.get(ednudge_district_local_id=district_local_id).ednudge_district_id
-    yo("i'm main!")
+    logging.debug("i'm main!")
     rs = RSections()
     rs.r_sections(district_id)
+    sys.exit()
 
-yo("__name__={}".format(__name__))
+logging.debug(f"__name__={__name__}")
 district_id = District.objects.get(ednudge_district_local_id='8888').ednudge_district_id
-yo("i'm main!")
 rs = RSections()
 rs.r_sections(district_id)

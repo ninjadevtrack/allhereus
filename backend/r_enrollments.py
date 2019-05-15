@@ -76,8 +76,13 @@ if school_local_id:
 else:
     school_id=None
     logging.debug(f"ENROLLMENTS for distrcit={district_local_id} for ALL schools")
-en_learners = r.ednudge_get_learners(district_id)
-en_instructors = r.ednudge_get_instructors(district_id)
+
+limit = 2000
+
+en_learners = r.ednudge_get_learners_all(district_id, limit)
+logging.debug(f"en_learners has {len(en_learners)} elements.")
+en_instructors = r.ednudge_get_instructors_all(district_id, limit)
+logging.debug(f"en_instructors has {len(en_instructors)} elements.")
 
 eenrollments=[]
 skip=0
@@ -90,31 +95,30 @@ while len(chunk.data) > 0:
     logging.debug(f"chunk:{chunk}")
 
 logging.debug(f"eenrollments has {len(eenrollments)} elements")
-esections = r.ednudge_get_sections(district_id).data
 
 for en in eenrollments:
-    yo("school_id:{}, enrollment_id:{}".format(en.school_id, en.id))
+    logging.debug("school_id:{}, enrollment_id:{}".format(en.school_id, en.id))
     roster_action="N"
 
     if en.person_type == "learner":
         # Ensure Student Exists
 
         # Get the EdNudge student
-        yo("en:{}".format(en))
-        en_learner = [x for x in en_learners.data 
+        logging.debug("en:{}".format(en))
+        en_learner = [x for x in en_learners 
             if x.id == en.person_id]
         if len(en_learner) == 0:
-            yo("en.person_id={}, en.person_type={} not found.".format(
+            logging.debug("en.person_id={}, en.person_type={} not found.".format(
                 en.person_id, en.person_type
             ))
             continue
         if len(en_learner) > 1:
-            yo("We found more than one learner with person_id={}. SKIPPING....".format(en.person_id))
+            logging.debug("We found more than one learner with person_id={}. SKIPPING....".format(en.person_id))
             continue
         
         # Get the en_learner so that we're not working with a list
         en_learner = en_learner[0]
-        yo("Found en_learner:{}".format(en_learner))
+        logging.debug("Found en_learner:{}".format(en_learner))
 
         student_roster_action = "N"
         try:
@@ -156,7 +160,7 @@ for en in eenrollments:
                 total_absences = en_learner.year_to_date_absences,
                 ednudge_merkleroot = en_learner.merkleroot
             )
-            yo("Created Student: {}".format(ah_student))
+            logging.debug("Created Student: {}".format(ah_student))
 
         if student_roster_action == "U":
             logging.debug("Updating AllHere Student for EdNudge learner_id=%s", en_learner.id)
@@ -192,7 +196,7 @@ for en in eenrollments:
             ah_section = Section.objects.get(
                 ednudge_is_enabled = True,
                 ednudge_section_id = en.section_id)
-            yo("ah_section:{}".format(ah_section))
+            logging.debug("ah_section:{}".format(ah_section))
 
             ah_sectionstudent = SectionStudent.objects.create(
                 section = ah_section,
@@ -218,18 +222,20 @@ for en in eenrollments:
     if en.person_type == "instructor":
         # Ensure Teacher Exists
         # Get the EdNudge teacher
-        en_instructor = [x for x in en_instructors.data 
+        en_instructor = [x for x in en_instructors 
             if x.id == en.person_id]
         if len(en_instructor) == 0:
-            yo("en.person_id={}, en.person_type={} not found.".format(
+            logging.debug("en.person_id={}, en.person_type={} not found.".format(
                 en.person_id, en.person_type
             ))
             continue
-        if len(en_instructor) > 1:
-            yo("We found more than one instructor with person_id={}. SKIPPING....".format(en.person_id))
+        elif len(en_instructor) > 1:
+            logging.debug("We found more than one instructor with person_id={}. SKIPPING....".format(en.person_id))
             continue        
-        # Get the en_instructor so that we're not working with a list
-        en_instructor = en_instructor[0]
+        else:
+            # Get the en_instructor so that we're not working with a list
+            en_instructor = en_instructor[0]
+            logging.debug(f"Found instructor with person_id={en_instructor.id}.")
 
         # Sync the teacher with AllHere
         teacher_roster_action = "N"
@@ -254,12 +260,11 @@ for en in eenrollments:
             instructor_email = en_instructor.email
             try:
                 test = MyUser.objects.get(email=instructor_email)
+                # if the test succeeded, we need a fake email address
+                logging.debug(f"Found a user with the same email address.  Creating a fake email address and continuing.... {test}")
+                instructor_email = f"noemail-{en_instructor.id}@allhere.com".replace(":",".")
             except MyUser.DoesNotExist:
-                # yo("Found a user with the same email address.  Skipping..... {}".format(test))
-                # TODO: uncomment ```continue```
-                #continue
-                yo("Creating a fake email address and continuing....")
-                instructor_email = "noemail-{}@allhere.com".format(en_instructor.id)
+                logging.debug(f"The email address for this user is unique: {instructor_email}")
 
             school = School.objects.get(
                 ednudge_is_enabled = True,
@@ -289,11 +294,24 @@ for en in eenrollments:
 
         if teacher_roster_action == "U":
             logging.debug("Updating AllHere MyUser for EdNudge Instructor Id=%s", en_instructor.id)
+
+            # Ensure instructor's email is unique
+            instructor_email = en_instructor.email
+            if instructor_email != ah_teacher.email:
+                try:
+                    test = MyUser.objects.get(email=instructor_email)
+                    # if the test succeeded, someone already has the email address, so skip it
+                    logging.debug(f"Found a user with the same email address.  We're going to skip this one.  Here's the other user: {test}")
+                    instructor_email = ah_teacher.email
+                except MyUser.DoesNotExist:
+                    logging.debug(f"The email address for this user is unique: {instructor_email}")
+
             ah_teacher.first_name = en_instructor.first_name
             ah_teacher.last_name = en_instructor.last_name
+            ah_teacher.email = instructor_email
             ah_teacher.ednudge_merkleroot = en_instructor.merkleroot
             ah_teacher.save(update_fields=['ednudge_merkleroot',
-                'first_name','last_name'])
+                'first_name','last_name', 'email'])
 
         # Sync the SectionTeacher
         sectionteacher_roster_action = "N"
@@ -348,7 +366,7 @@ for en in eenrollments:
             ah_section = Section.objects.get(
                 ednudge_is_enabled = True,
                 ednudge_section_id = en.section_id)
-            yo("ah_section:{}".format(ah_section))
+            logging.debug("ah_section:{}".format(ah_section))
 
             #TODO: consider adding these to our model
             #ah_sectionteacher.ednudge_start_date = en.start_date
@@ -376,4 +394,4 @@ for en in eenrollments:
             ah_sectionteacher.is_deleted = False
             ah_sectionteacher.save(update_fields=['is_deleted'])
 
-        yo("ah_sectionteacher: {}".format(ah_sectionteacher))
+        logging.debug("ah_sectionteacher: {}".format(ah_sectionteacher))
