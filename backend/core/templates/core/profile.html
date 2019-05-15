@@ -28,10 +28,10 @@
   </div>
 </div>
 <div class="col-lg-6 col-md-12">
-
+{% if show_roster_and_checkins %}
   <div class="card mb-4">
     <div class="card-body">
-      <a href="{% url 'staff_checkins' user.school.id user.id %}">
+      <a href="{{ checkins_url }}">
         <h4 class="card-title">Review Check-ins <span class="badge badge-secondary">{{ checkin_count }}</span></h4>
       </a>
     </div>
@@ -39,7 +39,7 @@
 
   <div class="card mb-4">
     <div class="card-body">
-      <a href="{% url 'staff_students' user.school.id user.id %}">
+      <a href="{{ student_roster_url }}">
         <h4 class="card-title">Student Roster <span class="badge badge-secondary">{{ student_roster_count }}</span></h4>
       </a>
     </div>
@@ -47,5 +47,6 @@
   {% comment "TODO: remove this when you delete core/_recent_acitivity.html" %}
   {% include "core/_recent_activity.html" with checkins=recent_checkins %}
   {% endcomment %}
+{% endif %}
 </div>
 {% endblock %}
