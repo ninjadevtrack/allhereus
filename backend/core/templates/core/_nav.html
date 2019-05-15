@@ -46,7 +46,7 @@
         </div>
       </li>
     {% else %}
-      <li class="nav-item {% if request.get_full_path == login_url %} active {% endif %}"">
+      <li class="nav-item {% if request.get_full_path == login_url %} active {% endif %}">
         {% url 'login' as login_url %}
         <a href="{{ login_url }}" >Login</a>
       </li>
