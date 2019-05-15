@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
 from django.contrib.auth.forms import SetPasswordForm
 
 from .models import CheckIn, Student, School, MyUser
@@ -98,8 +98,11 @@ def profile_edit(request):
 @login_required
 def checkins(request):
     """
-    list all the checkins for teacher
+    list all the checkins for teacher or school admin.  District Admin returns 404.
     """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
 
     context = {'checkins': request.user.checkins}
     return render(request, 'core/checkins.html', context)
@@ -199,6 +202,13 @@ def checkin_delete(request, id):
 
 @login_required
 def checkins_csv(request):
+    """
+    csv for view checkins:
+    list all the checkins for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
     response = HttpResponse(content_type='text/csv')
 
     filename = f'AllHere Checkins Archive {datetime.now()}'
