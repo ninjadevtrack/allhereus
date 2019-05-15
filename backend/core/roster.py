@@ -94,6 +94,29 @@ class Roster:
             logger.exception("Exception when calling DefaultApi->api_v1_districts_id_sections_get: %s\n" % e)
         return data
 
+    def ednudge_get_sections_all(self, district_id, limit):
+        data = None
+        sections = []
+        skip = 0
+
+        try:
+            data = self.api_instance.api_v1_districts_id_sections_get(district_id, skip=skip, limit=limit)
+            logger.debug("EdNudge Sections: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_districts_id_sections_get: %s\n" % e)
+
+        while data and len(data.data) > 0:
+            sections = sections + data.data
+            skip += limit
+
+            try:
+                data = self.api_instance.api_v1_districts_id_sections_get(district_id, skip=skip, limit=limit)
+                logger.debug("EdNudge Sections: {}".format(data.data))
+            except ApiException as e:
+                logger.exception("Exception when calling DefaultApi->api_v1_districts_id_sections_get: %s\n" % e)
+
+        return sections
+
     def ednudge_get_enrollments(self, district_id, skip, limit, school_id=None):
         data = None
         try:
@@ -116,6 +139,28 @@ class Roster:
             logger.exception("Exception when calling DefaultApi->api_v1_districts_id_learners_get: %s\n" % e)
         return data
 
+    def ednudge_get_learners_all(self, district_id, limit):
+        data = None
+        learners = []
+        skip = 0
+        try:
+            data = self.api_instance.api_v1_districts_id_learners_get(district_id, skip=skip, limit=limit)
+            logger.debug("EdNudge Learners: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_districts_id_learners_get: %s\n" % e)
+
+        while data and len(data.data) > 0:
+            learners = learners + data.data
+            skip += limit
+
+            try:
+                data = self.api_instance.api_v1_districts_id_learners_get(district_id, skip=skip, limit=limit)
+                logger.debug("EdNudge Learners: {}".format(data.data))
+            except ApiException as e:
+                logger.exception("Exception when calling DefaultApi->api_v1_districts_id_learners_get: %s\n" % e)
+
+        return learners
+
     def ednudge_get_instructors(self, district_id):
         data = None
         try:
@@ -125,6 +170,29 @@ class Roster:
         except ApiException as e:
             logger.exception("Exception when calling DefaultApi->api_v1_districts_id_instructors_get: %s\n" % e)
         return data
+
+    def ednudge_get_instructors_all(self, district_id, limit):
+        data = None
+        instructors = []
+        skip = 0
+        try:
+            data = self.api_instance.api_v1_districts_id_instructors_get(district_id, skip=skip, limit=limit)
+            logger.debug("EdNudge Instructors: {}".format(data.data))
+        except ApiException as e:
+            logger.exception("Exception when calling DefaultApi->api_v1_districts_id_instructors_get: %s\n" % e)
+
+        while data and len(data.data) > 0:
+            instructors = instructors + data.data
+            skip += limit
+
+            try:
+                data = self.api_instance.api_v1_districts_id_instructors_get(district_id, skip=skip, limit=limit)
+                logger.debug("EdNudge Instructors: {}".format(data.data))
+            except ApiException as e:
+                logger.exception("Exception when calling DefaultApi->api_v1_districts_id_instructors_get: %s\n" % e)
+
+
+        return instructors
 
     def ednudge_get_dailyattendance(self, district_id):
         data = None
