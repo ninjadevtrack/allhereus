@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed
 from django.contrib.auth.forms import SetPasswordForm
 
-from .models import CheckIn, Student, School
+from .models import CheckIn, Student, School, MyUser
 from .forms import CheckInForm, ProfileForm, StudentForm
 
 TABLE_DISPLAY_LIMIT = 100
@@ -526,4 +526,42 @@ def staff_student_edit(request, school_id, staff_id, student_id):
         'staff': staff,
         'student': student,
         'error_message': [error for error in form.non_field_errors()],
+    })
+
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_checkins(request, school_id, staff_id):
+    """
+    list all the checkins for staff
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school
+    checkins = staff.checkins
+
+    context = {
+        'checkins': checkins,
+        'staff': staff,
+        'school': school,
+        'checkin_view': 'staff_checkin',
+    }
+    return render(request, 'core/checkins.html', context)
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_checkin(request, school_id, staff_id, checkin_id):
+    """
+    view an individual checkin
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school 
+    checkin_event = get_object_or_404(staff.checkins, pk=checkin_id) # ensure the checkin doese in fact belong to the staff
+
+    # 403 if user is not allowed
+    has_checkin_permission(checkin_event, request.user)
+
+    return render(request, 'core/checkin.html', {
+        'checkin': checkin_event,
+        'success_score_percentage': checkin_event.success_score / 10 * 100,        
+        'viewonly': True,
     })

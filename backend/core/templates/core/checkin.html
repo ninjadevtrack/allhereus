@@ -8,7 +8,9 @@ Check-in
 <article class="container">
   <section class="space-between">
       <h1 class="mt-3 mb-3">Check-in</h1>
+      {% if not viewonly %}
       <a href="{% url 'checkin_edit' checkin.id %}" class="btn btn-primary">Edit</a>
+      {% endif %}
   </section>
   <section class="row">
     <div class="col-lg-6 col-md-12 pb-2">

@@ -555,6 +555,10 @@ class School(CommonInfo, SoftDeleteInfo):
     def staff(self):
         return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
 
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()        
+
 class Section(CommonInfo, SoftDeleteInfo):
     """A time when Teachers deliver instruction to Students
 

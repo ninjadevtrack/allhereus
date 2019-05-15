@@ -22,15 +22,24 @@ Check-ins
 
 <div class="container">
   <div class="row pl-3 d-flex justify-content-between align-items-center">
-    <h1 class="mt-3 mb-3">Check-ins</h1>
+    <h1 class="mt-3 {% if staff and request.user.role == 'DA' %}mb-1{% else %}mb-3{% endif %}">Check-ins</h1>
     <div class="d-flex justify-content-between align-items-center">
       <input id="search" class="form-control mr-2" type="search" placeholder="search...">
+      {% if staff and request.user.role == 'DA' %}
+      {% else %}
       <div class="btn-group">
         <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
         <a href="{% url 'checkins_csv' %}" class="btn btn-light" name="export">Export to CSV</a>
       </div>
+      {% endif %}
     </div>
   </div>
+
+  {% if staff and request.user.role == 'DA' %}
+  <div class="row pl-3 d-flex justify-content-between align-items-center">
+  <p class="mt-1 mb-1">{{ staff.first_name }} {{ staff.last_name }}</p>
+  </div>
+  {% endif %}
 
   {% if checkins %}
     <table class="table table-striped table-responsive" data-order='[[ 0, "desc" ]]'>
@@ -49,7 +58,7 @@ Check-ins
         {% for checkin in checkins %}
           <tr>
             <th scope="row" class="table-row-date" data-order="{{ checkin.date.timestamp }}">
-              <a href="{% url 'checkin' checkin.id %}">{{ checkin.date | date:"DATE_FORMAT" }}</a>
+              <a href="{% if checkin_view and checkin_view == 'staff_checkin' %}{% url checkin_view school.id staff.id checkin.id %}{% else %}{% url 'checkin' checkin.id %}{% endif %}">{{ checkin.date | date:"DATE_FORMAT" }}</a>
             </th>
             <td>{{ checkin.teacher.name }}</td>
             <td>{{ checkin.student.name }}</td>
@@ -66,8 +75,12 @@ Check-ins
       <span>Showing all {{ checkins | length }} checkins</span>
     </section>
   {% else %}
+    {% if request.user.role != 'DA' %}
     <p class="text-center">Let's log a check-in!</p>
     <p class="text-center">Click <a href="{% url 'checkin_add' %}" class="badge badge-primary">+ New</a> now!</p>
+    {% else %}
+    <p class="text-center">No check-ins!</p>
+    {% endif %}
   {% endif %}
 </div>
 
