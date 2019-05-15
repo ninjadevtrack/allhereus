@@ -14,7 +14,7 @@
       <li class="nav-item {% if request.get_full_path == home_url %} active {% endif %}">
         <a class="nav-link" href="{{ home_url }}">Home</a>
       </li>
-      {% if request.user.role == 'DA' %}
+      {% if request.user.is_district_admin %}
         {% url 'schools' as schools_url %}
         <li class="nav-item {% if request.get_full_path == schools_url %} active {% endif %}">
           <a class="nav-link" href="{{ schools_url }}">Manage</a>

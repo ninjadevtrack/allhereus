@@ -149,9 +149,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     @property
     def checkins(self):
-        if self.role == 'DA':
+        if self.is_district_admin:
             return CheckIn.objects.filter(student__district=self.district).order_by('-date').all()
-        if self.role == 'SA':
+        if self.is_school_admin:
             return CheckIn.objects.filter(student__school=self.school).order_by('-date').all()
         else:
             #return CheckIn.objects.filter(student__in=self.student_set.all()).order_by('-date').all()
@@ -159,9 +159,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     @property
     def students(self):
-        if self.role == 'DA':
+        if self.is_district_admin:
             return Student.objects.filter(district=self.district).order_by('last_name','first_name').all()
-        if self.role == 'SA':
+        if self.is_school_admin:
             return Student.objects.filter(school=self.school).order_by('last_name','first_name').all()
         else:
             if self.ednudge_is_enabled:
@@ -205,7 +205,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
 
     def __str__(self):
         return self.get_full_name()
-    
+
     @property
     def last_checkin(self):
         return self.checkins.first()
@@ -557,7 +557,7 @@ class School(CommonInfo, SoftDeleteInfo):
 
     @property
     def staff(self):
-        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()        
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
 
 class Section(CommonInfo, SoftDeleteInfo):
     """A time when Teachers deliver instruction to Students
