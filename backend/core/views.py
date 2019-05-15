@@ -59,9 +59,22 @@ def profile(request):
     """
     displays user's info
     """
+
+    if request.user.is_district_admin:
+        checkins_url = ''
+        student_roster_url = ''
+        show_roster_and_checkins = False
+    else:
+        checkins_url = reverse('checkins')
+        student_roster_url = reverse('students')
+        show_roster_and_checkins = True
+
     context = {
         'profile_url': reverse('profile'),
         'edit_url': reverse('profile_edit'),
+        'checkins_url': checkins_url,
+        'student_roster_url': student_roster_url,
+        'show_roster_and_checkins': show_roster_and_checkins,
         'checkin_count': request.user.checkins.count(),
         'student_roster_count': request.user.students.count(),
         'user': request.user,
@@ -406,13 +419,19 @@ def staff_profile(request, school_id, staff_id):
     """
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id)
-    staff_profile_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
-    profile_url = reverse('staff_profile', kwargs=staff_profile_kwargs)
-    edit_url = reverse("staff_profile_edit", kwargs=staff_profile_kwargs)
+    school_staff_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
+    profile_url = reverse('staff_profile', kwargs=school_staff_kwargs)
+    edit_url = reverse("staff_profile_edit", kwargs=school_staff_kwargs)
+    checkins_url = reverse('staff_checkins', kwargs=school_staff_kwargs)
+    student_roster_url = reverse('staff_students', kwargs=school_staff_kwargs)
+    show_roster_and_checkins = True,
 
     context = {
         'profile_url': profile_url,
         'edit_url': edit_url,
+        'checkins_url': checkins_url,
+        'student_roster_url': student_roster_url,
+        'show_roster_and_checkins': show_roster_and_checkins,
         'checkin_count': staff.checkins.count(),
         'student_roster_count': staff.students.count(),
         'user': staff,
@@ -564,7 +583,7 @@ def staff_checkin(request, school_id, staff_id, checkin_id):
     view an individual checkin
     """
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
-    staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school 
+    staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school
     checkin_event = get_object_or_404(staff.checkins, pk=checkin_id) # ensure the checkin doese in fact belong to the staff
 
     # 403 if user is not allowed
@@ -572,6 +591,6 @@ def staff_checkin(request, school_id, staff_id, checkin_id):
 
     return render(request, 'core/checkin.html', {
         'checkin': checkin_event,
-        'success_score_percentage': checkin_event.success_score / 10 * 100,        
+        'success_score_percentage': checkin_event.success_score / 10 * 100,
         'viewonly': True,
     })
