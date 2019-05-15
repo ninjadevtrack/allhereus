@@ -14,8 +14,7 @@
       <li class="nav-item {% if request.get_full_path == home_url %} active {% endif %}">
         <a class="nav-link" href="{{ home_url }}">Home</a>
       </li>
-      {# TODO: remove request.is_superuser once merged with A2Dw-79 #}
-      {% if request.user.role == 'DA' and request.user.is_superuser %}
+      {% if request.user.role == 'DA' %}
         {% url 'schools' as schools_url %}
         <li class="nav-item {% if request.get_full_path == schools_url %} active {% endif %}">
           <a class="nav-link" href="{{ schools_url }}">Manage</a>

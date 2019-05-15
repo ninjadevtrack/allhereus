@@ -9,8 +9,7 @@
 
   <div class="row mb-4 mt-3 d-flex justify-content-center">
 
-    {# TODO: remove request.is_superuser once merged with A2Dw-79 #}
-    {% if request.user.role == 'DA' and request.user.is_superuser %}
+    {% if request.user.role == 'DA' %}
     <div class="col-md-4 col-lg-3">
       <div class="card text-center pb-4 mb-4">
         <div class="card-block d-flex flex-column align-items-center justify-content-center">
