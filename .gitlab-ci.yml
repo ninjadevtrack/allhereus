@@ -1,0 +1,62 @@
+# Official docker image.
+image: docker:latest
+
+services:
+  - docker:dind
+
+# https://docs.gitlab.com/runner/executors/kubernetes.html#using-dockerdind
+variables:
+  DOCKER_HOST: "tcp://localhost:2375"
+  DOCKER_DRIVER: overlay2
+
+
+stages:
+  - build
+  - publish
+  - deploy
+
+build:
+  stage: build
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk update && apk add make
+  script:
+     - echo "${CI_COMMIT_SHORT_SHA}"
+     - echo "${CI_BUILD_REF_NAME}"
+     - cd backend
+     - make docker-echo-tag
+     - env | grep -i kube
+#     - make ednudge-sdk-generate
+#     - make docker-build
+#     - make docker-ci-publish-test
+  only:
+    - branches
+  except:
+    - master
+
+publish:
+  stage: publish
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk update && apk add make
+  script:
+     - cd backend
+#     - make docker-ci-publish-final
+  only:
+    - branches
+  except:
+    - master
+
+deploy:
+  stage: deploy
+  image: dtzar/helm-kubectl:2.12.3
+  script:
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config view
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
