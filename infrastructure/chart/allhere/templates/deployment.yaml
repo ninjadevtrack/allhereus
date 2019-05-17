@@ -57,6 +57,13 @@ spec:
                 value: "127.0.0.1"
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+        {{- if .Values.reviewApp }}
+        - name: db
+          image: postgres:9
+          imagePullPolicy: IfNotPresent
+          ports:
+           - containerPort: 5432
+        {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

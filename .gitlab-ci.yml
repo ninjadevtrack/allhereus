@@ -54,6 +54,7 @@ deploy:
   image: dtzar/helm-kubectl:2.12.3
   before_script:
     - apk update && apk add make
+    - export INSTANCE=$(echo $CI_BUILD_REF_SLUG | awk -F "-" '{print $2$3}')
   script:
     - kubectl config set-cluster k8s --server="${K8S_SERVER}"
     - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
@@ -62,5 +63,10 @@ deploy:
     - kubectl config use-context default
     - kubectl get pods --all-namespaces
     - cd infrastructure/chart
-    - make ci-review-app-install
-    - make ci-review-app-delete
+    - INSTANCE=${INSTANCE} NAMESPACE=default make ci-review-app-install
+    - INSTANCE=${INSTANCE} make ci-review-app-delete
+  only:
+    - branches
+  except:
+    - master
+    - develop
