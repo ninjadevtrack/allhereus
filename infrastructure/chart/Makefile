@@ -11,3 +11,10 @@ deploy-chart: ## Runs `helm upgrade` eg `make deploy-chart NAMESPACE=default INS
 install-chart: ## Runs `helm install` eg make install-chart NAMESPACE=default INSTANCE=allhere-dev DB_PASSWORD=password EDNUDGE_USERNAME=user@nidge.com EDNUDGE_PASSWORD=passwordo IMAGE_TAG=v7b3a39d DJANGO_SECRET_KEY=39138**3e0
 	@echo "going to use instance=$(INSTANCE)"
 	helm install ./allhere --name "$(INSTANCE)" --debug --namespace $(NAMESPACE) -f allhere/environments/$(INSTANCE).yaml --set secret.dbPassword=$(DB_PASSWORD),secret.ednudgeUsername=$(EDNUDGE_USERNAME),secret.ednudgePassword=$(EDNUDGE_PASSWORD),image.tag=$(IMAGE_TAG),secret.djangoSecretKey=$(DJANGO_SECRET_KEY)
+
+ci-review-app-install: ## Runs `helm install` for a Review App
+	@echo "Installing review app=$(CI_BUILD_REF_SLUG)"
+
+ci-review-app-delete: ## Runs `helm delete --purge` for a Review App
+	@echo "Installing review app=$(CI_BUILD_REF_SLUG)"
+

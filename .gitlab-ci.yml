@@ -59,3 +59,6 @@ deploy:
     - kubectl config set-context default --cluster=k8s --user=gitlab-admin
     - kubectl config use-context default
     - kubectl get pods --all-namespaces
+    - cd infrastructure/chart
+    - make ci-review-app-install
+    - make ci-review-app-delete
