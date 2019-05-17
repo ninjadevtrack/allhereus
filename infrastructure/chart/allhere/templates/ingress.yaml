@@ -1,3 +1,5 @@
+{{- if .Values.reviewApp }}
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -19,3 +21,4 @@ spec:
           serviceName: {{ include "allhere.fullname" . }}
           servicePort: 8000
         path: /
+{{- end }}
