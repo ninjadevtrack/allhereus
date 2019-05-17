@@ -74,10 +74,6 @@ review:
   except:
     - master
     - develop
-  tags:
-    - allhereapp
-    - review-apps
-    - deploy
 
 stop_review:
   stage: review
@@ -98,7 +94,3 @@ stop_review:
   environment:
     name: review/$CI_BUILD_REF_NAME
     action: stop
-  tags:
-    - allhereapp
-    - review-apps
-    - deploy
