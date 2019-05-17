@@ -27,9 +27,9 @@ build:
      - cd backend
      - make docker-echo-tag
      - env | grep -i kube
-#     - make ednudge-sdk-generate
-#     - make docker-build
-#     - make docker-ci-publish-test
+     - make ednudge-sdk-generate
+     - make docker-build
+     - make docker-ci-publish-test
   only:
     - branches
   except:
@@ -64,7 +64,7 @@ deploy:
     - kubectl get pods --all-namespaces
     - cd infrastructure/chart
     - INSTANCE=${INSTANCE} NAMESPACE=default make ci-review-app-install
-    - INSTANCE=${INSTANCE} make ci-review-app-delete
+#    - INSTANCE=${INSTANCE} make ci-review-app-delete
   only:
     - branches
   except:
