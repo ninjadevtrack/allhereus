@@ -27,7 +27,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
           - bash
-{{- if eq .Values.reviewApp "1" }}
+{{- if .Values.reviewApp }}
           - bootstrap-reviewapp.sh
 {{- else if eq .Values.configMap.debug "0" }}
           - bootstrap-prod.sh
