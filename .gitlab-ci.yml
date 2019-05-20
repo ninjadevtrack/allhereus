@@ -11,8 +11,8 @@ variables:
 
 
 stages:
-  - build
   - test
+  - build
   - review
   - review_test
   - publish
@@ -28,7 +28,6 @@ build:
      - echo "${CI_BUILD_REF_NAME}"
      - cd backend
      - make docker-echo-tag
-     - env | grep -i kube
      - make ednudge-sdk-generate
      - make docker-build
      - make docker-ci-publish-test
@@ -47,7 +46,8 @@ test:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - apk update && apk add make
   script:
-    - docker pull registry.gitlab.com/allhere/platform_v1/web:v"${CI_COMMIT_SHORT_SHA}"
+    - cd backend
+    - make ednudge-sdk-generate
     - docker-compose -f docker-compose-dev.yml pull web
     - docker-compose -f docker-compose-dev.yml up -d && docker-compose -f docker-compose-dev.yml exec -T  web bash run_tests.sh ; docker-compose -f docker-compose-dev.yml down
   only:
