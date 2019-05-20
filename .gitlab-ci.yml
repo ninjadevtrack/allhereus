@@ -56,19 +56,20 @@ test:
   except:
     - master
 
-#publish:
-#  stage: publish
-#  before_script:
-#    - docker info
-#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-#    - apk update && apk add make
-#  script:
-#     - cd backend
-#     - make docker-ci-publish-final
-#  only:
-#    - branches
-#  except:
-#    - master
+publish:
+  stage: publish
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk update && apk add make
+  script:
+     - cd backend
+     - make docker-ci-publish-final
+  only:
+    - branches
+    - /^(develop|release-.+)$/
+  except:
+    - master
 
 review:
   stage: review
