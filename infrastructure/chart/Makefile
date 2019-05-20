@@ -14,7 +14,7 @@ install-chart: ## Runs `helm install` eg make install-chart NAMESPACE=default IN
 
 ci-review-app-install: ## Runs `helm install` for a Review App.  Expects `INSTANCE`
 	@echo "Installing review app=$(INSTANCE)"
-	helm upgrade --install "$(INSTANCE)" ./allhere --debug --namespace $(NAMESPACE) --set image.tag=v$(CI_COMMIT_SHORT_SHA),reviewApp=1
+	helm upgrade --install --wait "$(INSTANCE)" ./allhere --debug --namespace $(NAMESPACE) --set image.tag=v$(CI_COMMIT_SHORT_SHA),reviewApp=1
 
 ci-review-app-delete: ## Runs `helm delete --purge` for a Review App
 	@echo "Deleting review app=$(INSTANCE)"
