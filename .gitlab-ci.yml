@@ -48,8 +48,8 @@ test:
   script:
     - cd backend
     - make ednudge-sdk-generate
-    - docker-compose -f ../docker-compose-prod.yml pull web
-    - docker-compose -f ../docker-compose-prod.yml up -d && docker-compose -f ../docker-compose-prod.yml exec -T  web bash run_tests.sh ; docker-compose -f ../docker-compose-prod.yml down
+    - docker-compose -f ../docker-compose-tests.yml pull web
+    - docker-compose -f ../docker-compose-tests.yml up -d && docker-compose -f ../docker-compose-tests.yml exec -T  web bash run_tests.sh ; docker-compose -f ../docker-compose-tests.yml down
   only:
     - branches
     - /^((feature|bug)\/.+|develop|release-.+)$/
