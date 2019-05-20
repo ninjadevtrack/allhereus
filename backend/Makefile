@@ -1,8 +1,8 @@
 EDNUDGE_API_HOST := $(shell cat scripts/set_ednudge_api_host.sh | cut -d '=' -f2)
-EDNUDGE_API_URL := http://${EDNUDGE_API_HOST}
+EDNUDGE_API_URL := https://api.ednudge.com
 REPO := registry.gitlab.com
 IMAGE_NAME := allhere/platform_v1/web
-IMAGE_TAG := v$(shell git rev-parse --short HEAD)
+IMAGE_TAG := v$(shell if [[ ! -z "${CI_COMMIT_SHORT_SHA}" ]]; then echo "${CI_COMMIT_SHORT_SHA}"; else git rev-parse --short=8 HEAD; fi)
 DJANGO_STATIC_BUCKET := "a05-allherestatic-837582"
 
 all: help
@@ -15,19 +15,31 @@ ednudge-print-env-vars: ## Prints out whatever ENV vars we need for ednudge
 
 ednudge-sdk-generate: ## Generates the EdNudge Python SDK using swagger-codegen
 	@echo "Generating the EdNudge SDK using $(EDNUDGE_API_URL)"
-	@bash ./scripts/ednudge_sdk_gen.sh $(EDNUDGE_API_URL)
+	./scripts/ednudge_sdk_gen.sh $(EDNUDGE_API_URL)
 
 ednudge-sdk-install: ## Runs setup.y install for the ednudge python SDK
 	@echo "Running setup.py install for ednudge SDK"
-	@bash ./scripts/ednudge_sdk_python_install.sh
+	./scripts/ednudge_sdk_python_install.sh
 
 ednudge-sdk-clean-old: ## Deletes all ednudge-sdk-python_*
-	@bash ./scripts/ednudge_sdk_clean_old.sh y
+	./scripts/ednudge_sdk_clean_old.sh y
 
+docker-echo-tag: ## Echos the tag that will be used for tagging the image.
+	@echo "IMAGE_TAG=$(IMAGE_TAG)"
 
 docker-build: ## Builds the Dockerfile-prod image
 	@echo "Building $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG)"
 	docker build -t $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) -f Dockerfile-prod .
+
+docker-ci-publish-test: ## Pushes the image to gitlab so that it can be pulled later to tag latest
+	@echo "Pushing $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG)"
+	docker push $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) 
+
+docker-ci-publish-final: ## Used in CI to tag the image latest and push to gitlab registry
+	@echo "Pushing $(REPO)/$(IMAGE_NAME):latest"
+	docker pull $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG)
+	docker tag $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) $(REPO)/$(IMAGE_NAME):latest
+	docker push $(REPO)/$(IMAGE_NAME):latest
 
 docker-publish: ## Pushes the image to gitlab
 	@echo "Pushing $(REPO)/$(IMAGE_NAME):$(IMAGE_TAG) and latest"
