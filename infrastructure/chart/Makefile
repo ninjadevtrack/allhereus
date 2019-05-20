@@ -20,3 +20,7 @@ ci-review-app-delete: ## Runs `helm delete --purge` for a Review App
 	@echo "Deleting review app=$(INSTANCE)"
 	helm delete $(INSTANCE) --purge
 
+ci-run-tests: ## Runs tests using the Review App pod
+	$(eval POD_NAME=$(shell sh -c "kubectl -n $(NAMESPACE) get pods | grep $(INSTANCE)" | awk '{print $$1}'))
+	@echo "Pod is $(POD_NAME)"
+	kubectl -n $(NAMESPACE) exec -t $(POD_NAME) bash run_tests.sh -c allhereapp

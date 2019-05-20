@@ -12,8 +12,9 @@ variables:
 
 stages:
   - build
-  - publish
   - review
+  - test
+  - publish
 
 build:
   stage: build
@@ -94,3 +95,19 @@ stop_review:
   environment:
     name: review/$CI_BUILD_REF_NAME
     action: stop
+
+test:
+  stage: test
+  image: dtzar/helm-kubectl:2.12.3
+  before_script:
+    - apk update && apk add make
+    - export INSTANCE=$(echo $CI_BUILD_REF_SLUG | awk -F "-" '{print $2$3}')
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab-admin --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
+  script:
+    - cd infrastructure/chart
+    - INSTANCE=${INSTANCE} NAMESPACE=default make ci-run-tests
