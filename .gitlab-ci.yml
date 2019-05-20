@@ -40,12 +40,16 @@ build:
 
 test:
   stage: test
+  image: tmaier/docker-compose:latest
   before_script:
     - docker info
+    - docker-compose --version
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - apk update && apk add make
   script:
-    - docker run -t registry.gitlab.com/allhere/platform_v1/web:v"${CI_COMMIT_SHORT_SHA}" bash run_tests.sh
+    - docker-compose -f docker-compose-prod.yml pull web
+    - docker-compose -f docker-compose-prod.yml pull nginx
+    - docker-compose -f docker-compose-prod.yml up -d && docker-compose -f docker-compose-prod.yml exec -T  web bash run_tests.sh ; docker-compose -f docker-compose-prod.yml down
   only:
     - branches
     - /^((feature|bug)\/.+|develop|release-.+)$/
