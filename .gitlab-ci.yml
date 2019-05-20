@@ -12,9 +12,10 @@ variables:
 
 stages:
   - build
-  - review
   - test
-#  - publish
+  - review
+  - review_test
+  - publish
 
 build:
   stage: build
@@ -33,10 +34,23 @@ build:
      - make docker-ci-publish-test
   only:
     - branches
-    - /^(feature|bug)\/.+$/
+    - /^((feature|bug)\/.+|develop|release-.+)$/
   except:
     - master
-    - develop
+
+test:
+  stage: test
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk update && apk add make
+  script:
+    - docker run -it registry.gitlab.com/allhere/platform_v1/web:v"${CI_COMMIT_SHORT_SHA}" bash run_tests.sh
+  only:
+    - branches
+    - /^((feature|bug)\/.+|develop|release-.+)$/
+  except:
+    - master
 
 #publish:
 #  stage: publish
@@ -98,8 +112,8 @@ stop_review:
     name: review/$CI_BUILD_REF_NAME
     action: stop
 
-test:
-  stage: test
+review_test:
+  stage: review_test
   image: dtzar/helm-kubectl:2.12.3
   before_script:
     - apk update && apk add make
