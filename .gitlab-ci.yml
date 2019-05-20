@@ -70,6 +70,7 @@ publish:
     - /^(develop|release-.+)$/
   except:
     - master
+    - /^(feature|bug)\/.+$/
 
 review:
   stage: review
