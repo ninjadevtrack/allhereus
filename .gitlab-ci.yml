@@ -45,7 +45,7 @@ test:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - apk update && apk add make
   script:
-    - docker run -it registry.gitlab.com/allhere/platform_v1/web:v"${CI_COMMIT_SHORT_SHA}" bash run_tests.sh
+    - docker run -t registry.gitlab.com/allhere/platform_v1/web:v"${CI_COMMIT_SHORT_SHA}" bash run_tests.sh
   only:
     - branches
     - /^((feature|bug)\/.+|develop|release-.+)$/
