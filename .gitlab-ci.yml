@@ -14,7 +14,7 @@ stages:
   - build
   - review
   - test
-  - publish
+#  - publish
 
 build:
   stage: build
@@ -33,22 +33,24 @@ build:
      - make docker-ci-publish-test
   only:
     - branches
+    - /^(feature|bug)\/.+$/
   except:
     - master
+    - develop
 
-publish:
-  stage: publish
-  before_script:
-    - docker info
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - apk update && apk add make
-  script:
-     - cd backend
+#publish:
+#  stage: publish
+#  before_script:
+#    - docker info
+#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+#    - apk update && apk add make
+#  script:
+#     - cd backend
 #     - make docker-ci-publish-final
-  only:
-    - branches
-  except:
-    - master
+#  only:
+#    - branches
+#  except:
+#    - master
 
 review:
   stage: review
@@ -65,13 +67,13 @@ review:
     - kubectl get pods --all-namespaces
     - cd infrastructure/chart
     - INSTANCE=${INSTANCE} NAMESPACE=default make ci-review-app-install
-#    - INSTANCE=${INSTANCE} make ci-review-app-delete
   environment:
     name: review/$CI_BUILD_REF_NAME
     url: https://$INSTANCE.eksdev.nonprod.allhere.co
     on_stop: stop_review
   only:
     - branches
+    - /^(feature|bug)\/.+$/
   except:
     - master
     - develop
@@ -111,3 +113,9 @@ test:
   script:
     - cd infrastructure/chart
     - INSTANCE=${INSTANCE} NAMESPACE=default make ci-run-tests
+  only:
+    - branches
+    - /^(feature|bug)\/.+$/
+  except:
+    - master
+    - develop
