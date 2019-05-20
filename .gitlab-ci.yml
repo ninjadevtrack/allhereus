@@ -96,7 +96,7 @@ review:
     - /^(feature|bug)\/.+$/
   except:
     - master
-    - develop
+    - /^(develop|release-.+)$/
 
 stop_review:
   stage: review
@@ -138,4 +138,4 @@ review_test:
     - /^(feature|bug)\/.+$/
   except:
     - master
-    - develop
+    - /^(develop|release-.+)$/
