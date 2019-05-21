@@ -11,6 +11,9 @@ image:
   tag: v4a287c2
   pullPolicy: Always
 
+# Set viewApp: 1 to install postgresql locally to the pod for gitlab Review Apps
+#reviewApp: 1
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -37,7 +40,7 @@ tolerations: []
 affinity: {}
 
 configMap:
-  debug: "0"
+  debug: "1"
   allowedHosts: ".eksdev.nonprod.allhere.co,0.0.0.0,127.0.0.1,.allhere.co"
   allowedCidrNets: 10.20.16.0/20
   dbHost: localhost
@@ -47,7 +50,7 @@ configMap:
   ednudgeApiUrl: https://api.ednudge.com
 
 secret:
-  dbUser: "myadmin"
+  dbUser: "postgres"
   dbPassword: ""
   djangoSecretKey: "-*r3lafkk9c+#*m%cu2(rn_9n*g=q2zkmvt6dxsq5w&uvr@7cq"
   ednudgeUsername: ""
