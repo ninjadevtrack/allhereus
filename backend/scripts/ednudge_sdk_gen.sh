@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 if [[ -z "$1" ]]; then
   echo "Usage: ${0} ednudge_api_url"

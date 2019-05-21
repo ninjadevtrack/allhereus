@@ -1,0 +1,926 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "1efxpkv9bjs2u1cdwb4dzjjbmxfdecit",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-11T19:35:09.112Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1q1szooi11dfgqabye3h9nkc1bfwoyve",
+  "fields": {
+    "session_data": "MDZlZTZjZGM3MjljY2VhZTM0NDJjZDNhYTRjNzY5NWI3OGI3MjQ2ZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNWIwYThlMjE3MTMwZDdlZWE2ZTU5ZDNlNGUwNmE3NWJjZTVhNzZiIn0=",
+    "expire_date": "2019-05-27T18:01:25.560Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2jwmu4uekmfqm7xau39cxzmh2bc45f0k",
+  "fields": {
+    "session_data": "MDZlZTZjZGM3MjljY2VhZTM0NDJjZDNhYTRjNzY5NWI3OGI3MjQ2ZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNWIwYThlMjE3MTMwZDdlZWE2ZTU5ZDNlNGUwNmE3NWJjZTVhNzZiIn0=",
+    "expire_date": "2019-04-16T10:59:42.231Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5cd8d6zpv2rx97nloxxh1v450ds82c44",
+  "fields": {
+    "session_data": "MDZlZTZjZGM3MjljY2VhZTM0NDJjZDNhYTRjNzY5NWI3OGI3MjQ2ZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNWIwYThlMjE3MTMwZDdlZWE2ZTU5ZDNlNGUwNmE3NWJjZTVhNzZiIn0=",
+    "expire_date": "2019-05-07T20:34:17.508Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5x6f7hgdwiawxtvuo5ua14mmfz7y0z49",
+  "fields": {
+    "session_data": "MDZlZTZjZGM3MjljY2VhZTM0NDJjZDNhYTRjNzY5NWI3OGI3MjQ2ZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNWIwYThlMjE3MTMwZDdlZWE2ZTU5ZDNlNGUwNmE3NWJjZTVhNzZiIn0=",
+    "expire_date": "2019-05-07T20:41:06.250Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "735qswzkodmi21zpwzh5f0dt00o2jnrn",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-10T22:52:50.635Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "a7waqv29oiu5jh2ntokt1717rkgtnrbe",
+  "fields": {
+    "session_data": "MDZlZTZjZGM3MjljY2VhZTM0NDJjZDNhYTRjNzY5NWI3OGI3MjQ2ZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNWIwYThlMjE3MTMwZDdlZWE2ZTU5ZDNlNGUwNmE3NWJjZTVhNzZiIn0=",
+    "expire_date": "2019-05-02T13:42:26.059Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "clqdvjqxuado0d8l42lvay1u9qdea4cw",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-05-17T16:02:37.983Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "d9nygtntfbtaekcwav7pk18ptviwen9a",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-10T22:49:50.688Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "n55acmhs4u4tiv2vxuii3sz6qrd0nel3",
+  "fields": {
+    "session_data": "MDZlZTZjZGM3MjljY2VhZTM0NDJjZDNhYTRjNzY5NWI3OGI3MjQ2ZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNWIwYThlMjE3MTMwZDdlZWE2ZTU5ZDNlNGUwNmE3NWJjZTVhNzZiIn0=",
+    "expire_date": "2019-03-21T17:21:26.098Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "npb3hzmk9tkj56wlaf6ydfcl9t80go48",
+  "fields": {
+    "session_data": "MDZlZTZjZGM3MjljY2VhZTM0NDJjZDNhYTRjNzY5NWI3OGI3MjQ2ZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNWIwYThlMjE3MTMwZDdlZWE2ZTU5ZDNlNGUwNmE3NWJjZTVhNzZiIn0=",
+    "expire_date": "2019-03-21T20:17:10.290Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "qgukyvukogc4tus2x0pvjtmqitey09t6",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-08T15:27:09.708Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "qxnanx90164v9lhaipne8aa31avrglu8",
+  "fields": {
+    "session_data": "ZDRmMWZmZDAzNmI1OTRlNDRmOTViMzgzOWIxYTgzMjQzMjFhNzU1ODp7Il9hdXRoX3VzZXJfaWQiOiIzIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YTQ5MGFkNzZlMzVjN2M0NTFkOTNkZWE5ZmMxZjhjYWFmZWJmNTE5In0=",
+    "expire_date": "2019-03-18T18:32:35.572Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "u0tfg5f00m954li6cvu84fnt2wag2v39",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-26T14:37:03.611Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vtttbf77aqm8wz3mpy87ewo9taoqi4m0",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-11T09:38:51.259Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "whmjz6d8iay86nn2lsbufi2lgvmfpl32",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-22T16:35:45.237Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zjf00taxyo9s7fbdbnr21xzp9e6xjaz5",
+  "fields": {
+    "session_data": "OWZhZGVkYWYzNTYxZTBiNzkzYmQ1ZmEzYmUyNjU5MTI0ODA4Y2FhMzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1MDljNmNiMmY0ODI5Njc2NGU2YjYyNGE5MjBlMGEwYTVkYjQ4NjQwIn0=",
+    "expire_date": "2019-04-10T22:50:18.047Z"
+  }
+},
+{
+  "model": "core.myuser",
+  "fields": {
+    "password": "pbkdf2_sha256$36000$Hqq2hDkXpVQ5$SkYDy1OoL+WX1m+VtqVXs1+ACjOC2KiQMA07lPCzmM0=",
+    "last_login": "2019-05-03T16:02:37.979Z",
+    "is_superuser": true,
+    "email": "rsmith@biocio.com",
+    "first_name": null,
+    "last_name": null,
+    "department": null,
+    "is_active": true,
+    "is_staff": true,
+    "date_joined": "2019-03-01",
+    "last_updated": "2019-04-25",
+    "district": 2,
+    "school": 2,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "fields": {
+    "password": "pbkdf2_sha256$36000$JVu4Io0zrvFr$oJWIRE7nFdq9ueVZi/CHGJ8OycaBytsVh9JdN6rFqIs=",
+    "last_login": "2019-05-13T18:01:25.555Z",
+    "is_superuser": true,
+    "email": "beth.posner@allhere.com",
+    "first_name": "Beth",
+    "last_name": "Posner",
+    "department": null,
+    "is_active": true,
+    "is_staff": true,
+    "date_joined": "2019-03-01",
+    "last_updated": "2019-04-23",
+    "district": 2,
+    "school": 1,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "fields": {
+    "password": "pbkdf2_sha256$36000$EdMoHMM6NEDk$a582vf9L3igSsB1EoOvY+6MmEENX4rTT0wTKeyl6S3c=",
+    "last_login": "2019-03-04T18:32:35Z",
+    "is_superuser": true,
+    "email": "yohan.torres@allhere.com",
+    "first_name": "Yohan",
+    "last_name": "Torres",
+    "department": null,
+    "is_active": true,
+    "is_staff": true,
+    "date_joined": "2019-03-04",
+    "last_updated": "2019-03-05",
+    "district": 2,
+    "school": 1,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "noemail-nudge:instructor:3245a31c-bf6c-44d3-bf55-256925fd93f4@allhere.com",
+    "first_name": "Margaretta",
+    "last_name": "Jacobson",
+    "department": null,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2019-03-27",
+    "last_updated": "2019-03-27",
+    "district": 4,
+    "school": 3,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.myuser",
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "noemail-nudge:instructor:6aa246ae-c3fc-4015-b272-23e1385ac3d6@allhere.com",
+    "first_name": "Retha",
+    "last_name": "Reilly",
+    "department": null,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2019-03-27",
+    "last_updated": "2019-03-27",
+    "district": 4,
+    "school": 4,
+    "grade": null,
+    "subject": null,
+    "role": "T",
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.student",
+  "pk": 1,
+  "fields": {
+    "created_on": "2019-03-02T16:14:48.305Z",
+    "modified_on": "2019-04-30T16:11:38.289Z",
+    "student_id": "s12345",
+    "is_active": true,
+    "first_name": "Flip",
+    "last_name": "Spandor",
+    "language": null,
+    "email": null,
+    "grade": "4",
+    "district": 2,
+    "school": 1,
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "parent_first_name": null,
+    "parent_last_name": null,
+    "phone": null,
+    "parent_email": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 2,
+  "fields": {
+    "created_on": "2019-03-05T16:31:10.981Z",
+    "modified_on": "2019-03-05T16:31:10.981Z",
+    "student_id": "0123-0990-3221",
+    "is_active": true,
+    "first_name": "Will",
+    "last_name": "Scott",
+    "language": "English",
+    "email": null,
+    "grade": "6",
+    "district": 2,
+    "school": 1,
+    "teacher": [
+      "yohan.torres@allhere.com"
+    ],
+    "parent_first_name": "Barnard",
+    "parent_last_name": "Scott",
+    "phone": "555-432-0909",
+    "parent_email": "scott@parent.com"
+  }
+},
+{
+  "model": "core.student",
+  "pk": 3,
+  "fields": {
+    "created_on": "2019-03-27T22:28:52.658Z",
+    "modified_on": "2019-03-27T22:51:00.542Z",
+    "student_id": "learner002",
+    "is_active": true,
+    "first_name": "Lorine",
+    "last_name": "Marquardt",
+    "language": "English",
+    "email": "lmarquardt@noemail.com",
+    "grade": "10",
+    "district": 4,
+    "school": 3,
+    "teacher": [
+      "rsmith@biocio.com"
+    ],
+    "parent_first_name": null,
+    "parent_last_name": null,
+    "phone": null,
+    "parent_email": null
+  }
+},
+{
+  "model": "core.student",
+  "pk": 4,
+  "fields": {
+    "created_on": "2019-03-27T22:28:52.701Z",
+    "modified_on": "2019-03-27T22:50:49.453Z",
+    "student_id": "learner001",
+    "is_active": true,
+    "first_name": "Laisha",
+    "last_name": "Stanton",
+    "language": "English",
+    "email": "lstanton@noemail.com",
+    "grade": "4",
+    "district": 4,
+    "school": 4,
+    "teacher": [
+      "rsmith@biocio.com"
+    ],
+    "parent_first_name": "Mommy",
+    "parent_last_name": "Stanton",
+    "phone": "+16466459808",
+    "parent_email": "mommy.stanton@noemail.com"
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 1,
+  "fields": {
+    "created_on": "2019-03-02T17:41:56.916Z",
+    "modified_on": "2019-03-02T17:41:56.916Z",
+    "date": "2019-03-02T17:41:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "C",
+    "mode": "V",
+    "notify_school_admin": false,
+    "success_score": 6,
+    "info_learned": "Test 1",
+    "info_better": "Test 1"
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 2,
+  "fields": {
+    "created_on": "2019-03-05T16:31:50.962Z",
+    "modified_on": "2019-03-05T16:31:50.962Z",
+    "date": "2019-03-05T16:31:00Z",
+    "teacher": [
+      "yohan.torres@allhere.com"
+    ],
+    "student": 2,
+    "status": "C",
+    "mode": "P",
+    "notify_school_admin": false,
+    "success_score": 8,
+    "info_learned": "",
+    "info_better": ""
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 3,
+  "fields": {
+    "created_on": "2019-03-07T20:17:47.105Z",
+    "modified_on": "2019-03-07T20:17:47.105Z",
+    "date": "2019-03-07T20:17:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "C",
+    "mode": "V",
+    "notify_school_admin": false,
+    "success_score": 2,
+    "info_learned": "",
+    "info_better": ""
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 4,
+  "fields": {
+    "created_on": "2019-04-01T13:57:28.195Z",
+    "modified_on": "2019-04-08T11:20:14.555Z",
+    "date": "2019-04-01T13:56:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "U",
+    "mode": "V",
+    "notify_school_admin": false,
+    "success_score": 4,
+    "info_learned": "Call earlier in the morning.",
+    "info_better": "Having more ideas for how he can wake up for school on time. Will send these ideas to him later this week via email."
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 5,
+  "fields": {
+    "created_on": "2019-04-02T13:53:31.201Z",
+    "modified_on": "2019-04-02T15:09:15.879Z",
+    "date": "2019-04-05T13:35:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "C",
+    "mode": "P",
+    "notify_school_admin": false,
+    "success_score": 3,
+    "info_learned": "We were unable to connect on the phone so this was not a successful check-in",
+    "info_better": "Find more times to call when the student is home."
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 6,
+  "fields": {
+    "created_on": "2019-04-02T14:19:07.051Z",
+    "modified_on": "2019-04-02T14:19:07.051Z",
+    "date": "2019-04-02T13:54:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "C",
+    "mode": "V",
+    "notify_school_admin": false,
+    "success_score": 4,
+    "info_learned": "I visited Flip in the classroom and talked with him about his attendance. He asked if he could switch his schedule next semester to not have a first period class because he needs to be home to get his brother on the bus to school.",
+    "info_better": "More regular check-ins, aiming to do this once per week even if attendance is high."
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 7,
+  "fields": {
+    "created_on": "2019-04-02T15:04:44.305Z",
+    "modified_on": "2019-04-08T11:19:07.901Z",
+    "date": "2019-04-02T15:04:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "C",
+    "mode": "V",
+    "notify_school_admin": false,
+    "success_score": 6,
+    "info_learned": "I visited Flip in the classroom and talked with him about his attendance. He asked if he could switch his schedule next semester to not have a first period class because he needs to be home to get his brother on the bus to school.",
+    "info_better": "More regular check-ins, aiming to do this once per week even if attendance is high."
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 8,
+  "fields": {
+    "created_on": "2019-04-17T15:29:01.787Z",
+    "modified_on": "2019-04-17T15:29:01.787Z",
+    "date": "2019-03-04T16:27:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "U",
+    "mode": "V",
+    "notify_school_admin": false,
+    "success_score": 5,
+    "info_learned": "Flip was not home but mom was. I was able to chat with her briefly about his attendance. She was slightly defensive but said she would talk to him.",
+    "info_better": "Having attendance files with me to share with mom would have helped."
+  }
+},
+{
+  "model": "core.checkin",
+  "pk": 9,
+  "fields": {
+    "created_on": "2019-05-02T15:35:52.903Z",
+    "modified_on": "2019-05-02T15:35:52.903Z",
+    "date": "2019-05-02T15:35:00Z",
+    "teacher": [
+      "beth.posner@allhere.com"
+    ],
+    "student": 1,
+    "status": "U",
+    "mode": "V",
+    "notify_school_admin": false,
+    "success_score": 6,
+    "info_learned": "",
+    "info_better": ""
+  }
+},
+{
+  "model": "core.district",
+  "pk": 2,
+  "fields": {
+    "created_on": "2019-03-02T16:13:58.775Z",
+    "modified_on": "2019-03-02T16:14:48.304Z",
+    "name": "DIstrictville",
+    "is_active": true,
+    "state": "MD",
+    "email_contact": "beth.postner@allhere.com",
+    "is_charter": false,
+    "is_private": false,
+    "notes": "",
+    "custom_text_succces_score": "",
+    "custom_text_info_learned": "",
+    "custom_text_info_better": ""
+  }
+},
+{
+  "model": "core.district",
+  "pk": 4,
+  "fields": {
+    "created_on": "2019-03-27T22:26:51.114Z",
+    "modified_on": "2019-03-27T22:26:51.114Z",
+    "name": "Rhett's District",
+    "is_active": true,
+    "state": null,
+    "email_contact": "",
+    "is_charter": false,
+    "is_private": false,
+    "notes": null,
+    "custom_text_succces_score": null,
+    "custom_text_info_learned": null,
+    "custom_text_info_better": null
+  }
+},
+{
+  "model": "core.district",
+  "pk": 5,
+  "fields": {
+    "created_on": "2019-03-27T22:26:51.121Z",
+    "modified_on": "2019-03-27T22:26:51.121Z",
+    "name": "cwhiteley",
+    "is_active": true,
+    "state": null,
+    "email_contact": "",
+    "is_charter": false,
+    "is_private": false,
+    "notes": null,
+    "custom_text_succces_score": null,
+    "custom_text_info_learned": null,
+    "custom_text_info_better": null
+  }
+},
+{
+  "model": "core.school",
+  "pk": 1,
+  "fields": {
+    "created_on": "2019-03-02T16:14:24.725Z",
+    "modified_on": "2019-03-02T16:14:24.725Z",
+    "name": "Groovy Elementary",
+    "is_active": true,
+    "address": "123 G Lane",
+    "description": "",
+    "district": 2
+  }
+},
+{
+  "model": "core.school",
+  "pk": 2,
+  "fields": {
+    "created_on": "2019-03-27T22:28:39.630Z",
+    "modified_on": "2019-03-27T22:28:39.630Z",
+    "name": "Blue Bell Elementary School",
+    "is_active": true,
+    "address": "",
+    "description": null,
+    "district": 4
+  }
+},
+{
+  "model": "core.school",
+  "pk": 3,
+  "fields": {
+    "created_on": "2019-03-27T22:28:39.641Z",
+    "modified_on": "2019-03-27T22:28:39.641Z",
+    "name": "Stoney River Elementary School",
+    "is_active": true,
+    "address": "",
+    "description": null,
+    "district": 4
+  }
+},
+{
+  "model": "core.school",
+  "pk": 4,
+  "fields": {
+    "created_on": "2019-03-27T22:28:39.649Z",
+    "modified_on": "2019-03-27T22:28:39.649Z",
+    "name": "Shady Groveland Middle School",
+    "is_active": true,
+    "address": "",
+    "description": null,
+    "district": 4
+  }
+},
+{
+  "model": "sites.site",
+  "fields": {
+    "domain": "app.allhere.co",
+    "name": "AllHere"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2019-03-01T20:33:18.683Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "2",
+    "object_repr": "beth.posner@allhere.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2019-03-01T21:24:29.365Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "2",
+    "object_repr": "beth.posner@allhere.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"is_superuser\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2019-03-01T21:24:49.179Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "2",
+    "object_repr": "beth.posner@allhere.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"is_staff\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2019-03-01T21:24:56.472Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "2",
+    "object_repr": "beth.posner@allhere.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"is_superuser\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2019-03-02T16:13:58.778Z",
+    "user": [
+      "beth.posner@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "district"
+    ],
+    "object_id": "2",
+    "object_repr": "DIstrictville",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2019-03-02T16:14:24.726Z",
+    "user": [
+      "beth.posner@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "district"
+    ],
+    "object_id": "2",
+    "object_repr": "DIstrictville",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"school\", \"object\": \"Groovy Elementary\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2019-03-02T16:14:48.307Z",
+    "user": [
+      "beth.posner@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "district"
+    ],
+    "object_id": "2",
+    "object_repr": "DIstrictville",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"student\", \"object\": \"Flip Spandor\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2019-03-04T18:08:04.053Z",
+    "user": [
+      "beth.posner@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "3",
+    "object_repr": "yohan.torres@allhere.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2019-03-04T18:08:37.026Z",
+    "user": [
+      "beth.posner@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "3",
+    "object_repr": "Yohan Torres",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"first_name\", \"last_name\", \"is_staff\", \"is_superuser\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2019-03-05T15:50:52.882Z",
+    "user": [
+      "yohan.torres@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "3",
+    "object_repr": "Yohan Torres",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"district\", \"school\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2019-03-07T20:21:09.000Z",
+    "user": [
+      "beth.posner@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "2",
+    "object_repr": "beth.posner@allhere.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"district\", \"school\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2019-03-25T15:30:40.896Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "2",
+    "object_repr": "beth.posner@allhere.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"is_superuser\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2019-03-27T22:50:49.455Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "student"
+    ],
+    "object_id": "4",
+    "object_repr": "Laisha Stanton",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"teacher\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2019-03-27T22:51:00.544Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "student"
+    ],
+    "object_id": "3",
+    "object_repr": "Lorine Marquardt",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"teacher\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2019-04-23T20:49:03.963Z",
+    "user": [
+      "beth.posner@allhere.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "2",
+    "object_repr": "Beth Posner",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"first_name\", \"last_name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2019-04-25T20:58:24.592Z",
+    "user": [
+      "rsmith@biocio.com"
+    ],
+    "content_type": [
+      "core",
+      "myuser"
+    ],
+    "object_id": "1",
+    "object_repr": "rsmith@biocio.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"district\", \"school\"]}}]"
+  }
+}
+]

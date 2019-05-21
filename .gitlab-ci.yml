@@ -1,0 +1,144 @@
+# Official docker image.
+image: docker:latest
+
+services:
+  - docker:dind
+
+# https://docs.gitlab.com/runner/executors/kubernetes.html#using-dockerdind
+variables:
+  DOCKER_HOST: "tcp://localhost:2375"
+  DOCKER_DRIVER: overlay2
+
+
+stages:
+  - test
+  - build
+  - review
+  - review_test
+  - publish
+
+build:
+  stage: build
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk update && apk add make
+  script:
+     - echo "${CI_COMMIT_SHORT_SHA}"
+     - echo "${CI_BUILD_REF_NAME}"
+     - cd backend
+     - make docker-echo-tag
+     - make ednudge-sdk-generate
+     - make docker-build
+     - make docker-ci-publish-test
+  only:
+    - branches
+    - /^((feature|bug)\/.+|develop|release-.+)$/
+  except:
+    - master
+
+test:
+  stage: test
+  image: tmaier/docker-compose:latest
+  before_script:
+    - docker info
+    - docker-compose --version
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk update && apk add make
+  script:
+    - cd backend
+    - make ednudge-sdk-generate
+    - docker-compose -f ../docker-compose-tests.yml pull web
+    - docker-compose -f ../docker-compose-tests.yml up -d && docker-compose -f ../docker-compose-tests.yml exec -T  web bash run_tests.sh ; docker-compose -f ../docker-compose-tests.yml down
+  only:
+    - branches
+    - /^((feature|bug)\/.+|develop|release-.+)$/
+  except:
+    - master
+
+publish:
+  stage: publish
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk update && apk add make
+  script:
+     - cd backend
+     - make docker-ci-publish-final
+  only:
+    - branches
+    - /^(develop|release-.+)$/
+  except:
+    - master
+    - /^(feature|bug)\/.+$/
+
+review:
+  stage: review
+  image: dtzar/helm-kubectl:2.12.3
+  before_script:
+    - apk update && apk add make
+    - export INSTANCE=$(echo $CI_BUILD_REF_SLUG | awk -F "-" '{print $2$3}')
+  script:
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab-admin --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
+    - cd infrastructure/chart
+    - INSTANCE=${INSTANCE} NAMESPACE=default make ci-review-app-install
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    url: https://$INSTANCE.eksdev.nonprod.allhere.co
+    on_stop: stop_review
+  only:
+    - branches
+    - /^(feature|bug)\/.+$/
+  except:
+    - master
+    - /^(develop|release-.+)$/
+
+stop_review:
+  stage: review
+  image: dtzar/helm-kubectl:2.12.3
+  before_script:
+    - apk update && apk add make
+    - export INSTANCE=$(echo $CI_BUILD_REF_SLUG | awk -F "-" '{print $2$3}')
+  script:
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab-admin --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
+    - cd infrastructure/chart
+    - INSTANCE=${INSTANCE} make ci-review-app-delete
+  when: manual
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    action: stop
+  except:
+    - master
+    - /^(develop|release-.+)$/
+
+review_test:
+  stage: review_test
+  image: dtzar/helm-kubectl:2.12.3
+  before_script:
+    - apk update && apk add make
+    - export INSTANCE=$(echo $CI_BUILD_REF_SLUG | awk -F "-" '{print $2$3}')
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab-admin --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
+  script:
+    - cd infrastructure/chart
+    - INSTANCE=${INSTANCE} NAMESPACE=default make ci-run-tests
+  only:
+    - branches
+    - /^(feature|bug)\/.+$/
+  except:
+    - master
+    - /^(develop|release-.+)$/
