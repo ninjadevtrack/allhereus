@@ -80,7 +80,9 @@ Students
         <td><a href="{{ student.last_checkin.url }}" class="text-dark">{{ student.last_checkin.date | naturaltime }}</a></td>
         <td>
           <div class="btn-group">
+            {% if not staff %}
             <a href="{% url 'student_checkin_add' student.pk %}" class="btn btn-success btn-sm">Add</a>
+            {% endif %}
             <a href="{% if not staff %}{% url 'student' student.id %}{%else%}{% url 'staff_student' student.school.id staff.id student.id %}{% endif %}" class="btn btn-secondary btn-sm">View</a>
             <a href="{% if not staff %}{% url 'student_edit' student.id %}{%else%}{% url 'staff_student_edit' student.school.id staff.id student.id %}{% endif %}" class="btn btn-info btn-sm">Edit</a>
           </div>
