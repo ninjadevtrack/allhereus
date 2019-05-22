@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "allhere.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "allhere.name" . }}
+    helm.sh/chart: {{ include "allhere.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+{{- with .Values.configMap }}
+  DEBUG: "{{ .debug }}"
+  ALLOWED_HOSTS: "{{ .allowedHosts }}"
+  ALLOWED_CIDR_NETS: "{{ .allowedCidrNets  }}"
+  DB_HOST: "{{ .dbHost  }}"
+  DB_NAME: "{{ .dbName }}"
+  DB_PORT: "{{ .dbPort }}"
+{{- if and .debug (eq .debug "0") }}
+  DJANGO_STATIC_URL: "{{ .djangoStaticUrl }}"
+{{- end }}
+  EDNUDGE_API_URL: "{{ .ednudgeApiUrl }}"
+{{- end }}

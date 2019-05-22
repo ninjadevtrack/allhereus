@@ -2,4 +2,16 @@ venv/
 db.sqlite3
 .cache
 .env
-__pycache__
+
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+### vim ###
+*.swp
+*.swo
+*~
+
+backend/ednudge-sdk-python*

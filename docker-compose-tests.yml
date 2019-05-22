@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:9
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    ports:
+     - "5432:5432"
+  web:
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-prod
+    environment:
+      - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=
+      - DB_PORT=5432
+      - LOGLEVEL=DEBUG
+      - ALLOWED_HOSTS=platform.allhere.co,127.0.0.1
+      - EDNUDGE_API_URL=http://18.221.122.128
+      - EDNUDGE_PASSWORD=1234567890
+      - EDNUDGE_USERNAME=chris.whiteley@billboard.net
+    command: bash bootstrap-dev.sh
+    volumes:
+      - ./backend:/var/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+volumes:
+  pgdata:
+    driver: local

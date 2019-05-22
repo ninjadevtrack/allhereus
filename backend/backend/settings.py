@@ -27,6 +27,8 @@ if os.getenv('DEBUG') == '1':
 else:
     DEBUG = False
 
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
     SECRET_KEY = '-*r3lafkk9c+#*m%cu2(rn_9n*g=q2zkmvt6dxsq5w&uvr@7cq'
@@ -48,11 +50,7 @@ RAVEN_CONFIG = {
     'dsn': os.getenv('SENTRY_DSN'),
 }
 
-if DEBUG:
-    ALLOWED_HOSTS = [x for x in os.getenv('ALLOWED_HOSTS').split(',')]
-else:
-    # domain set here, server_server.py, and nginx config
-    ALLOWED_HOSTS = ['.allhere.co', '104.236.78.22']
+ALLOWED_HOSTS = [x for x in os.getenv('ALLOWED_HOSTS').split(',')]
 
 if os.getenv('ALLOWED_CIDR_NETS'):
     ALLOWED_CIDR_NETS = [os.getenv('ALLOWED_CIDR_NETS')]
@@ -71,12 +69,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+#    'django.contrib.staticfiles',
     'django.contrib.humanize',
     'core.apps.CoreConfig',
     'django.contrib.sites',
     'raven.contrib.django.raven_compat',
 ]
+if DEBUG:
+    INSTALLED_APPS.append('django.contrib.staticfiles')
 
 MIDDLEWARE = [
     'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
@@ -184,12 +184,16 @@ DATETIME_INPUT_FORMATS += [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/var/app/django/static'
-# cache busting.
-# See https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+if DEBUG:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = '/var/app/django/static'
+    # cache busting.
+    # See https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#manifeststaticfilesstorage
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+else:
+    STATIC_URL = os.getenv('DJANGO_STATIC_URL')
 
+"""
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -234,6 +238,43 @@ LOGGING = {
             'level': 'DEBUG',
             'handlers': ['console'],
             'propagate': False,
+        },
+    },
+}
+
+if DEBUG:
+    del LOGGING['loggers']['raven']
+    del LOGGING['loggers']['sentry.errors']
+    del LOGGING['handlers']['sentry']
+    del LOGGING['root']
+    LOGGING['root'] = {
+        'level': LOGLEVEL,
+        'handlers': ['console'],
+    }
+"""
+
+LOGGING_CONFIG = None
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler'
+        },
+    },
+    'loggers': {
+        '': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'core': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'root': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console'],
+            'level': 'DEBUG',
         },
     },
 }
