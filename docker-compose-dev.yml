@@ -6,6 +6,8 @@ services:
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data/
+    ports:
+     - "5432:5432"
   web:
     restart: always
     build:
@@ -18,7 +20,11 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=
       - DB_PORT=5432
-      - ALLOWED_HOSTS=platform.allhere.co,.eksdev.nonprod.allhere.co,localhost
+      - LOGLEVEL=DEBUG
+      - ALLOWED_HOSTS=platform.allhere.co,127.0.0.1,localhost
+      - EDNUDGE_API_URL=http://18.221.122.128
+      - EDNUDGE_PASSWORD=1234567890
+      - EDNUDGE_USERNAME=chris.whiteley@billboard.net
     command: bash bootstrap-dev.sh
     volumes:
       - ./backend:/var/app

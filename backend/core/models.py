@@ -6,6 +6,22 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.urls import reverse
 
+class SoftDeleteInfo(models.Model):
+    """Abstract model for storing Soft Delete model info"""
+    is_deleted = models.BooleanField(
+        default=False,
+        db_column='is_deleted',
+        help_text='Soft delete indicator flag - When true the record is no longer visible on the front end though data is retained in case it was deleted my mistake.'
+        )
+    deleted_on = models.DateTimeField(
+        null=True,
+        blank=True,
+        db_column='deleted_on',
+        help_text='Soft delete timestamp - The date and time when the record was soft deleted.  This should be empty when is_deleted is False.'
+        )
+
+    class Meta:
+        abstract = True
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None, first_name=None, last_name=None):
@@ -30,7 +46,7 @@ class MyUserManager(BaseUserManager):
         return user
 
 
-class MyUser(AbstractBaseUser, PermissionsMixin):
+class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
     """Custom user model that only requires an email and password"""
     email = models.EmailField(unique=True)
 
@@ -70,6 +86,36 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     # if True, a user can edit membership
     is_manager = models.BooleanField(default=False)
 
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled.',)
+    ednudge_person_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the Person.'
+    )
+    ednudge_person_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The Person Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_person_type = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge Person Type.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -103,21 +149,34 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def checkins(self):
-        if self.role == 'DA':
+        if self.is_district_admin:
             return CheckIn.objects.filter(student__district=self.district).order_by('-date').all()
-        if self.role == 'SA':
+        if self.is_school_admin:
             return CheckIn.objects.filter(student__school=self.school).order_by('-date').all()
         else:
-            return CheckIn.objects.filter(student__in=self.student_set.all()).order_by('-date').all()
+            #return CheckIn.objects.filter(student__in=self.student_set.all()).order_by('-date').all()
+            return CheckIn.objects.filter(student__in=self.students).order_by('-date').all()
 
     @property
     def students(self):
-        if self.role == 'DA':
-            return Student.objects.filter(district=self.district).order_by('-date').all()
-        if self.role == 'SA':
-            return Student.objects.filter(school=self.school).order_by('-date').all()
+        if self.is_district_admin:
+            return Student.objects.filter(district=self.district).order_by('last_name','first_name').all()
+        if self.is_school_admin:
+            return Student.objects.filter(school=self.school).order_by('last_name','first_name').all()
         else:
-            return self.student_set.order_by('-date').all()
+            if self.ednudge_is_enabled:
+                student_ids = []
+                for section in self.section_set.filter(sectionteacher__is_deleted=False):
+                    for student in section.students.filter(sectionstudent__is_deleted=False):
+                        test = [s for s in student_ids if s == student.id]
+                        if test:
+                            next
+                        else:
+                            student_ids.append(student.id)
+                students = Student.objects.filter(id__in=student_ids)
+                return students
+            else:
+                return self.student_set.filter(is_deleted=False).order_by('last_name', 'first_name').all()
 
     @property
     def unassigned_students(self):
@@ -129,7 +188,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def schools(self):
-        return School.objects.all().filter(members=self)
+        if self.is_district_admin:
+            return School.objects.all().filter(district=self.district)
+        else:
+            return School.objects.all().filter(members=self)
 
     @property
     def avatar_url(self):
@@ -144,6 +206,22 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.get_full_name()
 
+    @property
+    def last_checkin(self):
+        return self.checkins.first()
+
+
+class TeacherManager(MyUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role='T')
+
+class Teacher(MyUser):
+
+    class Meta:
+        proxy = True
+
+    objects = TeacherManager()
+
 
 class CommonInfo(models.Model):
     """Abstract model for storing common model info"""
@@ -154,7 +232,7 @@ class CommonInfo(models.Model):
         abstract = True
 
 
-class Student(CommonInfo):
+class Student(CommonInfo, SoftDeleteInfo):
     """Student
 
     These are entities, not application users.
@@ -213,6 +291,41 @@ class Student(CommonInfo):
         help_text='Contact email for parent or guardian.',
     )
 
+    total_absences = models.PositiveSmallIntegerField(
+        default=None,
+        null=True,
+        blank=True,
+        help_text='Total number of absences since the beginning of the school year.',
+    )
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False,
+        editable=False,
+        help_text='Designates whether EdNudge integration is enabled.')
+    ednudge_learner_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated identifier for the learner.'
+    )
+    ednudge_learner_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The Learner Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
+
     @property
     def url(self):
         return reverse('student', args=[self.id])
@@ -228,6 +341,23 @@ class Student(CommonInfo):
     @property
     def last_checkin(self):
         return self.checkins.first()
+
+    @property
+    def support_team(self):
+        if self.ednudge_is_enabled:
+            teacher_ids = []
+            for section in self.section_set.all():
+                for teacher in section.teachers.all():
+                    test = [t for t in teacher_ids if t == teacher.id]
+                    if test:
+                        next
+                    else:
+                        teacher_ids.append(teacher.id)
+            teachers = Teacher.objects.filter(id__in=teacher_ids)
+            return teachers
+        else:
+            return self.teacher
+
 
     def __str__(self):
         return self.name
@@ -309,7 +439,7 @@ class CheckIn(CommonInfo):
         return f'Check-in on {self.student} by {self.teacher} at {self.date}'
 
 
-class District(CommonInfo):
+class District(CommonInfo, SoftDeleteInfo):
     """Collection of users representing K12 district or university.
 
     Users/Students are associated with _one_ District
@@ -335,11 +465,38 @@ class District(CommonInfo):
     custom_text_info_learned = models.TextField(null=True, blank=True)
     custom_text_info_better = models.TextField(null=True, blank=True)
 
+    ednudge_is_enabled = models.BooleanField(
+        default=False,
+        editable=False,
+        help_text='Designates whether EdNudge integration is enabled for this district.')
+    ednudge_district_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated identifier for the district.'
+    )
+    ednudge_district_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The District Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
     def __str__(self):
         return self.name
 
 
-class School(CommonInfo):
+class School(CommonInfo, SoftDeleteInfo):
     """Collection of users within a District
 
     Schools can be associated with _one_ District
@@ -354,5 +511,229 @@ class School(CommonInfo):
 
     district = models.ForeignKey(District)
 
+    ednudge_is_enabled = models.BooleanField(
+        default=False,
+        editable=False,
+        help_text='Designates whether EdNudge integration is enabled for this entity.')
+    ednudge_school_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated identifier for the school.'
+    )
+    ednudge_school_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The School Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_district_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated identifier for the district.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
     def __str__(self):
         return self.name
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
+
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
+
+    @property
+    def staff(self):
+        return MyUser.objects.filter(school=self).order_by('last_name','first_name').all()
+
+class Section(CommonInfo, SoftDeleteInfo):
+    """A time when Teachers deliver instruction to Students
+
+    Section must be associated with _one_ District
+    Section must be associated with _one_ School
+    """
+    name = models.CharField(max_length=255)
+    term_name = models.CharField(max_length=255)
+    term_start_date = models.DateField()
+    term_end_date = models.DateField()
+    period = models.CharField(max_length=255)
+    subject = models.CharField(max_length=255)
+
+    district = models.ForeignKey(District)
+    school = models.ForeignKey(School)
+
+    teachers = models.ManyToManyField(MyUser, through="SectionTeacher")
+    students = models.ManyToManyField(Student, through="SectionStudent")
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_section_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the section.',
+    )
+    ednudge_section_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The Section Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
+    def __str__(self):
+        return self.name
+
+class SectionTeacher(CommonInfo, SoftDeleteInfo):
+    """Pairs a Teacher to a Section
+
+    SectionTeacher must be associated with _one_ Section
+    SectionTeacher must be associated with _one_ Teacher
+    """
+
+    section = models.ForeignKey(Section)
+    teacher = models.ForeignKey(MyUser)
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_enrollment_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the enrollment.'
+    )
+    ednudge_section_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+    ednudge_person_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
+    def __str__(self):
+        return "section_id: {}, teacher_id: {}".format(self.section.id, self.teacher.id)
+
+class SectionStudent(CommonInfo, SoftDeleteInfo):
+    """Pairs a Student to a Section
+
+    SectionStudent must be associated with _one_ Section
+    SectionStudent must be associated with _one_ Student
+    """
+
+    section = models.ForeignKey(Section)
+    student = models.ForeignKey(Student)
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_enrollment_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the enrollment.'
+    )
+    ednudge_section_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+    ednudge_person_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The EdNudge internal system-generated identifier for the section.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
+    def __str__(self):
+        return "section_id: {}, student_id: {}".format(self.section.id, self.student.id)
+
+class StudentDailyAttendance(CommonInfo):
+    """Pairs a Student to a Section
+
+    SectionStudent must be associated with _one_ Section
+    SectionStudent must be associated with _one_ Student
+    """
+
+    school = models.ForeignKey(School)
+    student = models.ForeignKey(Student)
+
+    date = models.DateTimeField(default=timezone.now, help_text='Date of attendance mark.')
+
+    mark = models.CharField(
+        max_length=1,
+        choices=(
+            ('a', 'absent'),
+            ('t', 'tardy'),
+            ('p', 'present'),
+        ),
+        blank=False,
+        help_text='Attendance Mark.',
+    )
+
+    ednudge_is_enabled = models.BooleanField(
+        default=False, help_text='Designates whether EdNudge integration is enabled for this entity.',)
+    ednudge_dailyattendance_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        unique=True,
+        help_text='The EdNudge internal system-generated identifier for the dailyattendance.',
+    )
+    ednudge_dailyattendance_local_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='The dailyattendance Local Id.  This field is sourced from EdNudge.'
+    )
+    ednudge_merkleroot  = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        editable=False,
+        help_text='The EdNudge internal system-generated merkleroot.'
+    )
+
+    def __str__(self):
+        return "student_id: {}, school_id: {}, date: {}, mark: {}".format(
+            self.student.id, self.school.id, self.date, self.mark)

@@ -3,12 +3,13 @@ from datetime import datetime
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect
-from django.db.models import Q
-from .models import CheckIn, Student
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
+from django.contrib.auth.forms import SetPasswordForm
+
+from .models import CheckIn, Student, School, MyUser
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
 import io
@@ -66,8 +67,24 @@ def profile(request):
     """
     displays user's info
     """
+
+    if request.user.is_district_admin:
+        checkins_url = ''
+        student_roster_url = ''
+        show_roster_and_checkins = False
+    else:
+        checkins_url = reverse('checkins')
+        student_roster_url = reverse('students')
+        show_roster_and_checkins = True
+
     context = {
-        'recent_checkins': request.user.checkins[:10],
+        'profile_url': reverse('profile'),
+        'edit_url': reverse('profile_edit'),
+        'checkins_url': checkins_url,
+        'student_roster_url': student_roster_url,
+        'show_roster_and_checkins': show_roster_and_checkins,
+        'checkin_count': request.user.checkins.count(),
+        'student_roster_count': request.user.students.count(),
         'user': request.user,
         'view': 'display',
     }
@@ -79,16 +96,21 @@ def profile_edit(request):
     """
     profile in editing state
     """
+    profile_kwargs = {'user': request.user, 'instance':request.user}
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=request.user)
+        form = ProfileForm(request.POST, **profile_kwargs)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('profile'))
     else:
-        form = ProfileForm(instance=request.user)
+        form = ProfileForm(**profile_kwargs)
     return render(request, 'core/profile_edit.html', {
-        'recent_checkins': request.user.checkins[:10],
+        'profile_url': reverse('profile'),
+        'edit_url': reverse('profile_edit'),
+        'checkin_count': request.user.checkins.count(),
+        'student_roster_count': request.user.students.count(),
+        'user': request.user,
         'form': form,
         'error_message': [error for error in form.non_field_errors()],
     })
@@ -98,20 +120,25 @@ def profile_edit(request):
 @login_required
 def checkins(request):
     """
-    list all the checkins for teacher
+    list all the checkins for teacher or school admin.  District Admin returns 404.
     """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
     def student_sort(a, b):
         if a.name < b.name:
             return -1
         if a.name == b.name:
             return 0
         return 1
+
     checkins = request.user.checkins
     students = []
     for checkin in checkins:
         if checkin.student not in students:
             students.append(checkin.student)
     students.sort(key=cmp_to_key(student_sort))
+
     context = {'checkins': checkins, 'students': students}
     return render(request, 'core/checkins.html', context)
 
@@ -144,7 +171,9 @@ def has_checkin_permission(checkin, user):
     if checkin.school != user.school and not user.is_district_admin:
         raise PermissionDenied("Checkin is not in your school")
     if checkin.teacher != user and not user.is_school_admin and not user.is_district_admin:
-        raise PermissionDenied("Checkin is not in yours")
+        test = user.students.filter(id=checkin.student.id)
+        if len(test) == 0:
+            raise PermissionDenied("Checkin is not in yours")
 
 
 @login_required
@@ -208,6 +237,13 @@ def checkin_delete(request, id):
 
 @login_required
 def checkins_csv(request):
+    """
+    csv for view checkins:
+    list all the checkins for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
     response = HttpResponse(content_type='text/csv')
 
     filename = f'AllHere Checkins Archive {datetime.now()}'
@@ -217,12 +253,12 @@ def checkins_csv(request):
 
     writer.writerow(['Date', 'teacher', 'Student', 'Status', 'Format',
                      'Info learned', 'Info better', 'Success score'])
-                     
+
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
     to_date = request.GET.get('to','')
     search = request.GET.get('search', '')
-    
+
     status_choices= (
             ('C', 'Completed'),
             ('U', 'Unreachable'),
@@ -232,7 +268,7 @@ def checkins_csv(request):
     mode_choices=(
             ('P', 'Phone'),
             ('V', 'Visit'),
-            ('I', 'In-Person'), 
+            ('I', 'In-Person'),
             ('E', 'Email')
         )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
@@ -257,7 +293,7 @@ def checkins_csv(request):
     from_date_checkins = student_checkins
     if from_date != '':
         from_date_checkins = [checkin for checkin in student_checkins if checkin.date.date() >= datetime.strptime(from_date, '%m/%d/%Y').date()]
-    
+
     to_date_checkins = from_date_checkins
     if to_date != '':
         to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
@@ -287,7 +323,7 @@ def checkins_pdf(request):
     from_date = request.GET.get('from','')
     to_date = request.GET.get('to','')
     search = request.GET.get('search', '')
-    
+
     status_choices= (
             ('C', 'Completed'),
             ('U', 'Unreachable'),
@@ -297,7 +333,7 @@ def checkins_pdf(request):
     mode_choices=(
             ('P', 'Phone'),
             ('V', 'Visit'),
-            ('I', 'In-Person'), 
+            ('I', 'In-Person'),
             ('E', 'Email')
         )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
@@ -321,7 +357,7 @@ def checkins_pdf(request):
     from_date_checkins = student_checkins
     if from_date != '':
         from_date_checkins = [checkin for checkin in student_checkins if checkin.date.date() >= datetime.strptime(from_date, '%m/%d/%Y').date()]
-    
+
     to_date_checkins = from_date_checkins
     if to_date != '':
         to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
@@ -381,7 +417,7 @@ def reports_in_chart(request):
             { 'phone': phone, 'visit': visit, 'in_person': in_person, 'email': email, \
             'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
 
-        
+
 
     return HttpResponse("This feature is coming.")
 
@@ -505,7 +541,7 @@ def students_csv(request):
     search = request.GET.get('search','')
     students = request.user.students.order_by('last_name') \
     .filter(
-            Q(first_name__icontains=search) | 
+            Q(first_name__icontains=search) |
             Q(last_name__icontains=search) |
             Q(student_id__icontains=search) |
             Q(grade__icontains=search) |
@@ -531,13 +567,13 @@ def students_pdf(request):
     search = request.GET.get('search','')
     students = request.user.students.order_by('last_name') \
     .filter(
-            Q(first_name__icontains=search) | 
+            Q(first_name__icontains=search) |
             Q(last_name__icontains=search) |
             Q(student_id__icontains=search) |
             Q(grade__icontains=search) |
             Q(email__icontains=search)
         )
-    
+
     return render_to_pdf(
         'core/pdf_students_template.html',
         {
@@ -584,3 +620,232 @@ def support(request):
     return the support page
     """
     return render(request, 'core/support.html')
+
+def district_admin_required(login_url=None, raise_exception=False):
+    """
+    Decorator for views that checks whether a user is a District Admin. If
+    not, redirects to the log-in page unless the raise_exception parameter
+    is True, in which case the PermissionDenied exception is raised.
+    """
+    def check_is_da(user):
+        # First check if the user belongs to the group
+        if user.is_district_admin:
+            return True
+        # In case the 403 handler should be called raise the exception
+        if raise_exception:
+            raise PermissionDenied("You must be a District Administrator to use this feature.")
+        # As the last resort, show the login form
+        return False
+    return user_passes_test(check_is_da, login_url=login_url)
+
+@login_required
+@district_admin_required(raise_exception=True)
+def schools(request):
+    """
+    List view of schools
+    """
+    district = request.user.district
+    schools = request.user.schools.order_by('name')
+    return render(request, 'core/school_list.html', {
+        'district': district,
+        'schools': schools,
+        'schools_total': schools.count(),
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff(request, school_id):
+    """
+    List view of staff
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = school.staff.order_by('last_name','first_name')
+    return render(request, 'core/staff_list.html', {
+        'school': school,
+        'staff': staff,
+        'staff_total': staff.count(),
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_profile(request, school_id, staff_id):
+    """
+    Display a staff's profile
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id)
+    school_staff_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
+    profile_url = reverse('staff_profile', kwargs=school_staff_kwargs)
+    edit_url = reverse("staff_profile_edit", kwargs=school_staff_kwargs)
+    checkins_url = reverse('staff_checkins', kwargs=school_staff_kwargs)
+    student_roster_url = reverse('staff_students', kwargs=school_staff_kwargs)
+    show_roster_and_checkins = True,
+
+    context = {
+        'profile_url': profile_url,
+        'edit_url': edit_url,
+        'checkins_url': checkins_url,
+        'student_roster_url': student_roster_url,
+        'show_roster_and_checkins': show_roster_and_checkins,
+        'checkin_count': staff.checkins.count(),
+        'student_roster_count': staff.students.count(),
+        'user': staff,
+        'view': 'display',
+    }
+    return render(request, 'core/profile.html', context)
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_profile_edit(request, school_id, staff_id):
+    """
+    staff_profile in editing state
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id)
+    staff_profile_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
+    profile_url = reverse('staff_profile', kwargs=staff_profile_kwargs)
+    edit_url = reverse('staff_profile_edit', kwargs=staff_profile_kwargs)
+    profile_kwargs = {'user': request.user, 'instance':staff}
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, **profile_kwargs)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(profile_url)
+    else:
+        form = ProfileForm(**profile_kwargs)
+    return render(request, 'core/profile_edit.html', {
+        'profile_url': profile_url,
+        'edit_url': edit_url,
+        'staff_password_set_url': reverse('staff_password_set', kwargs={
+            'school_id': school_id,
+            'staff_id': staff_id,
+        }),
+        'checkin_count': staff.checkins.count(),
+        'student_roster_count': staff.students.count(),
+        'user': staff,
+        'form': form,
+        'error_message': [error for error in form.non_field_errors()],
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_password_set(request, school_id, staff_id):
+    """
+    staff_profile in editing state
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is in the DA's schools
+    staff_profile_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
+    profile_url = reverse('staff_profile', kwargs=staff_profile_kwargs)
+    if not staff:
+        return HttpResponseForbidden()  # Just straight up forbid this request, looking fishy already!
+    if request.method == 'POST':
+        form = SetPasswordForm(staff, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(profile_url)
+    elif request.method == 'GET':
+        form = SetPasswordForm(staff)
+    else:
+        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
+    form.fields['new_password2'].label = 'Confirm New Password'
+    form.fields['new_password2'].longest = True
+    return render(request, 'core/password_change.html', {
+        'form': form,
+        'staff': staff,
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_students(request, school_id, staff_id):
+    """
+    List view of staff students
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id)
+    students = staff.students.filter(school=school).order_by('last_name','first_name')
+    return render(request, 'core/student_list.html', {
+        'staff': staff,
+        'students': students,
+        'student_total': len(students),
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_student(request, school_id, staff_id, student_id):
+    """
+    Student detail view
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
+    student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
+    return render(request, 'core/student.html', {
+        'school': school,
+        'staff': staff,
+        'student': student,
+        'recent_checkins': student.checkins[:10]
+    })
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_student_edit(request, school_id, staff_id, student_id):
+    """
+    Edit existing student
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
+    student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
+    if request.method == 'POST':
+        form = StudentForm(request.user, request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('staff_students', kwargs={
+                'school_id': school_id, 'staff_id': staff_id}))
+    else:
+        form = StudentForm(request.user, instance=student)
+    return render(request, 'core/student_edit.html', {
+        'form': form,
+        'view': 'edit',
+        'school': school,
+        'staff': staff,
+        'student': student,
+        'error_message': [error for error in form.non_field_errors()],
+    })
+
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_checkins(request, school_id, staff_id):
+    """
+    list all the checkins for staff
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school
+    checkins = staff.checkins
+
+    context = {
+        'checkins': checkins,
+        'staff': staff,
+        'school': school,
+        'checkin_view': 'staff_checkin',
+    }
+    return render(request, 'core/checkins.html', context)
+
+@login_required
+@district_admin_required(raise_exception=True)
+def staff_checkin(request, school_id, staff_id, checkin_id):
+    """
+    view an individual checkin
+    """
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school
+    checkin_event = get_object_or_404(staff.checkins, pk=checkin_id) # ensure the checkin doese in fact belong to the staff
+
+    # 403 if user is not allowed
+    has_checkin_permission(checkin_event, request.user)
+
+    return render(request, 'core/checkin.html', {
+        'checkin': checkin_event,
+        'success_score_percentage': checkin_event.success_score / 10 * 100,
+        'viewonly': True,
+    })

@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Schools
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+<style>
+  table.dataTable {
+  border-collapse: collapse !important;
+}
+</style>
+{% endblock %}
+{% load humanize %}
+{% block content %}
+<div class="container">
+
+  <div class="row pl-3 d-flex justify-content-between align-items-center">
+    <h1 class="mt-3 mb-1">Schools</h1>
+    <div class="d-flex justify-content-between align-items-center">
+      <input id="search" class="form-control mr-2" type="search" placeholder="search...">
+    </div>
+  </div>
+
+  <div class="row pl-3 d-flex justify-content-between align-items-center">
+      <p class="mt-1 mb-1">{{ district.name }}</p>
+  </div>
+
+  <table class="table table-striped table-responsive"  data-order='[[ 0, "asc" ]]'>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th style="width:50%;">School Name</th>
+        <th style="width:50%;">School Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for school in schools %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>
+          <a href="{% url 'staff' school.id %}" class="text-dark">{{ school.name }}</a>
+        </td>
+        <td>
+          <a href="{% url 'staff' school.id %}" class="text-dark">{{ school.address }}</a>
+        </td>
+      </tr>
+      {% empty %}
+      <p class="text-muted">Sorry, we couldn't find any schools for you.</p>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="text-muted">Showing <b>{{ schools | length | apnumber }}</b> of <b>{{ schools_total | apnumber}}</b> school{{ schools_total | pluralize }}.<br />
+  <b>ND</b> - Indicates that there is no data available.</p>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var table = $('table').DataTable({
+        "paging":   false,
+        "info":     false,
+        "searching": true,
+        "dom": 't',
+    });
+    var search = document.querySelector('#search');
+    search.addEventListener('keyup', function () {
+      table.search(search.value).draw();
+    })
+} );
+</script>
+{% endblock %}

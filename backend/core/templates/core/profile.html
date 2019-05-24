@@ -5,6 +5,7 @@
     <div class="card-body">
       <h4 class="card-title">Personal Information</h4>
       <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between align-items-center"><b>Role:</b> <span>{{ user.get_role_display }}</span></li>
         <li class="list-group-item d-flex justify-content-between align-items-center"><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
         {% if user.department %}
         <li class="list-group-item d-flex justify-content-between align-items-center"><b>Department:</b> <span>{{ user.department }}</span></li>
@@ -27,6 +28,25 @@
   </div>
 </div>
 <div class="col-lg-6 col-md-12">
+{% if show_roster_and_checkins %}
+  <div class="card mb-4">
+    <div class="card-body">
+      <a href="{{ checkins_url }}">
+        <h4 class="card-title">Review Check-ins <span class="badge badge-secondary">{{ checkin_count }}</span></h4>
+      </a>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <a href="{{ student_roster_url }}">
+        <h4 class="card-title">Student Roster <span class="badge badge-secondary">{{ student_roster_count }}</span></h4>
+      </a>
+    </div>
+  </div>
+  {% comment "TODO: remove this when you delete core/_recent_acitivity.html" %}
   {% include "core/_recent_activity.html" with checkins=recent_checkins %}
+  {% endcomment %}
+{% endif %}
 </div>
 {% endblock %}

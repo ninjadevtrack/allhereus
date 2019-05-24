@@ -11,3 +11,4 @@ COPY requirements.txt /var/app/
 RUN pip3 install -r requirements.txt
 
 COPY . /var/app/
+RUN make ednudge-sdk-install

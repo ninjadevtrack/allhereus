@@ -16,5 +16,6 @@ def test_creating_csvs(client, teacher):
     assert res.status_code == 200
     assert res.get('Content-Type') == 'text/csv'
     assert res.get('Content-Disposition') == 'attachment; filename="AllHere Checkins Archive 2012-01-14 00:00:00.csv"'
-    header_rows = b'date,teacher,student,status,visit type,info learned,info better,success score\r\n'
+    header_rows = b'Date,teacher,Student,Status,Format,Info learned,Info better,Success score\r\n'
+    print(res.content)
     assert res.content == header_rows
