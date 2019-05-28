@@ -53,3 +53,6 @@ django-static-publish: ## runs python manage.py collectstatic then pushes it to 
 	@echo "running collectstatic then pushing to s3://$(DJANGO_STATIC_BUCKET)/static/$(IMAGE_TAG)/"
 	docker-compose -f ../docker-compose-dev.yml exec web python manage.py collectstatic
 	aws s3 sync ./django/ s3://$(DJANGO_STATIC_BUCKET)/static/$(IMAGE_TAG)/
+
+docker-run-tests: ## runs unit tests using docker-compose
+	docker-compose -f ../docker-compose-tests.yml up --build -d && docker-compose -f ../docker-compose-tests.yml exec -T  web bash run_tests.sh ; docker-compose -f ../docker-compose-tests.yml down
