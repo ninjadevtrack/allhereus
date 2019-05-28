@@ -24,13 +24,41 @@ def school(district):
 @pytest.fixture
 def teacher(school, district):
     u = MyUser.objects.create_user(
-        email='teach@allhere.co',
+        email='teacher@allhere.co',
         first_name='Donny',
         last_name='Donowitz',
         password='test123',
         )
     u.district=district
     u.school=school
+    u.save()
+    return u
+
+@pytest.fixture
+def school_admin(school, district):
+    u = MyUser.objects.create_user(
+        email='school_admin@allhere.co',
+        first_name='School',
+        last_name='Admin',
+        password='test123',
+        )
+    u.district=district
+    u.school=school
+    u.role = 'SA'
+    u.save()
+    return u
+
+@pytest.fixture
+def district_admin(school, district):
+    u = MyUser.objects.create_user(
+        email='district_admin@allhere.co',
+        first_name='District',
+        last_name='Admin',
+        password='test123',
+        )
+    u.district=district
+    u.school=school
+    u.role = 'DA'
     u.save()
     return u
 
