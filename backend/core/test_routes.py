@@ -326,6 +326,110 @@ def test_profile_anonymous(client):
     res = client.get('/profile')
     assert res.status_code == 302
 
+"""
+Url Tests url(r'^students.pdf', views.students_pdf, name='students_pdf'),
+"""
+def test_students_pdf_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/students.pdf')
+    assert res.status_code == 200
+
+def test_students_pdf_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/students.pdf')
+    assert res.status_code == 200
+
+def test_students_pdf_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/students.pdf')
+    assert res.status_code == 404
+
+def test_students_pdf_anonymous(client):
+    # anonymous
+    res = client.get('/students.pdf')
+    assert res.status_code == 302
+
+"""
+Url Tests url(r'^students.csv', views.students_csv, name='students_csv'),
+"""
+def test_students_csv_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/students.csv')
+    assert res.status_code == 200
+
+def test_students_csv_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/students.csv')
+    assert res.status_code == 200
+
+def test_students_csv_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/students.csv')
+    assert res.status_code == 404
+
+def test_students_csv_anonymous(client):
+    # anonymous
+    res = client.get('/students.csv')
+    assert res.status_code == 302
+
+
+"""
+Url Tests url(r'^checkins.pdf', views.checkins_pdf, name='checkins_pdf'),
+"""
+def test_checkins_pdf_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/checkins.pdf')
+    assert res.status_code == 200
+
+def test_checkins_pdf_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/checkins.pdf')
+    assert res.status_code == 200
+
+def test_checkins_pdf_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/checkins.pdf')
+    assert res.status_code == 404
+
+def test_checkins_pdf_anonymous(client):
+    # anonymous
+    res = client.get('/checkins.pdf')
+    assert res.status_code == 302
+
+"""
+Url Tests url(r'^checkins.csv', views.checkins_csv, name='checkins_csv'),
+"""
+def test_checkins_csv_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/checkins.csv')
+    assert res.status_code == 200
+
+def test_checkins_csv_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/checkins.csv')
+    assert res.status_code == 200
+
+def test_checkins_csv_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/checkins.csv')
+    assert res.status_code == 404
+
+def test_checkins_csv_anonymous(client):
+    # anonymous
+    res = client.get('/checkins.csv')
+    assert res.status_code == 302
 
 """
 Url Tests url(r'reports/$', views.reports, name='reports'),
