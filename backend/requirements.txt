@@ -22,3 +22,4 @@ six==1.10.0
 watchdog==0.8.3
 xhtml2pdf==0.2.1
 CleanerVersion==2.1.1
+django-waffle==0.16.0

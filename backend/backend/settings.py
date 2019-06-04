@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'raven.contrib.django.raven_compat',
     'versions',
+    'waffle',
 ]
 if DEBUG:
     INSTALLED_APPS.append('django.contrib.staticfiles')
@@ -88,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'waffle.middleware.WaffleMiddleware',
 ]
 if os.getenv('ALLOWED_CIDR_NETS'):
     MIDDLEWARE.insert(0, 'allow_cidr.middleware.AllowCIDRMiddleware')
