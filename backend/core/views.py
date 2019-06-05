@@ -355,6 +355,13 @@ def render_to_pdf(template_src, context_dict):
 
 @login_required
 def checkins_pdf(request):
+    """
+    pdf for view checkins:
+    list all the checkins for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
     to_date = request.GET.get('to','')
@@ -565,6 +572,13 @@ def student_checkin_add(request, id):
 
 @login_required
 def students_csv(request):
+    """
+    csv for view students:
+    list all the students for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
     response = HttpResponse(content_type='text/csv')
 
     filename = f'AllHere Students Archive {datetime.now()}'
@@ -591,6 +605,12 @@ def students_csv(request):
 
 @login_required
 def students_pdf(request):
+    """
+    pdf for view students:
+    list all the students for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
     response = HttpResponse(content_type='text/csv')
 
     filename = f'AllHere Students Archive {datetime.now()}'
