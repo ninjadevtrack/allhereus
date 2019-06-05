@@ -325,3 +325,57 @@ def test_profile_anonymous(client):
     # anonymous
     res = client.get('/profile')
     assert res.status_code == 302
+
+
+"""
+Url Tests url(r'reports/$', views.reports, name='reports'),
+"""
+def test_reports_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/reports/')
+    assert res.status_code == 200
+
+def test_reports_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/reports/')
+    assert res.status_code == 403
+
+def test_reports_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/reports/')
+    assert res.status_code == 403
+
+def test_reports_anonymous(client):
+    # anonymous
+    res = client.get('/reports/')
+    assert res.status_code == 302
+
+
+"""
+Url Tests url(r'reports-chart/$', views.reports_in_chart, name='reports-chart'),
+"""
+def test_reports_chart_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/reports-chart/')
+    assert res.status_code == 200
+
+def test_reports_chart_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/reports-chart/')
+    assert res.status_code == 403
+
+def test_reports_chart_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/reports-chart/')
+    assert res.status_code == 403
+
+def test_reports_chart_anonymous(client):
+    # anonymous
+    res = client.get('/reports-chart/')
+    assert res.status_code == 302

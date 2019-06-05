@@ -140,6 +140,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
         return True
 
     @property
+    def is_teacher(self):
+        return self.role == 'T'
+
+    @property
     def is_school_admin(self):
         return self.role == 'SA'
 
