@@ -23,6 +23,42 @@ from operator import or_
 from django.contrib.humanize.templatetags.humanize import naturaltime
 TABLE_DISPLAY_LIMIT = 100
 
+
+def district_admin_required(login_url=None, raise_exception=False):
+    """
+    Decorator for views that checks whether a user is a District Admin. If
+    not, redirects to the log-in page unless the raise_exception parameter
+    is True, in which case the PermissionDenied exception is raised.
+    """
+    def check_is_da(user):
+        # First check if the user belongs to the group
+        if user.is_district_admin:
+            return True
+        # In case the 403 handler should be called raise the exception
+        if raise_exception:
+            raise PermissionDenied("You must be a District Administrator to use this feature.")
+        # As the last resort, show the login form
+        return False
+    return user_passes_test(check_is_da, login_url=login_url)
+
+def teacher_required(login_url=None, raise_exception=False):
+    """
+    Decorator for views that checks whether a user is a Teacher. If
+    not, redirects to the log-in page unless the raise_exception parameter
+    is True, in which case the PermissionDenied exception is raised.
+    """
+    def check_is_teacher(user):
+        # First check if the user belongs to the group
+        if user.is_teacher:
+            return True
+        # In case the 403 handler should be called raise the exception
+        if raise_exception:
+            raise PermissionDenied("You must be a Teacher to use this feature.")
+        # As the last resort, show the login form
+        return False
+    return user_passes_test(check_is_teacher, login_url=login_url)
+
+
 @login_required
 def home(request):
     """
@@ -319,6 +355,13 @@ def render_to_pdf(template_src, context_dict):
 
 @login_required
 def checkins_pdf(request):
+    """
+    pdf for view checkins:
+    list all the checkins for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
     to_date = request.GET.get('to','')
@@ -372,6 +415,7 @@ def checkins_pdf(request):
 
 
 @login_required
+@teacher_required(raise_exception=True)
 def reports_in_chart(request):
     checkins = request.user.checkins
     from_date = request.GET.get('from', '')
@@ -528,6 +572,13 @@ def student_checkin_add(request, id):
 
 @login_required
 def students_csv(request):
+    """
+    csv for view students:
+    list all the students for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
+
     response = HttpResponse(content_type='text/csv')
 
     filename = f'AllHere Students Archive {datetime.now()}'
@@ -554,6 +605,12 @@ def students_csv(request):
 
 @login_required
 def students_pdf(request):
+    """
+    pdf for view students:
+    list all the students for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District Administrators.")
     response = HttpResponse(content_type='text/csv')
 
     filename = f'AllHere Students Archive {datetime.now()}'
@@ -583,7 +640,7 @@ def students_pdf(request):
     )
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
+@teacher_required(raise_exception=True)
 def reports(request):
     """
     displays report
@@ -621,22 +678,6 @@ def support(request):
     """
     return render(request, 'core/support.html')
 
-def district_admin_required(login_url=None, raise_exception=False):
-    """
-    Decorator for views that checks whether a user is a District Admin. If
-    not, redirects to the log-in page unless the raise_exception parameter
-    is True, in which case the PermissionDenied exception is raised.
-    """
-    def check_is_da(user):
-        # First check if the user belongs to the group
-        if user.is_district_admin:
-            return True
-        # In case the 403 handler should be called raise the exception
-        if raise_exception:
-            raise PermissionDenied("You must be a District Administrator to use this feature.")
-        # As the last resort, show the login form
-        return False
-    return user_passes_test(check_is_da, login_url=login_url)
 
 @login_required
 @district_admin_required(raise_exception=True)
