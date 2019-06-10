@@ -354,8 +354,6 @@ def checkins_pdf(request):
     pdf for view checkins:
     list all the checkins for teacher or school admin.  District Admin returns 404.
     """
-    if request.user.is_district_admin:
-        raise Http404("This view isn't defined for District Administrators.")
 
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
