@@ -700,7 +700,7 @@ def staff(request, school_id):
     List view of staff
     """
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
-    staff = school.staff.order_by('last_name','first_name')
+    staff = school.staff.filter(district=school.district).order_by('last_name','first_name')
     return render(request, 'core/staff_list.html', {
         'school': school,
         'staff': staff,
@@ -862,7 +862,7 @@ def staff_checkins(request, school_id, staff_id):
     """
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school
-    checkins = staff.checkins
+    checkins = staff.checkins.filter(student__school=school)
 
     context = {
         'checkins': checkins,
