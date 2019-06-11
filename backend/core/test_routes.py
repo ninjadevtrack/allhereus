@@ -921,3 +921,110 @@ def test_reports_chart_anonymous(client):
     # anonymous
     res = client.get('/reports-chart/')
     assert res.status_code == 302
+
+
+"""
+Url Tests url(r'teams/$', views.teams, name='teams'),
+"""
+def test_teams_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/teams/')
+    assert res.status_code == 200
+
+def test_teams_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/teams/')
+    assert res.status_code == 200
+
+def test_teams_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/teams/')
+    assert res.status_code == 200
+
+def test_teams_anonymous(client):
+    # anonymous
+    res = client.get('/teams/')
+    assert res.status_code == 302
+
+
+"""
+Url Tests url(r'support', views.support, name='support'),
+"""
+def test_support_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/support')
+    assert res.status_code == 200
+
+def test_support_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/support')
+    assert res.status_code == 200
+
+def test_support_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/support')
+    assert res.status_code == 200
+
+def test_support_anonymous(client):
+    # anonymous
+    res = client.get('/support')
+    assert res.status_code == 200
+
+"""
+Url Tests url(r'privacy', views.privacy, name='privacy'),
+"""
+def test_privacy_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/privacy')
+    assert res.status_code == 200
+
+def test_privacy_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/privacy')
+    assert res.status_code == 200
+
+def test_privacy_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/privacy')
+    assert res.status_code == 200
+
+def test_privacy_anonymous(client):
+    # anonymous
+    res = client.get('/privacy')
+    assert res.status_code == 200
+
+"""
+Url Tests url(r'teams/(?P<id>[0-9]+)/', views.team, name='team'),
+"""
+def test_team_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/teams/123/')
+    assert res.status_code == 200
+
+def test_team_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/teams/123/')
+    assert res.status_code == 200
+
+def test_team_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/teams/123/')
+    assert res.status_code == 200
+
+def test_team_anonymous(client):
+    # anonymous
+    res = client.get('/teams/123/')
+    assert res.status_code == 302
+
