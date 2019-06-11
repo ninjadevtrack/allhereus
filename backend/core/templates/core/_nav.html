@@ -20,11 +20,11 @@
           <a class="nav-link" href="{{ schools_url }}">Manage</a>
         </li>
       {% endif%}
-      {% if not request.user.is_district_admin %}
         {% url 'checkins' as checkins_url %}
         <li class="nav-item {% if request.get_full_path == checkins_url %} active {% endif %}">
           <a class="nav-link" href="{{ checkins_url }}">Check-ins</a>
         </li>
+      {% if not request.user.is_district_admin %}
         {% url 'students' as students_url %}
         <li class="nav-item {% if request.get_full_path == students_url %} active {% endif %}">
           <a class="nav-link" href="{{ students_url }}">Students</a>

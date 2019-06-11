@@ -13,7 +13,7 @@ def test_home_teacher(client, teacher):
     client.force_login(teacher)
     res = client.get('/')
     assert res.status_code == 200
-  
+
 def test_home_school_admin(client, school_admin):
     """
     route '/' for school admin
@@ -540,7 +540,8 @@ def test_checkins_district_admin(client, district_admin):
     # district_admin
     client.force_login(district_admin)
     res = client.get('/checkins/')
-    assert res.status_code == 404
+    assert res.status_code == 200
+
 def test_checkins_anonymous(client):
     # anonymous
     res = client.get('/checkins/')
@@ -835,7 +836,7 @@ def test_checkins_pdf_district_admin(client, district_admin):
     # district_admin
     client.force_login(district_admin)
     res = client.get('/checkins.pdf')
-    assert res.status_code == 404
+    assert res.status_code == 200
 
 def test_checkins_pdf_anonymous(client):
     # anonymous
@@ -861,7 +862,7 @@ def test_checkins_csv_district_admin(client, district_admin):
     # district_admin
     client.force_login(district_admin)
     res = client.get('/checkins.csv')
-    assert res.status_code == 404
+    assert res.status_code == 200
 
 def test_checkins_csv_anonymous(client):
     # anonymous

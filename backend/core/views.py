@@ -156,10 +156,8 @@ def profile_edit(request):
 @login_required
 def checkins(request):
     """
-    list all the checkins for teacher or school admin.  District Admin returns 404.
+    list all the checkins for teacher, school admin, district admin.
     """
-    if request.user.is_district_admin:
-        raise Http404("This view isn't defined for District Administrators.")
 
     def student_sort(a, b):
         if a.name < b.name:
@@ -275,11 +273,8 @@ def checkin_delete(request, id):
 def checkins_csv(request):
     """
     csv for view checkins:
-    list all the checkins for teacher or school admin.  District Admin returns 404.
+    list all the checkins for teacher, school adminand District Admin.
     """
-    if request.user.is_district_admin:
-        raise Http404("This view isn't defined for District Administrators.")
-
     response = HttpResponse(content_type='text/csv')
 
     filename = f'AllHere Checkins Archive {datetime.now()}'
@@ -359,8 +354,6 @@ def checkins_pdf(request):
     pdf for view checkins:
     list all the checkins for teacher or school admin.  District Admin returns 404.
     """
-    if request.user.is_district_admin:
-        raise Http404("This view isn't defined for District Administrators.")
 
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
