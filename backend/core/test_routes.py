@@ -45,7 +45,7 @@ def test_staff_student_edit_teacher(client, teacher, school, student):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/{}/students/{}/edit'.format(school.id, teacher.id, student.id))
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_staff_student_edit_district_admin(client, district_admin, school, student):
     # district_admin
@@ -57,7 +57,7 @@ def test_staff_student_edit_school_admin(client, school_admin, school, student):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/{}/students/{}/edit'.format(school.id, school_admin.id, student.id))
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_staff_student_edit_anonymous(client, school, student):
     # anonymous user
@@ -71,13 +71,13 @@ def test_staff_student_teacher(client, teacher, school, student):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/{}/students/{}/'.format(school.id, teacher.id, student.id))
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_staff_student_school_admin(client, school_admin, school, student):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/{}/students/{}/'.format(school.id, school_admin.id, student.id))
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_staff_student_district_admin(client, district_admin, school, student):
     # district_admin
@@ -151,13 +151,13 @@ def test_staff_checkin_teacher(client, teacher, school, checkin):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/{}/checkins/{}/'.format(school.id, teacher.id, checkin.id))
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_staff_checkin_school_admin(client, school_admin, school, checkin):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/{}/checkins/{}/'.format(school.id, school_admin.id, checkin.id))
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_staff_checkin_district_admin(client, district_admin, school, checkin):
     # district_admin
@@ -177,13 +177,13 @@ def test_staff_checkins_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/{}/checkins/'.format(school.id, teacher.id))
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_staff_checkins_school_admin(client, school_admin, school):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/{}/checkins/'.format(school.id, school_admin.id))
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_staff_checkins_district_admin(client, district_admin, school):
     # district_admin
@@ -203,13 +203,13 @@ def test_staff_profile_edit_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/{}/edit'.format(school.id, teacher.id))
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_staff_profile_edit_school_admin(client, school_admin, school):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/{}/edit'.format(school.id, school_admin.id))
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_staff_profile_edit_district_admin(client, district_admin, school):
     # district_admin
@@ -229,13 +229,13 @@ def test_staff_profile_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/{}/'.format(school.id, teacher.id))
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_staff_profile_school_admin(client, school_admin, school):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/{}/'.format(school.id, school_admin.id))
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_staff_profile_district_admin(client, district_admin, school):
     # district_admin
@@ -255,13 +255,13 @@ def test_staff_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/'.format(school.id, teacher.id))
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_staff_school_admin(client, school_admin, school):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/'.format(school.id, school_admin.id))
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_staff_district_admin(client, district_admin, school):
     # district_admin
@@ -281,13 +281,13 @@ def test_schools_teacher(client, teacher):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/')
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 def test_schools_school_admin(client, school_admin):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/')
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 def test_schools_district_admin(client, district_admin):
     # district_admin

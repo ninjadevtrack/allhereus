@@ -673,11 +673,12 @@ def support(request):
 
 
 @login_required
-@district_admin_required(raise_exception=True)
 def schools(request):
     """
-    List view of schools
+    list all the schools for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     district = request.user.district
     schools = request.user.schools.order_by('name')
     return render(request, 'core/school_list.html', {
@@ -687,11 +688,12 @@ def schools(request):
     })
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff(request, school_id):
     """
-    List view of staff
+    List view of staff for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = school.staff.filter(district=school.district).order_by('last_name','first_name')
     return render(request, 'core/staff_list.html', {
@@ -701,11 +703,12 @@ def staff(request, school_id):
     })
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff_profile(request, school_id, staff_id):
     """
-    Display a staff's profile
+    Display a staff's profile for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id)
     school_staff_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
@@ -729,11 +732,12 @@ def staff_profile(request, school_id, staff_id):
     return render(request, 'core/profile.html', context)
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff_profile_edit(request, school_id, staff_id):
     """
-    staff_profile in editing state
+    staff_profile in editing state for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id)
     staff_profile_kwargs = { 'school_id': school.id, 'staff_id': staff.id }
@@ -805,11 +809,13 @@ def staff_students(request, school_id, staff_id):
     })
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff_student(request, school_id, staff_id, student_id):
     """
-    Student detail view
+    Student details view for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
+    
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
     student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
@@ -821,11 +827,12 @@ def staff_student(request, school_id, staff_id, student_id):
     })
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff_student_edit(request, school_id, staff_id, student_id):
     """
-    Edit existing student
+    Editing exsting student for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
     student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
@@ -848,11 +855,12 @@ def staff_student_edit(request, school_id, staff_id, student_id):
 
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff_checkins(request, school_id, staff_id):
     """
-    list all the checkins for staff
+    list all the checkins for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school
     checkins = staff.checkins.filter(student__school=school)
@@ -866,11 +874,12 @@ def staff_checkins(request, school_id, staff_id):
     return render(request, 'core/checkins.html', context)
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff_checkin(request, school_id, staff_id, checkin_id):
     """
-    view an individual checkin
+    view an individual checkin for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id) # only allowing staff at the school
     checkin_event = get_object_or_404(staff.checkins, pk=checkin_id) # ensure the checkin doese in fact belong to the staff
