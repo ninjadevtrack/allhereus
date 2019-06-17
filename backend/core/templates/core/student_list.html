@@ -22,7 +22,7 @@ Students
         {% if request.user.role != 'DA' %}
         <div class="btn-group">
           <a href="{% url 'students_unassigned' %}" class="btn btn-info">Add Unassigned Students</a>
-          <a href="{% url 'student_add' %}" class="btn btn-new-student">New Student</a>
+          <!-- <a href="{% url 'student_add' %}" class="btn btn-new-student">New Student</a> -->
           <div class="dropdown">
             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Export

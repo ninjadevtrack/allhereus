@@ -476,6 +476,7 @@ def student_add(request):
     """
     Create new student
     """
+    raise Http404("This view is disabled for now.")
     if request.method == 'POST':
         form = StudentForm(request.user, request.POST)
         form.district = request.user.district
