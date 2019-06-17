@@ -461,8 +461,7 @@ def student_add(request):
     """
     Create new student view for district_admin or Teacher.  School_admin returns 404.
     """
-    if request.user.is_school_admin:
-        raise Http404("This view isn't defined for School_admin.")
+    raise Http404("This view is disabled for now.")
     if request.method == 'POST':
         form = StudentForm(request.user, request.POST)
         form.district = request.user.district

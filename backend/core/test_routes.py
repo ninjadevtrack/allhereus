@@ -675,7 +675,7 @@ def test_students_add_teacher(client, teacher):
     # teacher
     client.force_login(teacher)
     res = client.get('/students/add')
-    assert res.status_code == 200
+    assert res.status_code == 404
 def test_students_add_school_admin(client, school_admin):
     # school_admin
     client.force_login(school_admin)
@@ -686,7 +686,7 @@ def test_students_add_district_admin(client, district_admin):
     # district_admin
     client.force_login(district_admin)
     res = client.get('/students/add')
-    assert res.status_code == 200
+    assert res.status_code == 404
 def test_students_add_anonymous(client):
     # anonymous
     res = client.get('/students/add')
