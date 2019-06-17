@@ -656,7 +656,7 @@ def test_students_school_admin(client, school_admin):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/students/')
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_students_district_admin(client, district_admin):
     # district_admin
@@ -680,7 +680,7 @@ def test_students_add_school_admin(client, school_admin):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/students/add')
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_students_add_district_admin(client, district_admin):
     # district_admin
@@ -704,7 +704,7 @@ def test_students_unassigned_school_admin(client, school_admin):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/students/unassigned')
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_students_unassigned_district_admin(client, district_admin):
     # district_admin
@@ -728,7 +728,7 @@ def test_student_school_admin(client, school_admin, student):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/students/{}/'.format(student.id))
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_student_district_admin(client, district_admin, student):
     # district_admin
@@ -752,7 +752,7 @@ def test_student_school_admin(client, school_admin, student):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/students/{}/edit'.format(student.id))
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_student_district_admin(client, district_admin, student):
     # district_admin

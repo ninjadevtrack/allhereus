@@ -462,8 +462,10 @@ def reports_in_chart(request):
 @login_required
 def student(request, id):
     """
-    Student detail view
+    Display Student detail view for district_admin or Teacher.  School_admin returns 404.
     """
+    if request.user.is_school_admin:
+        raise Http404("This view isn't defined for School_admin.")
     student = get_object_or_404(Student, pk=id)
     return render(request, 'core/student.html', {
         'student': student,
@@ -474,8 +476,10 @@ def student(request, id):
 @login_required
 def student_add(request):
     """
-    Create new student
+    Create new student view for district_admin or Teacher.  School_admin returns 404.
     """
+    if request.user.is_school_admin:
+        raise Http404("This view isn't defined for School_admin.")
     if request.method == 'POST':
         form = StudentForm(request.user, request.POST)
         form.district = request.user.district
@@ -493,8 +497,10 @@ def student_add(request):
 @login_required
 def student_edit(request, id):
     """
-    Edit existing student
+    Edit existing student view for district_admin or Teacher.  School_admin returns 404.
     """
+    if request.user.is_school_admin:
+        raise Http404("This view isn't defined for School_admin.")
     student = get_object_or_404(Student, pk=id)
     if request.method == 'POST':
         form = StudentForm(request.user, request.POST, instance=student)
@@ -514,8 +520,10 @@ def student_edit(request, id):
 @login_required
 def students(request):
     """
-    List view of students
+    List view of students for district_admin or Teacher.  School_admin returns 404.
     """
+    if request.user.is_school_admin:
+        raise Http404("This view isn't defined for School_admin.")
     students = request.user.students.order_by('last_name')
     return render(request, 'core/student_list.html', {
         'students': students,
@@ -526,8 +534,10 @@ def students(request):
 @login_required
 def students_unassigned(request):
     """
-    List view/ form to assign unassigned students to teacher
+    List view/ form to assign unassigned students to teacher for district_admin or Teacher.  School_admin returns 404.
     """
+    if request.user.is_school_admin:
+        raise Http404("This view isn't defined for School_admin.")
     errors = []
     if request.method == 'POST':
         student_ids = []
