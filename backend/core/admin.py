@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
+from django.db.models import F
 from core.models import MyUser, Student, CheckIn, District, School, Section, SectionStudent, SectionTeacher
 
 
@@ -208,10 +208,30 @@ class SectionAdmin(admin.ModelAdmin):
 
     readonly_fields = ['ednudge_is_enabled','ednudge_section_id', 'ednudge_section_local_id', 'ednudge_merkleroot']
 
+class CheckInAdmin(admin.ModelAdmin):
+    ordering = ('teacher', 'student', 'date',)
+    list_display = ('district', 'school', 'teacher','student', 'date','status')
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.select_related('student').annotate(
+            _district=F('student__district'),
+            _school=F('student__school')
+        )
+        return queryset
+
+    def district(self, obj):
+        return obj.student.district
+    
+    def school(self, obj):
+        return obj.student.school
+
+    district.admin_order_field = '_district'
+    school.admin_order_field = '_school'
 
 admin.site.register(MyUser, UserAdmin)
 admin.site.register(Student, StudentAdmin)
-admin.site.register(CheckIn)
+admin.site.register(CheckIn, CheckInAdmin)
 admin.site.register(District, DisctrictAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Section, SectionAdmin)
