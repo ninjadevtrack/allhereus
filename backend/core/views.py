@@ -19,7 +19,7 @@ from functools import cmp_to_key, reduce
 from django.contrib.auth.decorators import user_passes_test
 from datetime import datetime, timedelta
 from operator import or_
-
+from .utils import download_checkins_csv
 from django.contrib.humanize.templatetags.humanize import naturaltime
 TABLE_DISPLAY_LIMIT = 100
 
@@ -275,16 +275,6 @@ def checkins_csv(request):
     csv for view checkins:
     list all the checkins for teacher, school adminand District Admin.
     """
-    response = HttpResponse(content_type='text/csv')
-
-    filename = f'AllHere Checkins Archive {datetime.now()}'
-    response['Content-Disposition'] = f'attachment; filename="{ filename }.csv"'
-
-    writer = csv.writer(response)
-
-    writer.writerow(['Date', 'teacher', 'Student', 'Status', 'Format',
-                     'Info learned', 'Info better', 'Success score'])
-
     student = request.GET.get('student','')
     from_date = request.GET.get('from','')
     to_date = request.GET.get('to','')
@@ -329,14 +319,7 @@ def checkins_csv(request):
     if to_date != '':
         to_date_checkins = [checkin for checkin in from_date_checkins if checkin.date.date() <= datetime.strptime(to_date, '%m/%d/%Y').date()]
 
-
-    for checkin in to_date_checkins:
-        writer.writerow([checkin.date, checkin.teacher, checkin.student,
-                         checkin.get_status_display(), checkin.get_mode_display(),
-                         checkin.info_learned, checkin.info_better,
-                         checkin.success_score])
-
-    return response
+    return download_checkins_csv(to_date_checkins)
 
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
