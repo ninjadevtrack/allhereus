@@ -5,8 +5,10 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.db.models import F
 from core.models import MyUser, Student, CheckIn, District, School, Section, SectionStudent, SectionTeacher
-
-
+import csv
+from django.http import HttpResponse
+from datetime import datetime
+from .utils import download_checkins_csv
 # https://github.com/django/django/blob/a96b981d84367fd41b1df40adf3ac9ca71a741dd/django/contrib/auth/forms.py#L64-L150
 class UserCreationForm(forms.ModelForm):
     """
@@ -208,6 +210,7 @@ class SectionAdmin(admin.ModelAdmin):
 
     readonly_fields = ['ednudge_is_enabled','ednudge_section_id', 'ednudge_section_local_id', 'ednudge_merkleroot']
 
+
 class CheckInAdmin(admin.ModelAdmin):
     ordering = ('teacher', 'student', 'date',)
     list_display = ('district', 'school', 'teacher','student', 'date','status')
@@ -226,8 +229,14 @@ class CheckInAdmin(admin.ModelAdmin):
     def school(self, obj):
         return obj.student.school
 
+    def download_csv(self, request, queryset):
+        return download_checkins_csv(queryset)
+    download_csv.short_description = "Download CSV"
+
     district.admin_order_field = '_district'
     school.admin_order_field = '_school'
+    actions = [download_csv]
+
 
 admin.site.register(MyUser, UserAdmin)
 admin.site.register(Student, StudentAdmin)
