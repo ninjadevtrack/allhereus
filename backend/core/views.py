@@ -459,9 +459,10 @@ def student(request, id):
 @login_required
 def student_add(request):
     """
-    Create new student view for district_admin or Teacher.  School_admin returns 404.
+    Create new student view for rostered user
     """
-    raise Http404("This view is disabled for now.")
+    if not request.user.is_rostered:
+        raise Http404("This view is not available for the rostered users.")
     if request.method == 'POST':
         form = StudentForm(request.user, request.POST)
         form.district = request.user.district
