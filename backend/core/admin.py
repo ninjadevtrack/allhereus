@@ -214,7 +214,7 @@ class SectionAdmin(admin.ModelAdmin):
 class CheckInAdmin(admin.ModelAdmin):
     ordering = ('teacher', 'student', 'date',)
     list_display = ('district', 'school', 'teacher','student', 'date','status')
-
+    list_filter = ('teacher','student', 'date','status')
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         queryset = queryset.select_related('student').annotate(
