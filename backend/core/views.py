@@ -787,7 +787,6 @@ def staff_password_set(request, school_id, staff_id):
     })
 
 @login_required
-@district_admin_required(raise_exception=True)
 def staff_students(request, school_id, staff_id):
     """
     List view of staff students
