@@ -213,8 +213,9 @@ class SectionAdmin(admin.ModelAdmin):
 
 class CheckInAdmin(admin.ModelAdmin):
     ordering = ('teacher', 'student', 'date',)
-    list_display = ('district', 'school', 'teacher','student', 'date','status')
-    list_filter = ('teacher','student', 'date','status')
+    list_display = ('district', 'school', 'teacher','student', 'date')
+    search_fields = ('student__district__name', 'student__school__name', 'teacher__first_name', 'teacher__last_name', 'student__first_name', 'student__last_name', 'date','status')
+
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         queryset = queryset.select_related('student').annotate(
