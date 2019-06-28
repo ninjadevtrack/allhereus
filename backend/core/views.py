@@ -789,8 +789,10 @@ def staff_password_set(request, school_id, staff_id):
 @login_required
 def staff_students(request, school_id, staff_id):
     """
-    List view of staff students
+    List view of staff students for district_admin or school_admin.  Teacher returns 404.
     """
+    if request.user.is_teacher:
+        raise Http404("This view isn't defined for Teacher.")
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id)
     students = staff.students.filter(school=school).order_by('last_name','first_name')

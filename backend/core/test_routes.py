@@ -98,7 +98,7 @@ def test_staff_students_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
     res = client.get('/schools/{}/staff/{}/students/'.format(school.id, teacher.id))
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_staff_students_school_admin(client, school_admin, school):
     # school_admin
