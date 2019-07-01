@@ -41,6 +41,7 @@ Check-ins
             <input id="to" name="to" type="text" class="form-control"/>
           </div>
         </div>
+        {% if request.user.is_teacher %}
         <div class="col-md-3 mr-2">
           <select name="student" id="student">
             <option value="all" selected>All</option>
@@ -49,6 +50,7 @@ Check-ins
             {% endfor %}
           </select>
         </div>
+        {% endif %}
         <input id="search" class="form-control col-md-2 mr-2" name="search" type="search" placeholder="search...">
           {% if staff and request.user.is_district_admin %}
           {% else %}
