@@ -152,6 +152,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
         return self.role == 'DA'
 
     @property
+    def is_rostered(self):
+        return self.district.ednudge_is_enabled
+
+    @property
     def checkins(self):
         if self.is_district_admin:
             return CheckIn.objects.filter(student__district=self.district).order_by('-date').all()

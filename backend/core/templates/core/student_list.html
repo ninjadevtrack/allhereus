@@ -22,7 +22,9 @@ Students
         {% if request.user.role != 'DA' %}
         <div class="btn-group">
           <a href="{% url 'students_unassigned' %}" class="btn btn-info">Add Unassigned Students</a>
-          <a href="{% url 'student_add' %}" class="btn btn-new-student">New Student</a>
+          {% if not request.user.is_rostered %}
+            <a href="{% url 'student_add' %}" class="btn btn-new-student">New Student</a>
+          {% endif %}
           <div class="dropdown">
             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Export
