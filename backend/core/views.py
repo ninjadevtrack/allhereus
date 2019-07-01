@@ -508,6 +508,8 @@ def students(request):
     if request.user.is_school_admin:
         raise Http404("This view isn't defined for School_admin.")
     students = request.user.students.order_by('last_name')
+    for student in students:
+        student.teacher_checkins = student.checkins.filter(teacher=request.user).count()
     return render(request, 'core/student_list.html', {
         'students': students,
         'student_total': len(students),
