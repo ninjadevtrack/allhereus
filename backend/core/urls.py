@@ -54,4 +54,6 @@ urlpatterns = [
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/$', views.staff_students, name='staff_students'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/$', views.staff_student, name='staff_student'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/edit$', views.staff_student_edit, name='staff_student_edit'),
+
+    url(r'^library/$', views.library, name='library'),
 ]
