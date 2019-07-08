@@ -99,8 +99,10 @@ ul {
               <p class="text-danger">{{ error }}</p>
             {% endfor %}
           </div>
+        </div>
 
-          <div class="form-group col-md-12">
+        <div class="form-row">
+          <div class="form-group col-md-6">
             <label for="{{ form.success_score.html_name }}">
               {% if request.user.district.custom_text_succces_score %}
                 {{ request.user.district.custom_text_succces_score }}
@@ -108,10 +110,21 @@ ul {
                 How successful was the recent check-in you had with your mentee?
               {% endif %}
             </label>
-            <div class="col-md-4">
               {{ form.success_score }}
-            </div>
           </div>
+
+          <div class="form-group col-md-6">
+              <label {#for="{{ form.strategy.html_name }} #}">
+                  Strategy:
+              </label>
+              {% if not form.instance.id %}
+                {{ form.strategy }}
+              {% else %}
+              <div>
+                {{ form.instance.strategy }}
+              </div>
+              {% endif %}
+              </div>
         </div>
 
         <div class="form-group col-md-12">

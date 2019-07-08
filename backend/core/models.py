@@ -5,6 +5,10 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.urls import reverse
+from versions.models import Versionable, VersionManager
+from versions.fields import VersionedForeignKey
+from datetime import datetime
+from django.db.models import Q
 
 class SoftDeleteInfo(models.Model):
     """Abstract model for storing Soft Delete model info"""
@@ -22,6 +26,35 @@ class SoftDeleteInfo(models.Model):
 
     class Meta:
         abstract = True
+
+class GradeLevelField(models.CharField):
+    def __init__(self, *args, **kwargs):
+
+        GRADE_LEVEL_CHOICES=(
+            ('PK', 'Pre-Kindergarten'),
+            ('K', 'Kindergarten'),
+            ('1', '1st Grade'),
+            ('2', '2nd Grade'),
+            ('3', '3rd Grade'),
+            ('4', '4th Grade'),
+            ('5', '5th Grade'),
+            ('6', '6th Grade'),
+            ('7', '7th Grade'),
+            ('8', '8th Grade'),
+            ('9', '9th Grade'),
+            ('10', '10th Grade'),
+            ('11', '11th Grade'),
+            ('12', '12th Grade'),
+            ('O', 'Other')
+        )
+
+        kwargs['choices'] = GRADE_LEVEL_CHOICES
+        kwargs['max_length'] = 2
+        kwargs['null'] = True
+        kwargs['blank'] = True
+        kwargs['help_text'] =  'Grade level of student.'
+
+        super(GradeLevelField, self).__init__(*args, **kwargs)
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None, first_name=None, last_name=None):
@@ -431,6 +464,42 @@ class CheckIn(CommonInfo):
         help_text='What could have made this mentor check-in better?',
     )
 
+    _strategy = VersionedForeignKey(
+        'Strategy',
+        db_column="strategy",
+        null=True,
+        blank=True,
+        on_delete=models.DO_NOTHING)
+
+    strategy_as_of = models.DateTimeField(
+        null=True,
+        default=None,
+        blank=True,
+        help_text='The date the strategy was changed.  This is used to render the correct version of the strategy.',
+    )
+
+    @property
+    def strategy(self):
+        try:
+            if self._strategy == None:
+                return None
+            return Strategy.objects.filter(identity=self._strategy.identity).as_of(self.strategy_as_of).first()
+        except:
+            return Strategy.objects.filter(
+                identity=self._strategy_id).as_of(
+                    self.strategy_as_of).first()
+
+    @property
+    def strategy_display_name(self):
+        if self._strategy == None:
+            return None
+        return self.strategy.display_name
+
+    @strategy.setter
+    def strategy(self, value):
+        self.strategy_as_of = datetime.utcnow().replace(tzinfo=timezone.utc)
+        self._strategy = value
+
     @property
     def district(self):
         return self.student.district
@@ -745,3 +814,65 @@ class StudentDailyAttendance(CommonInfo):
     def __str__(self):
         return "student_id: {}, school_id: {}, date: {}, mark: {}".format(
             self.student.id, self.school.id, self.date, self.mark)
+
+class Practice(CommonInfo):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name}"
+
+class StrategyManager(VersionManager):
+    def for_district(self, district):
+        return super().get_queryset().filter(Q(district=district) | Q(district=None) )
+
+class Strategy(Versionable):
+    """Intervention Strategy
+
+    This is a Versionable object which means that behind the scenes, it is stored using Type 2 Slowy Changing Dimensions.
+    This means that for any given Strategy, there will always be one effective or "active" version.  For models
+    that reference Strategy, like CheckIn, they can get the version of the Strategy at the time
+    the user set it by looking it up like this Strategy.objects.filter(identity==my_things_identity).as_of(time_stamp).
+    """
+
+    class Meta:
+        verbose_name_plural = "Strategies"
+
+    objects = StrategyManager()
+
+    name = models.CharField(max_length=255,
+        help_text="Name of the Strategy.  This should be globally unique so that you can identify this strategy as it changes over time.  The system does not enforce global uniqueness though.")
+    display_name = models.CharField(max_length=255,
+        help_text="The Strategy name that is displayed on checkin forms.")
+    district = models.ForeignKey(
+            District,
+            null=True,
+            blank=True,
+            help_text='If blank, the Strategy is Global and applies to all users.  If specified, the Strategy only applies to the specified district. Once an intervention strategy is created, you cannot change the district since that would have potential security implications.',
+    )
+    practice = models.ForeignKey(Practice,
+        help_text='The Practice this Strategy belongs to.')
+    description = models.CharField(max_length=255,
+        help_text='Expository text about the Strategy; used in page views to elaborate on the Strategy beyond what is in the display_name.')
+    # strategy_content = # TODO: need s3 / plugable solution for `media`
+    grade_level_from = GradeLevelField(
+        help_text='grade_level_from and grade_level_to are the range of grade_levels appropriate for this strategy.'
+    )
+    grade_level_to = GradeLevelField(
+        help_text='grade_level_from and grade_level_to are the range of grade_levels appropriate for this strategy.'
+    )
+    is_tier1 =  models.BooleanField(
+        default=False,
+        help_text='True if Tier1 Strategy.'
+        )
+    is_tier2 =  models.BooleanField(
+        default=False,
+        help_text='True if Tier2 Strategy.'
+        )
+    is_tier3 =  models.BooleanField(
+        default=False,
+        help_text='True if Tier3 Strategy.'
+        )
+
+    def __str__(self):
+        return self.display_name
+

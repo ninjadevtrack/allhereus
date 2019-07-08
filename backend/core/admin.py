@@ -4,11 +4,15 @@ from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.db.models import F
-from core.models import MyUser, Student, CheckIn, District, School, Section, SectionStudent, SectionTeacher
+from core.models import MyUser, Student, CheckIn, District, School, Section, SectionStudent, SectionTeacher, Strategy, Practice
 import csv
 from django.http import HttpResponse
 from datetime import datetime
 from .utils import download_checkins_csv
+
+
+from versions.admin import VersionedAdmin
+
 # https://github.com/django/django/blob/a96b981d84367fd41b1df40adf3ac9ca71a741dd/django/contrib/auth/forms.py#L64-L150
 class UserCreationForm(forms.ModelForm):
     """
@@ -210,11 +214,21 @@ class SectionAdmin(admin.ModelAdmin):
 
     readonly_fields = ['ednudge_is_enabled','ednudge_section_id', 'ednudge_section_local_id', 'ednudge_merkleroot']
 
-
 class CheckInAdmin(admin.ModelAdmin):
+    class Meta:
+        model = CheckIn
     ordering = ('teacher', 'student', 'date',)
-    list_display = ('district', 'school', 'teacher','student', 'date', 'status')
+    list_display = ('district', 'school', 'teacher','student', 'date', 'status','strategy_display_name')
     search_fields = ('student__district__name', 'student__school__name', 'teacher__first_name', 'teacher__last_name', 'student__first_name', 'student__last_name', 'date')
+    readonly_fields = ('strategy_display_name','strategy_as_of')
+    fieldsets = (
+        ('CheckIn Info', {
+            'fields': (
+                'date','teacher','student','status','mode','notify_school_admin',
+                'success_score','info_learned','info_better','strategy_display_name','strategy_as_of',
+            )
+        }),
+    )
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -226,7 +240,7 @@ class CheckInAdmin(admin.ModelAdmin):
 
     def district(self, obj):
         return obj.student.district
-    
+
     def school(self, obj):
         return obj.student.school
 
@@ -239,9 +253,34 @@ class CheckInAdmin(admin.ModelAdmin):
     actions = [download_csv]
 
 
+class StrategyVersionedAdmin(VersionedAdmin):
+    def get_readonly_fields(self, request, obj=None):
+        if obj: #editing an exising object
+            return self.readonly_fields + ('name','district',)
+        return self.readonly_fields
+
+class StrategyAdmin(StrategyVersionedAdmin):
+    class Meta:
+        model = Strategy
+
+    list_display_show_identity = False # we don't need the UUID in the list view since 'name' is the UK
+    list_display = ('district', 'practice', 'name', 'display_name',)
+    fieldsets = (
+            ('Strategy Info', {
+                'fields': (
+                    'name', 'display_name','practice','description',
+                    'grade_level_from','grade_level_to',
+                    'is_tier1','is_tier2','is_tier3',)}),
+            ('District Info', {
+                 'fields': (
+                     'district',)}),
+    )
+
 admin.site.register(MyUser, UserAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(CheckIn, CheckInAdmin)
 admin.site.register(District, DisctrictAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Section, SectionAdmin)
+admin.site.register(Strategy, StrategyAdmin)
+admin.site.register(Practice)

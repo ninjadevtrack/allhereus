@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'django.contrib.sites',
     'raven.contrib.django.raven_compat',
+    'versions',
 ]
 if DEBUG:
     INSTALLED_APPS.append('django.contrib.staticfiles')

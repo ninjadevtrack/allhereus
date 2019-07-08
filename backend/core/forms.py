@@ -1,5 +1,7 @@
 from django.forms import ModelForm, ModelChoiceField, IntegerField, NumberInput, TypedChoiceField, ValidationError, CharField
-from .models import MyUser, CheckIn, Student, School
+from .models import MyUser, CheckIn, Student, School, Strategy
+
+
 
 class CheckInForm(ModelForm):
     """Custom class to create/edit CheckIn"""
@@ -10,12 +12,19 @@ class CheckInForm(ModelForm):
         model = CheckIn
         fields = ['date', 'teacher', 'student', 'status',
                   'mode', 'notify_school_admin', 'success_score',
-                  'info_learned', 'info_better']
+                  'info_learned', 'info_better',]
+
+    def save(self, *args, **kwargs):
+        if self.instance.id == None:
+            self.instance.strategy = self.cleaned_data['strategy']
+        return super().save(*args, **kwargs)
+
 
     def clean(self):
         cleaned_data = super(CheckInForm, self).clean()
         teacher = cleaned_data.get("teacher")
         student = cleaned_data.get("student")
+
 
         # Basic validation of relationships
         # We should enforce this more on the model side
@@ -29,6 +38,11 @@ class CheckInForm(ModelForm):
     def __init__(self, user, student, *args, **kwargs):
         self.user = user
         super(CheckInForm, self).__init__(*args, **kwargs)
+        if self.instance.id == None:
+            self.fields['strategy'] = ModelChoiceField(
+                queryset=Strategy.objects.for_district(user.district).as_of(),
+                required=False)
+
         # District admins can view teachers and students of distrct
         # School admins can view teachers and students of school
         # Teachers can view their students and cannot change the teacher field
@@ -61,7 +75,6 @@ class CheckInForm(ModelForm):
             field = self.fields.get(field_name)
             if field and isinstance(field, TypedChoiceField):
                 field.choices = [('', "Select one")] + field.choices[1:]
-
 
 class ProfileForm(ModelForm):
     class Meta:

@@ -811,7 +811,7 @@ def staff_student(request, school_id, staff_id, student_id):
     """
     if request.user.is_teacher:
         raise Http404("This view isn't defined for Teacher.")
-    
+
     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
     staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
     student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
