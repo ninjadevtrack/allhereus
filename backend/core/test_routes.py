@@ -1028,3 +1028,28 @@ def test_team_anonymous(client):
     res = client.get('/teams/123/')
     assert res.status_code == 302
 
+"""
+Url Tests url(r'/library/$', views.library, name='library')
+"""
+def test_library_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/library/')
+    assert res.status_code == 200
+
+def test_library_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/library/')
+    assert res.status_code == 200
+
+def test_library_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/library/')
+    assert res.status_code == 200
+
+def test_library_anonymous(client):
+    # anonymous
+    res = client.get('/library/')
+    assert res.status_code == 302

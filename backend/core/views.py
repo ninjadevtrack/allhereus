@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
 from django.contrib.auth.forms import SetPasswordForm
 
-from .models import CheckIn, Student, School, MyUser
+from .models import CheckIn, Student, School, MyUser, Strategy
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
 import io
@@ -888,3 +888,15 @@ def staff_checkin(request, school_id, staff_id, checkin_id):
         'success_score_percentage': checkin_event.success_score / 10 * 100,
         'viewonly': True,
     })
+
+@login_required
+def library(request):
+    """
+    the landing page for Intevention Stratgy Library
+    """
+    context = {
+        'strategies': Strategy.objects.as_of(),
+        'total': len(request.user.checkins),
+    }
+
+    return render(request, 'core/library.html', context=context)
