@@ -87,6 +87,7 @@ Check-ins
           <th>School</th>
           <th>Status</th>
           <th>Format</th>
+          <th>Strategy</th>
           <th>Feedback</th>
           <th>Better</th>
           <th data-orderable="false"></th>
@@ -103,6 +104,7 @@ Check-ins
             <td>{{ checkin.student.school.name }}</td>
             <td>{{ checkin.get_status_display }}</td>
             <td>{{ checkin.get_mode_display }}</td>
+            <td>{{ checkin.strategy }}</td>
             <td class="table-row-text">{{ checkin.info_learned }}</td>
             <td class="table-row-text">{{ checkin.info_better }}</td>
             <td>

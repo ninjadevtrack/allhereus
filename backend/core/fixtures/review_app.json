@@ -922,5 +922,92 @@
     "action_flag": 2,
     "change_message": "[{\"changed\": {\"fields\": [\"district\", \"school\"]}}]"
   }
+},
+{
+  "model": "core.practice",
+  "pk": 1,
+  "fields": {
+    "created_on": "2019-06-25T18:35:29.140Z",
+    "modified_on": "2019-06-25T18:35:29.140Z",
+    "name": "Motivation"
+  }
+},
+{
+  "model": "core.practice",
+  "pk": 2,
+  "fields": {
+    "created_on": "2019-06-26T18:34:16.269Z",
+    "modified_on": "2019-06-26T18:34:16.269Z",
+    "name": "Foster Positive Family Engagement"
+  }
+},
+{
+  "model": "core.practice",
+  "pk": 3,
+  "fields": {
+    "created_on": "2019-06-26T18:34:24.978Z",
+    "modified_on": "2019-06-26T18:34:24.978Z",
+    "name": "Build Background"
+  }
+},
+{
+  "model": "core.strategy",
+  "pk": "30f34f9f-1a6f-4216-9c1c-609daf1cebf6",
+  "fields": {
+    "identity": "30f34f9f-1a6f-4216-9c1c-609daf1cebf6",
+    "version_start_date": "2019-06-26T18:48:09.813Z",
+    "version_end_date": null,
+    "version_birth_date": "2019-06-26T18:48:09.813Z",
+    "name": "Check and Connect",
+    "display_name": "Check and Connect",
+    "district": null,
+    "practice": 1,
+    "description": "is an intervention used with k-12 who show warning signs",
+    "grade_level_from": "K",
+    "grade_level_to": "12",
+    "is_tier1": true,
+    "is_tier2": false,
+    "is_tier3": false
+  }
+},
+{
+  "model": "core.strategy",
+  "pk": "a73e035c-93c2-4652-9c61-5ba21918c558",
+  "fields": {
+    "identity": "a73e035c-93c2-4652-9c61-5ba21918c558",
+    "version_start_date": "2019-06-26T18:50:48.410Z",
+    "version_end_date": null,
+    "version_birth_date": "2019-06-26T18:50:48.410Z",
+    "name": "Inquiry and Research",
+    "display_name": "Inquiry and Research",
+    "district": null,
+    "practice": 3,
+    "description": "involves learning about the student before planning your first home visit.  This could be through data mining",
+    "grade_level_from": "PK",
+    "grade_level_to": "12",
+    "is_tier1": true,
+    "is_tier2": false,
+    "is_tier3": false
+  }
+},
+{
+  "model": "core.strategy",
+  "pk": "e30ce448-5d01-4031-8991-b393eb00363e",
+  "fields": {
+    "identity": "e30ce448-5d01-4031-8991-b393eb00363e",
+    "version_start_date": "2019-06-26T18:49:27.318Z",
+    "version_end_date": null,
+    "version_birth_date": "2019-06-26T18:49:27.318Z",
+    "name": "Goal Setting Talk",
+    "display_name": "Goal Setting Talk",
+    "district": null,
+    "practice": 2,
+    "description": "provides the opportunity for mentors to plan each conversation with a family around the goals for",
+    "grade_level_from": "K",
+    "grade_level_to": "12",
+    "is_tier1": true,
+    "is_tier2": false,
+    "is_tier3": false
+  }
 }
 ]

@@ -31,13 +31,14 @@
         </li>
         {% url 'reports' as reports_url %}
         {% if request.user.is_teacher %}
-        <li class="nav-item {% if request.get_full_path == reports %} active {% endif %}">
+        <li class="nav-item {% if request.get_full_path == reports_url %} active {% endif %}">
           <a class="nav-link" href="{{ reports_url }}">Reports</a>
         </li>
         {% endif %}
       {% endif %}
-      <li class="nav-item {% if request.get_full_path == support %} active {% endif %}">
-        <a class="nav-link" href="{% url 'support' %}">Help</a>
+      {% url 'support' as support_url %}
+      <li class="nav-item {% if request.get_full_path == support_url %} active {% endif %}">
+        <a class="nav-link" href="{{ support_url }}">Help</a>
       </li>
     {% endif %}
     </ul>
