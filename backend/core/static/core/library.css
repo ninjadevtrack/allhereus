@@ -25,3 +25,7 @@
 .library-item:hover {
     font-weight: bold !important;
 }
+
+.stretched-link:hover {
+    text-decoration: none;
+}
