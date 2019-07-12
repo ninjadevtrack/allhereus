@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Allhere Strategies
+{% endblock %}
+
+{% block content %}
+<article class="container">
+  <div class="row mb-4 mt-3 d-flex justify-content-left">
+    {% for strategy in strategies%}
+      {% include "core/strategy_tile.html" with strategy=strategy %}
+    {% endfor %}
+  </div>
+</article>
+{% endblock %}
