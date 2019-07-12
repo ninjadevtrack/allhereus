@@ -901,7 +901,6 @@ def library(request):
 
     return render(request, 'core/library.html', context=context)
 
-@login_required
 def strategy(request, strategy_id):
     """
     the details page for an Intervention Strategy.
@@ -911,3 +910,13 @@ def strategy(request, strategy_id):
     }
 
     return render(request, 'core/strategy.html', context=context)
+
+def strategies(request):
+    """
+    the landing page for Intevention Stratgy Library
+    """
+    context = {
+        'strategies': Strategy.objects.as_of(),
+    }
+
+    return render(request, 'core/strategies.html', context=context)
