@@ -911,6 +911,7 @@ def strategy(request, strategy_id):
 
     return render(request, 'core/strategy.html', context=context)
 
+@login_required
 def strategies(request):
     """
     the landing page for Intevention Stratgy Library
