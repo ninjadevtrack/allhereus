@@ -9,67 +9,76 @@ Strategy
   <section class="space-between">
       <h1 class="mt-3 mb-3">{{ strategy.display_name }}</h1>
   </section>
-  <section class="row">
-    <div class="col-lg-6 col-md-12 pb-2">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Details</h4>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Date:</b> {{ checkin.date }}</li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Teacher:</b> {{ checkin.teacher }}</li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Student:</b> {{ checkin.student }}</li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <b>Format:</b> {% if checkin.get_mode_display %}{{ checkin.get_mode_display }} {% else %} <span class="text-muted">No mode was entered for this field.</span>{% endif %}</li>
-          </ul>
+  <section class="container">
+    <div class="row">
+      <h4 class="col">Grade Level</h4>
+      <div class="col">{{ strategy.grade_level_from}} - {{ strategy.grade_level_to}}</div>
+    </div>
+    <div class="row">
+      <h4 class="col">Student Grouping</h4>
+      <div class="col">{# TODO #}</div>
+    </div>
+    <div class="row">
+      <h4 class="col">Root Cause Domain(s)</h4>
+      <div class="col">{# TODO #}</div>
+    </div>
+    <div class="row">
+      <h4 class="col">Objective</h4>
+      <div class="col">{# TODO #}</div>
+    </div>
+    <div class="row">
+      <h4 class="col">Description</h4>
+      <div class="col">{{ strategy.description }}</div>
+    </div>
+    <div class="row">
+      <h4 class="col">Materials</h4>
+      <div class="col">{# TODO #}</div>
+    </div>
+    <div class="row">
+      <h4 class="col">Staff Actions</h4>
+      <div class="col">
+        <div>
+          <h5>Before</h5>
+          <div>{# TODO #}...before stuff</div>
         </div>
-      </div>
-      <div class="card mt-2">
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Status:</b> {{ checkin.get_status_display }} </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Strategy:</b> {{ checkin.strategy }} </li>
-          </ul>
+        <div>
+          <h5>After</h5>
+          <div>{# TODO #}...after stuff</div>
         </div>
       </div>
     </div>
+    <div class="row">
+      <h4 class="col">Student Actions</h4>
+      <div class="col">{# TODO #}</div>
     </div>
-    <div class="col-lg-6 col-md-12 pb-2">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Results</h4>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Notify School Admin:</b> {% if checkin.notify_school_admin %} Yes {% else %} No {% endif %}</li>
-            <li class="list-group-item d-flex justify-content-between align-items-center"><b>Success Score:</b> {{ checkin.success_score }} / 10</li>
-          </ul>
-        </div>
-      </div>
-      <div class="card mt-2">
-        <div class="card-body">
-          <h4 class="card-title">Information Gathered</h4>
-          {% if checkin.info_learned %}
-          <div class="card-text pre-wrap">
-          {{ checkin.info_learned }}
-          {% else %}
-          <div class="card-text text-muted">
-          No information was entered for this field.
-          {% endif %}
+  <div class="row">
+    <h4 class="col">Family Actions</h4>
+    <div class="col">{# TODO #}</div>
+  </div>
+  <div class="row">
+    <h4 class="col">Evidence of Success (Address student engagement, family engagement, and content produced.)</h4>
+    <div class="col">{# TODO #}</div>
+  </div>
+  <div class="row">
+    <h4 class="col">Quick Tips</h4>
+    <div class="col">{# TODO #}</div>
+  </div>
+  <div class="row">
+    <h4 class="col">Watch Out For!</h4>
+    <div class="col">{# TODO #}</div>
+  </div>
+  </section>
+  <section class="container">
+      <div class="row">
+          <h4 class="col">Other Resources</h4>
+          <div class="col">
+            <h5>Outside Links</h5>
           </div>
-        </div>
-      </div>
-      <div class="card mt-2">
-        <div class="card-body">
-          <h4 class="card-title">Improvements for Future</h4>
-          {% if checkin.info_better %}
-          <div class="card-text pre-wrap">
-          {{ checkin.info_better }}
-          {% else %}
-          <div class="card-text text-muted">
-          No improvements were entered for this field.
-          {% endif %}
+          <div class="col">
+            <h5>Helpful Links</h5>
           </div>
-        </div>
       </div>
-    </div>
+  </section>
 </article>
 
 {% endblock %}
