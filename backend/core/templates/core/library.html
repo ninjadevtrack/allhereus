@@ -33,7 +33,7 @@
               <a class="stretched-link" href="#">
                 <p class="card-title mb-3 text-dark library-item-title">Framework Overview</p>
                 <img src="{% static 'core/research.svg' %}" width="50"/>
-                <p class="card-text mt-2 text-dark">Explore the why behind AllHere Strategies</p>
+                <p class="card-text mt-2 text-dark">&nbsp;&nbsp;Explore the why behind AllHere Strategies&nbsp;&nbsp;</p>
               </a>
           </div>
         </div>
@@ -58,19 +58,8 @@
   </section>
 
   <div class="row mb-4 mt-3 d-flex justify-content-left">
-
     {% for strategy in strategies%}
-    <div class="col-md-4">
-      <div class="card text-left mb-4 library-item">
-        <div class="card-body">
-          <a class="stretched-link text-dark" href="#">
-            <p class="mb-4 card-text font-weight-bold text-dark">{{ strategy.practice }}</p>
-            <p class="mb-4 card-text "><span class="font-weight-normal">Strategy:</span> {{ strategy.display_name }}</p>
-            <p class="mb-0 card-text"><span class="font-weight-bold">Description:</span> <span class="font-italic">{{ strategy.display_name }}</span> {{ strategy.description }}</p>
-          </a>
-        </div>
-      </div>
-    </div>
+      {% include "core/strategy_tile.html" with strategy=strategy %}
     {% endfor %}
 
   </div>

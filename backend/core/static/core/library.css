@@ -3,7 +3,7 @@
     border-radius: 0px;
     padding: 10px;
     color: black;
-    font-size: 25px;
+    font-size: 20px;
 }
 .library-search::placeholder {
     color: black;
@@ -28,4 +28,41 @@
 
 .stretched-link:hover {
     text-decoration: none;
+}
+
+.strategy-tile {
+    height: 350px;
+}
+
+.strategy-button {
+    background-color: #4e4e4e !important;
+    width: 100px;
+    color: white !important;
+    margin: 2px;
+}
+
+.strategy-button a {
+    color: white !important;
+}
+
+.strategy-button a:hover {
+    text-decoration: none;
+}
+
+.heart {
+    font-size: 24px;
+    color:white; 
+}
+
+.heart .inside{
+    position:absolute;
+    font-size: 20px;
+    color: #4e4e4e !important;
+    left:2px;
+    top:2px;
+}
+
+.dropdown-toggle.track-button {
+    padding-left: 10px;
+    color: black !important;
 }
