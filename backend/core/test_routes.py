@@ -1053,3 +1053,29 @@ def test_library_anonymous(client):
     # anonymous
     res = client.get('/library/')
     assert res.status_code == 302
+
+"""
+Url Tests url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy')
+"""
+def test_strategy_teacher(client, teacher, strategy):
+    # teacher
+    client.force_login(teacher)
+    res = client.get(f'/strategies/{strategy.id}/')
+    assert res.status_code == 200
+
+def test_library_school_admin(client, school_admin, strategy):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get(f'/strategies/{strategy.id}/')
+    assert res.status_code == 200
+
+def test_library_district_admin(client, district_admin, strategy):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get(f'/strategies/{strategy.id}/')
+    assert res.status_code == 200
+
+def test_library_anonymous(client, strategy):
+    # anonymous
+    res = client.get(f'/strategies/{strategy.id}/')
+    assert res.status_code == 302
