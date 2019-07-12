@@ -900,3 +900,14 @@ def library(request):
     }
 
     return render(request, 'core/library.html', context=context)
+
+@login_required
+def strategy(request, strategy_id):
+    """
+    the details page for an Intervention Strategy.
+    """
+    context = {
+        'strategy': Strategy.objects.get(id=strategy_id),
+    }
+
+    return render(request, 'core/strategy.html', context=context)
