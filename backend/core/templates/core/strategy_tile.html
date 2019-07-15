@@ -1,3 +1,4 @@
+{% load static%}
 <div class="col-md-4">
     <div class="card text-left mb-4 library-item strategy-tile">
         <div class="card-body">
@@ -8,17 +9,13 @@
         </a>
         </div>
         <div class="d-flex justify-content-end">
-        <div class="btn btn-default btn-lg strategy-button" >
-            <a href="#">
-                <!-- <span class="glyphicon glyphicon-heart heart">
-                    <span class="inside glyphicon glyphicon-heart"></span>
-                </span> -->
-                Like
-            </a>
-        </div>
-        <div class="btn btn-default btn-lg strategy-button">
-            <a href="{% url 'checkin_add' %}">Track</a>
-        </div>
+            <div class="btn btn-default btn-lg heart">
+                <a href="#">
+                </a>
+            </div>
+            <div class="btn btn-default btn-lg strategy-button">
+                <a href="{% url 'checkin_add' %}">Track</a>
+            </div>
         </div>
     </div>
 </div>
