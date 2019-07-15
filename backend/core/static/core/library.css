@@ -31,7 +31,12 @@
 }
 
 .strategy-tile {
-    height: 500px;
+    height: 350px !important;
+}
+
+.strategy-description {
+    max-height: 140px !important;
+    overflow: hidden;
 }
 
 .strategy-button {
