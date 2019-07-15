@@ -917,7 +917,7 @@ def strategies(request):
     the landing page for Intevention Stratgy Library
     """
     context = {
-        'strategies': Strategy.objects.as_of(),
+        'strategies': Strategy.objects.as_of().order_by('practice', 'display_name'),
     }
 
     return render(request, 'core/strategies.html', context=context)
