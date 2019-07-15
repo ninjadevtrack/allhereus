@@ -35,12 +35,19 @@
 }
 
 .strategy-button {
-    background-color: #4e4e4e !important;
+    background-color: black;
     width: 100px;
     color: white !important;
     margin: 2px;
 }
-
+.heart {
+    background: url('./heart.png') no-repeat center;
+    background-size: 100% 160%;
+    background-color: transparent !important;
+    border-radius: 10px 10px 6px 6px !important;
+    width: 100px;
+    height: 50px;
+}
 .strategy-button a {
     color: white !important;
 }
