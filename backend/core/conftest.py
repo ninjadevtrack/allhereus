@@ -6,6 +6,8 @@ from .models import (
     Student,
     District,
     School,
+    Practice,
+    Strategy,
 )
 
 @pytest.fixture
@@ -78,3 +80,17 @@ def checkin(teacher, student):
     return CheckIn.objects.create(
         teacher=teacher,
         student=student)
+
+@pytest.fixture
+def practice():
+    return Practice.objects.create(
+        name="Practice 1")
+
+@pytest.fixture
+def strategy(practice):
+    return Strategy.objects.create(
+        practice=practice,
+        name="Test Strategy",
+        display_name="Test Strategy Display Name",
+        grade_level_from="k",
+        grade_level_to="12")

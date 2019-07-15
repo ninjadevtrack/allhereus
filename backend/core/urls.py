@@ -56,5 +56,7 @@ urlpatterns = [
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/edit$', views.staff_student_edit, name='staff_student_edit'),
 
     url(r'^library/$', views.library, name='library'),
+
     url(r'^strategies/$', views.strategies, name='strategies'),
+    url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
 ]
