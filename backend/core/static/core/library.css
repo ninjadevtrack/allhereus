@@ -66,3 +66,27 @@
     padding-left: 10px;
     color: black !important;
 }
+
+.strategy-row {
+    margin-bottom: 20px;
+}
+.strategy-row > div {
+    border: solid 2px;
+    margin: 0px 0px -2px 0px;
+    padding: 0px;
+}
+
+.strategy-row > div > h4 {
+    background-color: #dedede;
+    padding:10px;
+    margin: 0px;
+}
+
+
+.strategy-row > div > div {
+    border-left: solid 2px;
+    border-top: solid 2px;
+    margin: -2px;
+    padding: 10px;
+    
+}
