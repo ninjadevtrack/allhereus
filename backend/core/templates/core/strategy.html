@@ -1,15 +1,25 @@
 {% extends "core/base.html" %}
 
 {% block title %}
-Strategy
 {% endblock %}
 
 {% block content %}
-<article class="container">
-  <section class="space-between">
-      <h1 class="mt-3 mb-3">{{ strategy.display_name }}</h1>
+<article class="container pb-3">
+
+  <section class="space-between strategy-header">
+      <h4 class="mt-3 mb-3">{{ strategy.display_name }}</h4>
   </section>
-  <section class="container strategy-row">
+  <section class="container strategy-row" style="width: 60%;">
+    <div class="row" >
+      <h4 class="col-md-4 col-sm-12">Practice</h4>
+      <div class="col-md-8 col-sm-12">{{strategy.practice}}</div>
+    </div>
+    <div class="row">
+      <h4 class="col-md-4 col-sm-12">Strategy</h4>
+      <div class="col-md-8 col-sm-12">{{strategy.display_name}}</div>
+    </div>
+  </section>
+  <section class="container strategy-row mb-3">
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Grade Level</h4>
       <div class="col-md-8 col-sm-12">{{ strategy.grade_level_from}} - {{ strategy.grade_level_to}}</div>
@@ -41,7 +51,7 @@ Strategy
           <h5>Before</h5>
           <div>{# TODO #}&nbsp;...before stuff</div>
         </div>
-        <div class="strategy-subitem-end">
+        <div class="strategy-subitem-middle">
           <h5>After</h5>
           <div>{# TODO #}&nbsp;...after stuff</div>
         </div>
@@ -51,36 +61,31 @@ Strategy
       <h4 class="col-md-4 col-sm-12">Student Actions</h4>
       <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
     </div>
-  <div class="row">
-    <h4 class="col-md-4 col-sm-12">Family Actions</h4>
-    <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
-  </div>
-  <div class="row">
-    <h4 class="col-md-4 col-sm-12">Evidence of Success (Address student engagement, family engagement, and content produced.)</h4>
-    <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
-  </div>
-  <div class="row">
-    <h4 class="col-md-4 col-sm-12">Quick Tips</h4>
-    <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
-  </div>
-  <div class="row">
-    <h4 class="col-md-4 col-sm-12">Watch Out For!</h4>
-    <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
-  </div>
-  </section>
-
-  <section class="container strategy-row mb-5">
-    <div class="row mb-5">
-      <h4 class="col-md-4 col-sm-12">Other Resource</h4>
-      <div class="col-md-8 col-sm-12">
-        <div class="strategy-subitem-middle">
-          <h5>Outside Links</h5>
-          <div>{# TODO #}&nbsp;</div>
-        </div>
-        <div class="strategy-subitem-end">
-          <h5>Helpful Links</h5>
-          <div>{# TODO #}&nbsp;</div>
-        </div>
+    <div class="row">
+      <h4 class="col-md-4 col-sm-12">Family Actions</h4>
+      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+    </div>
+    <div class="row">
+      <h4 class="col-md-4 col-sm-12">Evidence of Success (Address student engagement, family engagement, and content produced.)</h4>
+      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+    </div>
+    <div class="row">
+      <h4 class="col-md-4 col-sm-12">Quick Tips</h4>
+      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+    </div>
+    <div class="row">
+      <h4 class="col-md-4 col-sm-12">Watch Out For!</h4>
+      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+    </div>
+    <div class="row">
+      <h4 class="col-md-4 col-sm-12">Other Resources</h4>
+      <div class="col-md-4 col-sm-12 strategy-link">
+        <h5>Outside Links</h5>
+        <p>&nbsp;</p>
+      </div>
+      <div class="col-md-4 col-sm-12 strategy-link">
+        <h5>Helpful Links</h5>
+        <p>&nbsp;</p>
       </div>
     </div>
   </section>

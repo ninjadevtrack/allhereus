@@ -81,23 +81,30 @@
     padding:10px;
     margin: 0px;
 }
-
 .strategy-subitem-middle {
-    border-bottom: solid 2px;
-    margin-left: -12px;
-    margin-right: -12px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-bottom: 10px;
 }
 
-.strategy-subitem-end {
-    padding: 10px 10px 10px 0px;
-
+.strategy-subitem-middle > h5 {
+    font-weight: bold;
+    text-align: center;
+    text-decoration: underline;
 }
+
 .strategy-row > div > div {
     border-left: solid 2px;
     border-top: solid 2px;
     margin: -2px;
     padding: 10px;
-    
 }
+
+.strategy-link {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.strategy-header {
+    display: block;
+    text-align: center;
+}
+
