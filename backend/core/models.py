@@ -877,65 +877,78 @@ class Strategy(Versionable):
 
     student_grouping = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     root_cause_domains = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     objective = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
     materials = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     staff_actions_before = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     staff_actions_after = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     student_actions = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     family_actions = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     evidence_of_success = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     quick_tips = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     watch_out_for = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     other_resources_links = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
     other_resources_downloads = tinymce_models.HTMLField(
         default='',
+        blank=True,
         help_text=""
     )
 
