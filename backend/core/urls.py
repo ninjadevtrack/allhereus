@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib.auth import views as auth_views
 
 from . import views
@@ -58,4 +58,6 @@ urlpatterns = [
     url(r'^library/$', views.library, name='library'),
 
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
+
+    url(r'^tinymce/', include('tinymce.urls')),
 ]

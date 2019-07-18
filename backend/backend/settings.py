@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'raven.contrib.django.raven_compat',
     'versions',
+    'tinymce',
 ]
 if DEBUG:
     INSTALLED_APPS.append('django.contrib.staticfiles')
