@@ -10,6 +10,8 @@ from versions.fields import VersionedForeignKey
 from datetime import datetime
 from django.db.models import Q
 
+from tinymce import models as tinymce_models
+
 class SoftDeleteInfo(models.Model):
     """Abstract model for storing Soft Delete model info"""
     is_deleted = models.BooleanField(
@@ -872,6 +874,72 @@ class Strategy(Versionable):
         default=False,
         help_text='True if Tier3 Strategy.'
         )
+
+    student_grouping = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    root_cause_domains = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    objective = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+    materials = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    staff_actions_before = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    staff_actions_after = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    student_actions = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    family_actions = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    evidence_of_success = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    quick_tips = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    watch_out_for = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    other_resources_links = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+    other_resources_downloads = tinymce_models.HTMLField(
+        default='',
+        help_text=""
+    )
+
+
 
     def __str__(self):
         return self.display_name
