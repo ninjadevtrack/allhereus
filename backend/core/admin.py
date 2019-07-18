@@ -268,9 +268,21 @@ class StrategyAdmin(StrategyVersionedAdmin):
     fieldsets = (
             ('Strategy Info', {
                 'fields': (
-                    'name', 'display_name','practice','description',
+                    'practice', 'name', 'display_name','description',
                     'grade_level_from','grade_level_to',
-                    'is_tier1','is_tier2','is_tier3',)}),
+                    'student_grouping',
+                    'root_cause_domains',
+                    'objective',
+                    'materials',
+                    'staff_actions_before','staff_actions_after',
+                    'student_actions',
+                    'family_actions',
+                    'evidence_of_success',
+                    'quick_tips',
+                    'watch_out_for',
+                    'other_resources_links','other_resources_downloads',
+                    'is_tier1','is_tier2','is_tier3',
+                    )}),
             ('District Info', {
                  'fields': (
                      'district',)}),

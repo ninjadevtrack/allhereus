@@ -25,8 +25,8 @@
       <div class="col-md-8 col-sm-12">{{ strategy.grade_level_from}} - {{ strategy.grade_level_to}}</div>
     </div>
     <div class="row">
-      <h4 class="col-md-4 col-sm-12">Student Grouping</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;&nbsp;</div>
+      <h4 class="col">Student Grouping</h4>
+      <div class="col">{{ strategy.student_grouping | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Root Cause Domain(s)</h4>

@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'raven.contrib.django.raven_compat',
     'versions',
     'waffle',
+    'tinymce',
 ]
 if DEBUG:
     INSTALLED_APPS.append('django.contrib.staticfiles')
