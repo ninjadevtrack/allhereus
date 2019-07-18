@@ -57,6 +57,7 @@ urlpatterns = [
 
     url(r'^library/$', views.library, name='library'),
 
+    url(r'^strategies/$', views.strategies, name='strategies'),
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
     url(r'^strategies/$', views.strategies, name='strategies'),
 ]
