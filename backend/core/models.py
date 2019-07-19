@@ -853,7 +853,7 @@ class Strategy(Versionable):
     )
     practice = models.ForeignKey(Practice,
         help_text='The Practice this Strategy belongs to.')
-    description = models.CharField(max_length=255,
+    description = models.TextField(
         help_text='Expository text about the Strategy; used in page views to elaborate on the Strategy beyond what is in the display_name.')
     # strategy_content = # TODO: need s3 / plugable solution for `media`
     grade_level_from = GradeLevelField(
@@ -881,13 +881,13 @@ class Strategy(Versionable):
         help_text=""
     )
 
-    root_cause_domains = tinymce_models.HTMLField(
+    root_cause_domains = models.TextField(
         default='',
         blank=True,
         help_text=""
     )
 
-    objective = tinymce_models.HTMLField(
+    objective = models.TextField(
         default='',
         blank=True,
         help_text=""
