@@ -25,16 +25,16 @@
       <div class="col-md-8 col-sm-12">{{ strategy.grade_level_from}} - {{ strategy.grade_level_to}}</div>
     </div>
     <div class="row">
-      <h4 class="col">Student Grouping</h4>
-      <div class="col">{{ strategy.student_grouping | safe }}</div>
+      <h4 class="col-md-4 col-sm-12">Student Grouping</h4>
+      <div class="col-md-8 col-sm-12">{{ strategy.student_grouping | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Root Cause Domain(s)</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strategy.root_cause_domains | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Objective</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strategy.objective | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Description</h4>
@@ -42,50 +42,50 @@
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Materials</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strateg.materials | safe }}&nbsp;</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Staff Actions</h4>
       <div class="col-md-8 col-sm-12">
         <div class="strategy-subitem-middle">
           <h5>Before</h5>
-          <div>{# TODO #}&nbsp;...before stuff</div>
+          <div>{{ strategy.staff_actions_before | safe }}</div>
         </div>
         <div class="strategy-subitem-middle">
           <h5>After</h5>
-          <div>{# TODO #}&nbsp;...after stuff</div>
+          <div>{{ strategy.staff_actions_after | safe }}</div>
         </div>
       </div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Student Actions</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strategy.student_actions | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Family Actions</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strategy.family_actions | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Evidence of Success (Address student engagement, family engagement, and content produced.)</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strategy.evidence_of_stuccess | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Quick Tips</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strateg.quick_tips | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Watch Out For!</h4>
-      <div class="col-md-8 col-sm-12">{# TODO #}&nbsp;</div>
+      <div class="col-md-8 col-sm-12">{{ strategy.watch_out_for | safe }}</div>
     </div>
     <div class="row">
       <h4 class="col-md-4 col-sm-12">Other Resources</h4>
       <div class="col-md-4 col-sm-12 strategy-link">
         <h5>Outside Links</h5>
-        <p>&nbsp;</p>
+        <p>{{ strategy.other_resources_links | safe }}</p>
       </div>
       <div class="col-md-4 col-sm-12 strategy-link">
         <h5>Helpful Links</h5>
-        <p>&nbsp;</p>
+        <p>{{ strategy.other_resources_downloads | safe }}</p>
       </div>
     </div>
   </section>
