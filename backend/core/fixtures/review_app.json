@@ -950,64 +950,7 @@
     "name": "Build Background"
   }
 },
-{
-  "model": "core.strategy",
-  "pk": "30f34f9f-1a6f-4216-9c1c-609daf1cebf6",
-  "fields": {
-    "identity": "30f34f9f-1a6f-4216-9c1c-609daf1cebf6",
-    "version_start_date": "2019-06-26T18:48:09.813Z",
-    "version_end_date": null,
-    "version_birth_date": "2019-06-26T18:48:09.813Z",
-    "name": "Check and Connect",
-    "display_name": "Check and Connect",
-    "district": null,
-    "practice": 1,
-    "description": "is an intervention used with k-12 who show warning signs",
-    "grade_level_from": "K",
-    "grade_level_to": "12",
-    "is_tier1": true,
-    "is_tier2": false,
-    "is_tier3": false
-  }
-},
-{
-  "model": "core.strategy",
-  "pk": "a73e035c-93c2-4652-9c61-5ba21918c558",
-  "fields": {
-    "identity": "a73e035c-93c2-4652-9c61-5ba21918c558",
-    "version_start_date": "2019-06-26T18:50:48.410Z",
-    "version_end_date": null,
-    "version_birth_date": "2019-06-26T18:50:48.410Z",
-    "name": "Inquiry and Research",
-    "display_name": "Inquiry and Research",
-    "district": null,
-    "practice": 3,
-    "description": "involves learning about the student before planning your first home visit.  This could be through data mining",
-    "grade_level_from": "PK",
-    "grade_level_to": "12",
-    "is_tier1": true,
-    "is_tier2": false,
-    "is_tier3": false
-  }
-},
-{
-  "model": "core.strategy",
-  "pk": "e30ce448-5d01-4031-8991-b393eb00363e",
-  "fields": {
-    "identity": "e30ce448-5d01-4031-8991-b393eb00363e",
-    "version_start_date": "2019-06-26T18:49:27.318Z",
-    "version_end_date": null,
-    "version_birth_date": "2019-06-26T18:49:27.318Z",
-    "name": "Goal Setting Talk",
-    "display_name": "Goal Setting Talk",
-    "district": null,
-    "practice": 2,
-    "description": "provides the opportunity for mentors to plan each conversation with a family around the goals for",
-    "grade_level_from": "K",
-    "grade_level_to": "12",
-    "is_tier1": true,
-    "is_tier2": false,
-    "is_tier3": false
-  }
-}
+  {"model": "core.strategy", "pk": "30f34f9f-1a6f-4216-9c1c-609daf1cebf6", "fields": {"identity": "30f34f9f-1a6f-4216-9c1c-609daf1cebf6", "version_start_date": "2019-07-19T19:53:28.910Z", "version_end_date": null, "version_birth_date": "2019-06-26T18:48:09.813Z", "name": "Check and Connect", "display_name": "Check and Connect", "district": null, "practice": 1, "description": "Teachers, students and families get to know each other in a comfortable environment. Teacher and families discuss family strengths and areas wheresupport is needed. Teachers, students and families form a strong, supportive partnership.", "grade_level_from": "K", "grade_level_to": "12", "is_tier1": true, "is_tier2": false, "is_tier3": false, "student_grouping": "<p><span style=\"font-family: Cambria, serif; font-size: 16px; white-space: pre-wrap;\">1:1, small group (student and his/her family members)</span></p>", "root_cause_domains": "Lack of/insufficient parental involvement; families need proactive support; student concerns.", "objective": "Teacher will establish positive communication with families; increase parental involvement; and/or demonstrate proactive support for students and their families.", "materials": "<p><span id=\"docs-internal-guid-48e4ef3e-7fff-f523-4b2c-34b300fbdec3\"><span style=\"font-size: 12pt; font-family: Cambria, serif; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; vertical-align: baseline; white-space: pre-wrap;\">ND</span></span></p>", "staff_actions_before": "<ol>\r\n<li><span class=\"s1\">Call the family to set up a time and place for the home visit.</span></li>\r\n<li><span class=\"s1\">Decide on whether you will be conducting the home visit alone or with a partner.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n<li><span class=\"s1\">Have a plan or agenda for the home visit.</span></li>\r\n<li><span class=\"s1\">Review records, family history, and/or cultural background.</span></li>\r\n<li><span class=\"s1\">Gather materials/resources to leave behind with families, including checklists, referral to support services, contact information, etc.</span></li>\r\n<li><span class=\"s1\">Have a plan for how you will communicate with families who don&rsquo;t speak English (i.e. bring a translator or translating device, review key words, etc.)<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n</ol>", "staff_actions_after": "<ol>\r\n<li><span class=\"s1\">Set a positive tone for the meeting with a warm introduction and thanking the family for their time and participation.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n<li><span class=\"s1\">Review purpose of visit (agenda) with family.</span></li>\r\n<li><span class=\"s1\">Discuss each item on the agenda separately, allowing family(s) to offer input on each one. Agenda items can include discussing family strengths and weaknesses, sharing hopes/dreams/expectations, establishing goals, etc.)</span></li>\r\n<li><span class=\"s1\">Ask student/family if they have any questions. Answer each question.</span></li>\r\n<li><span class=\"s1\">Discuss next steps.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n<li><span class=\"s1\">Share resources and/or contact information.</span></li>\r\n<li><span class=\"s1\">Thank the family/student again for meeting with you.</span></li>\r\n<li><span class=\"s1\">Optional: schedule follow-up visit to share resources and/or discuss progress.</span></li>\r\n</ol>", "student_actions": "<ul>\r\n<li><span class=\"s1\">Answer questions about your dreams/hopes/ expectations/goals.</span></li>\r\n<li><span class=\"s1\">Think about and ask for the kind of support you think you need to achieve your goals.</span></li>\r\n<li><span class=\"s1\">Pay attention to the steps you and/or your family should follow next.</span></li>\r\n<li><span class=\"s1\">Ask questions you may have.</span></li>\r\n<li><span class=\"s1\">Act as a positive link between your teacher and parent/family.</span></li>\r\n</ul>", "family_actions": "<p>Family Actions....</p>", "evidence_of_success": "<ul>\r\n<li><span class=\"s1\">Student/family understands the purpose of you being there is to offer help and support.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n<li><span class=\"s1\">Parents/families are motivated to help and become involved.</span></li>\r\n<li><span class=\"s1\">Student/family are clear on what steps follow next and have a plan for completing them.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n</ul>", "quick_tips": "<ul>\r\n<li><span class=\"s1\">Be flexible about the time and place for each home visit.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n<li><span class=\"s1\">Be respectful of cultural and ethnic values.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n<li><span class=\"s1\">Be safe.<span class=\"Apple-converted-space\">&nbsp;</span></span></li>\r\n<li><strong><span class=\"s1\">Focus on building relationships and offering support.</span></strong></li>\r\n</ul>", "watch_out_for": "<ul>\r\n<li><span class=\"s1\">Imposing your own values/beliefs/expectations over the family&rsquo;s during the visit.</span></li>\r\n<li><span class=\"s1\">Avoid taking notes<span class=\"Apple-converted-space\">&nbsp; </span>during the first visit to give families undivided attention and dispel feelings of suspicion.</span></li>\r\n<li><span class=\"s1\">Avoid bringing visitors without the parent/family&rsquo;s permission.</span></li>\r\n<li><span class=\"s1\">Avoid a visit in a location that feels uncomfortable to you or the family.</span></li>\r\n</ul>", "other_resources_links": "<p style=\"line-height: 1.2; text-align: center; margin-top: 0pt; margin-bottom: 12pt;\" dir=\"ltr\"><a style=\"text-decoration: none;\" href=\"https://www.edutopia.org/article/home-visits-101-cristina-santamaria-graff\"><span style=\"font-size: 12pt; font-family: Cambria,serif; color: #1155cc; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: underline; -webkit-text-decoration-skip: none; text-decoration-skip-ink: none; vertical-align: baseline; white-space: pre-wrap;\">Home Visits 101</span></a></p>\r\n<p style=\"line-height: 1.2; text-align: center; margin-top: 0pt; margin-bottom: 12pt;\" dir=\"ltr\"><span style=\"font-size: 12pt; font-family: Cambria,serif; color: #1155cc; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: underline; -webkit-text-decoration-skip: none; text-decoration-skip-ink: none; vertical-align: baseline; white-space: pre-wrap;\"><a style=\"text-decoration: none;\" href=\"http://www.nea.org/tools/16935.htm\">Research Spotlight on Home Visits</a></span></p>\r\n<p style=\"line-height: 1.2; text-align: center; margin-top: 0pt; margin-bottom: 12pt;\" dir=\"ltr\"><a style=\"text-decoration: none;\" href=\"http://www.nea.org/home/34090.htm\"><span style=\"font-size: 12pt; font-family: Cambria,serif; color: #1155cc; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: underline; -webkit-text-decoration-skip: none; text-decoration-skip-ink: none; vertical-align: baseline; white-space: pre-wrap;\">There&rsquo;s No Place Like Home Visits With Parents</span></a></p>", "other_resources_downloads": "<p><span id=\"docs-internal-guid-da382feb-7fff-579b-a658-47e1766eab13\"><a style=\"text-decoration-line: none;\" href=\"https://docs.google.com/document/d/1tkZjjFNTgIWM1CacwkRIJJcXT2-X8UNmhMlD7EfFPZ4/edit\"><span style=\"font-size: 12pt; font-family: Cambria, serif; color: #1155cc; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; text-decoration-line: underline; text-decoration-skip-ink: none; vertical-align: baseline; white-space: pre-wrap;\">Tips for Conducting a Successful Home Visit </span></a></span></p>"}},
+  {"model": "core.strategy", "pk": "a73e035c-93c2-4652-9c61-5ba21918c558", "fields": {"identity": "a73e035c-93c2-4652-9c61-5ba21918c558", "version_start_date": "2019-07-19T19:51:05.763Z", "version_end_date": null, "version_birth_date": "2019-06-26T18:50:48.410Z", "name": "Inquiry and Research", "display_name": "Inquiry and Research", "district": null, "practice": 3, "description": "involves learning about the student before planning your first home visit.  This could be through data mining", "grade_level_from": "PK", "grade_level_to": "12", "is_tier1": true, "is_tier2": false, "is_tier3": false, "student_grouping": "<p>ND</p>", "root_cause_domains": "ND", "objective": "ND", "materials": "<p>ND</p>", "staff_actions_before": "", "staff_actions_after": "", "student_actions": "<p>nd</p>", "family_actions": "<p>ND</p>", "evidence_of_success": "<p>ND</p>", "quick_tips": "<p>nd</p>", "watch_out_for": "<p>nd</p>", "other_resources_links": "", "other_resources_downloads": ""}},
+  {"model": "core.strategy", "pk": "e30ce448-5d01-4031-8991-b393eb00363e", "fields": {"identity": "e30ce448-5d01-4031-8991-b393eb00363e", "version_start_date": "2019-06-26T18:49:27.318Z", "version_end_date": null, "version_birth_date": "2019-06-26T18:49:27.318Z", "name": "Goal Setting Talk", "display_name": "Goal Setting Talk", "district": null, "practice": 2, "description": "provides the opportunity for mentors to plan each conversation with a family around the goals for", "grade_level_from": "K", "grade_level_to": "12", "is_tier1": true, "is_tier2": false, "is_tier3": false, "student_grouping": "", "root_cause_domains": "", "objective": "", "materials": "", "staff_actions_before": "", "staff_actions_after": "", "student_actions": "", "family_actions": "", "evidence_of_success": "", "quick_tips": "", "watch_out_for": "", "other_resources_links": "", "other_resources_downloads": ""}}
 ]
