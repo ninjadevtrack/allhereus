@@ -928,6 +928,7 @@ def strategies(request):
     )
     context = {
         'strategies': filtered_strategies.order_by('practice', 'display_name'),
+        'search': search
     }
 
     return render(request, 'core/strategies.html', context=context)
