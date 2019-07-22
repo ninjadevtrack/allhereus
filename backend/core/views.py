@@ -901,6 +901,7 @@ def library(request):
 
     return render(request, 'core/library.html', context=context)
 
+@login_required
 def strategy(request, strategy_id):
     """
     the details page for an Intervention Strategy.
