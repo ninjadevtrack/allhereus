@@ -31,16 +31,29 @@
 }
 
 .strategy-tile {
-    height: 500px;
+    height: 350px !important;
+}
+
+.strategy-description {
+    max-height: 140px !important;
+    overflow: hidden;
 }
 
 .strategy-button {
-    background-color: #4e4e4e !important;
-    width: 100px;
+    background-color: black;
+    width: 75px;
+    height: 37px;
     color: white !important;
     margin: 2px;
 }
-
+.heart {
+    background: url('./heart.png') no-repeat center;
+    background-size: 100% 150%;
+    background-color: transparent !important;
+    border-radius: 10px 10px 6px 6px !important;
+    width: 77px;
+    height: 40px;
+}
 .strategy-button a {
     color: white !important;
 }
