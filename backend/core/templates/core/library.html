@@ -6,7 +6,7 @@
   <section class="text-center">
     <h1 class="mt-3 font-weight-bold d-md-block d-none">How do you want to help your students today?</h1>
     <h5 class="mt-3 d-md-block d-none">Unlock student support practices and intervention strategies for your students and families.</h5>
-    <form id="library-form" action="{% url 'strategies' %}" target="_blank">
+    <form id="library-form" action="{% url 'strategies' %}">
         <input id="search" class="form-control library-search" name="search" type="search" placeholder="Type to seach practices and strategies">
         </form>
 
@@ -18,7 +18,7 @@
     <div class="col-md-4 col-lg-4">
       <div class="card text-center mb-4 library-item">
         <div class="card-body">
-          <a class="stretched-link" href="{% url 'strategies' %}">
+          <a class="stretched-link" href="{% url 'strategies' %}" target="_blank">
             <p class="card-title mb-3 text-dark library-item-title">Browse Strategies</p>
             <img src="{% static 'core/looking-houses.svg' %}" width="50"/>
             <p class="card-text mt-2 text-dark">&nbsp;&nbsp;Find the right strategies for your students&nbsp;&nbsp;</p>
@@ -30,7 +30,7 @@
     <div class="col-md-4 col-lg-4">
         <div class="card text-center mb-4 library-item">
           <div class="card-body">
-              <a class="stretched-link" href="#">
+              <a class="stretched-link" href="#" target="_blank">
                 <p class="card-title mb-3 text-dark library-item-title">Framework Overview</p>
                 <img src="{% static 'core/research.svg' %}" width="50"/>
                 <p class="card-text mt-2 text-dark">&nbsp;&nbsp;Explore the why behind AllHere Strategies&nbsp;&nbsp;</p>
@@ -40,7 +40,7 @@
       </div>
 
     <div class="col-md-4">
-      <div class="card text-center mb-4 library-item">
+      <div class="card text-center mb-4 library-item" target="_blank">
         <div class="card-body">
           <a class="stretched-link" href="#">
             <p class="card-title mb-3 text-dark library-item-title">My Strategies</p>
