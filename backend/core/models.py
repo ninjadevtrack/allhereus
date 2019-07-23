@@ -10,6 +10,8 @@ from versions.fields import VersionedForeignKey
 from datetime import datetime
 from django.db.models import Q
 
+from tinymce import models as tinymce_models
+
 class SoftDeleteInfo(models.Model):
     """Abstract model for storing Soft Delete model info"""
     is_deleted = models.BooleanField(
@@ -851,7 +853,7 @@ class Strategy(Versionable):
     )
     practice = models.ForeignKey(Practice,
         help_text='The Practice this Strategy belongs to.')
-    description = models.CharField(max_length=255,
+    description = models.TextField(
         help_text='Expository text about the Strategy; used in page views to elaborate on the Strategy beyond what is in the display_name.')
     # strategy_content = # TODO: need s3 / plugable solution for `media`
     grade_level_from = GradeLevelField(
@@ -872,6 +874,85 @@ class Strategy(Versionable):
         default=False,
         help_text='True if Tier3 Strategy.'
         )
+
+    student_grouping = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    root_cause_domains = models.TextField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    objective = models.TextField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+    materials = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    staff_actions_before = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    staff_actions_after = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    student_actions = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    family_actions = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    evidence_of_success = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    quick_tips = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    watch_out_for = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    other_resources_links = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+    other_resources_downloads = tinymce_models.HTMLField(
+        default='',
+        blank=True,
+        help_text=""
+    )
+
+
 
     def __str__(self):
         return self.display_name
