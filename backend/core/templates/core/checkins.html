@@ -52,21 +52,21 @@ Check-ins
         </div>
         {% endif %}
         <input id="search" class="form-control col-md-2 mr-2" name="search" type="search" placeholder="search...">
+        <div class="btn-group">
           {% if staff and request.user.is_district_admin %}
           {% else %}
-          <div class="btn-group">
-          <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
-          <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Export
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="dropdown-item" type="button" onClick="exportCheckIns('{% url 'checkins_csv' %}?v{% now 'U' %}')">Export to CSV</button>
-              <button class="dropdown-item" type="button" onClick="exportCheckIns('{% url 'checkins_pdf' %}?v{% now 'U' %}')">Export to PDF</button>
+            <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>
+          {% endif %}
+            <div class="dropdown">
+              <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Export
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <button class="dropdown-item" type="button" onClick="exportCheckIns('{% url 'checkins_csv' %}?v{% now 'U' %}')">Export to CSV</button>
+                <button class="dropdown-item" type="button" onClick="exportCheckIns('{% url 'checkins_pdf' %}?v{% now 'U' %}')">Export to PDF</button>
+              </div>
             </div>
           </div>
-        </div>
-        {% endif %}
       </div>
     </form>
   </div>
