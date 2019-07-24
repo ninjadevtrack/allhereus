@@ -917,8 +917,18 @@ def strategies(request):
     """
     the landing page for Intevention Stratgy Library
     """
+    search = request.GET.get("search", "")
+    strategies = Strategy.objects.as_of()
+    filtered_strategies = strategies.filter(
+        Q(name__icontains=search) |
+        Q(display_name__icontains=search) |
+        Q(description__icontains=search) |
+        Q(district__name__icontains=search) |
+        Q(practice__name__icontains=search)
+    )
     context = {
-        'strategies': Strategy.objects.as_of().order_by('practice', 'display_name'),
+        'strategies': filtered_strategies.order_by('practice', 'display_name'),
+        'search': search
     }
 
     return render(request, 'core/strategies.html', context=context)
