@@ -48,11 +48,11 @@
 }
 .heart {
     background: url('./heart.png') no-repeat center;
-    background-size: 100% 150%;
     background-color: transparent !important;
-    border-radius: 10px 10px 6px 6px !important;
+    border-radius:  10px 10px 5px 5px !important;
     width: 77px;
-    height: 40px;
+    height: 41px;
+    margin-top: -2px;
 }
 .strategy-button a {
     color: white !important;
