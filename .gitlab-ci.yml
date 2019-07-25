@@ -16,6 +16,8 @@ stages:
   - review
   - review_test
   - publish
+  - deploy
+  - deploy_validate
 
 build:
   stage: build
@@ -142,3 +144,77 @@ review_test:
   except:
     - master
     - /^(develop|release-.+)$/
+
+
+deploy_dev:
+  stage: deploy
+  image: dtzar/helm-kubectl:2.12.3
+  before_script:
+    - apk update && apk add make
+    - export IMAGE_TAG=v$(CI_COMMIT_SHORT_SHA)
+    - export DB_PASSWORD="${K8S_DEV_DB_PASSWORD}"
+    - export EDNUDGE_USERNAME="${K8S_DEV_EDNUDGE_USERNAME}"
+    - export EDNUDGE_PASSWORD="${K8S_DEV_EDNUDGE_PASSWORD}"
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab-admin --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
+  script:
+    - cd infrastructure/chart
+    - INSTANCE=allhere-dev NAMESPACE=default make ci-helm-install
+  environment:
+    name: develop
+    url: https://appdev.allhere.co
+    on_stop: stop_dev
+  only:
+    - branches
+    - /^develop$/
+  except:
+    - master
+    - /^(feature|bug|release)\/.+$/
+
+stop_dev:
+  stage: deploy
+  image: dtzar/helm-kubectl:2.12.3
+  before_script:
+    - apk update && apk add make
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab-admin --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
+  script:
+    - cd infrastructure/chart
+    - INSTANCE=allhere-dev make ci-helm-delete
+  when: manual
+  environment:
+    name: develop
+    action: stop
+  except:
+    - master
+    - /^(feature|bug|release)\/.+$/
+
+
+deploy_dev_validate:
+  stage: deploy_validate
+  image: dtzar/helm-kubectl:2.12.3
+  before_script:
+    - apk update && apk add make
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_CA}
+    - kubectl config set-credentials gitlab-admin --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl get pods --all-namespaces
+  script:
+    - cd infrastructure/chart
+    - INSTANCE=allhere-dev NAMESPACE=default make ci-validate
+  only:
+    - branches
+    - /^develop$/
+  except:
+    - master
+    - /^(feature|bug|release)\/.+$/

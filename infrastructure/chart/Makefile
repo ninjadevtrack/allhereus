@@ -24,3 +24,16 @@ ci-run-tests: ## Runs tests using the Review App pod
 	$(eval POD_NAME=$(shell sh -c "kubectl -n $(NAMESPACE) get pods | grep $(INSTANCE)" | grep -i running | awk '{print $$1}'))
 	@echo "Pod is $(POD_NAME)"
 	kubectl -n $(NAMESPACE) exec -t $(POD_NAME) bash run_tests.sh -c allhereapp
+
+ci-helm-install: ## Runs `helm install` for a Review App.  Expects `INSTANCE`
+	@echo "Installing dev for image=v$(CI_COMMIT_SHORT_SHA)"
+	helm upgrade --install --wait "$(INSTANCE)" ./allhere --debug --namespace $(NAMESPACE) -f allhere/environments/$(INSTANCE).yaml --set secret.dbPassword=$(DB_PASSWORD),secret.ednudgeUsername=$(EDNUDGE_USERNAME),secret.ednudgePassword=$(EDNUDGE_PASSWORD),image.tag=$(IMAGE_TAG)
+
+ci-helm-delete: ## Runs `helm delete --purge` for a Review App
+	@echo "Deleting dev instance: $(INSTANCE)"
+	helm delete $(INSTANCE) --purge
+
+ci-validate: ## Runs tests using the Review App pod
+	$(eval POD_NAME=$(shell sh -c "kubectl -n $(NAMESPACE) get pods | grep $(INSTANCE)" | grep -i running | awk '{print $$1}'))
+	@echo "Pod is $(POD_NAME)"
+	kubectl -n $(NAMESPACE) exec -t $(POD_NAME) bash run_tests.sh -c allhereapp
