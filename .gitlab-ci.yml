@@ -151,7 +151,7 @@ deploy_dev:
   image: dtzar/helm-kubectl:2.12.3
   before_script:
     - apk update && apk add make
-    - export IMAGE_TAG=v$(CI_COMMIT_SHORT_SHA)
+    - export IMAGE_TAG=v"${CI_COMMIT_SHORT_SHA}"
     - export DB_PASSWORD="${K8S_DEV_DB_PASSWORD}"
     - export EDNUDGE_USERNAME="${K8S_DEV_EDNUDGE_USERNAME}"
     - export EDNUDGE_PASSWORD="${K8S_DEV_EDNUDGE_PASSWORD}"
