@@ -1,11 +1,11 @@
 from django.conf.urls import url, include
+from django.contrib.flatpages import views as flat_views
 from django.contrib.auth import views as auth_views
-
 from . import views
 
 urlpatterns = [
+    url(r'^library/framework/$', flat_views.flatpage, {'url': '/library/framework/'}, name='library_framework'),
     url(r'^$', views.home, name='home'),
-
     url(r'login', auth_views.login, {'template_name': 'core/login.html'}, name='login'),
     url(r'logout', views.logout_view, name="logout"),
     url(r'signup', views.signup, name='signup'),
