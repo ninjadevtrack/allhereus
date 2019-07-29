@@ -17,12 +17,14 @@ def add_library_framework_page(apps, schema_editor):
     try:
         flatpage = FlatPage.objects.get(url='/library/framework/')
     except FlatPage.DoesNotExist:
-        FlatPage.objects.create(
+        flatpage = FlatPage.objects.create(
             url='/library/framework/',
             title="Library Framework",
             content="AllHere Library Strategy",
             registration_required=True,
         )
+        flatpage.sites.add(site)
+        flatpage.save()
 
 class Migration(migrations.Migration):
 
