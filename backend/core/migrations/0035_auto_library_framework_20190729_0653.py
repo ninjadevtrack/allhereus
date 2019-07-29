@@ -16,6 +16,8 @@ def add_library_framework_page(apps, schema_editor):
     
     try:
         flatpage = FlatPage.objects.get(url='/library/framework/')
+        flagpage.registration_required = True
+        flagpage.save()
     except FlatPage.DoesNotExist:
         flatpage = FlatPage.objects.create(
             url='/library/framework/',
