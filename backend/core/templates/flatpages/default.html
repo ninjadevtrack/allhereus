@@ -1,13 +1,17 @@
 {% extends "core/base.html" %}
 {% load static %}
 {% block title %}
-{{ flatpage.title}}
+  {{ flatpage.title}}
 {% endblock%}
 {% block content %}
 
-<article class="container">
-  <section>
-    {{ flatpage.content }}
-  </section>
-</article>
+{% if user.is_authenticated %}
+  <article class="container">
+    <section>
+      {{ flatpage.content }}
+    </section>
+  </article>
+{% else %}
+    <meta http-equiv="REFRESH" content="0;url=/login?next={{ flatpage.url }}">
+{% endif %}
 {% endblock %}
