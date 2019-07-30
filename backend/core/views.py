@@ -391,8 +391,14 @@ def checkins_pdf(request):
 
 
 @login_required
-@teacher_required(raise_exception=True)
 def reports_in_chart(request):
+    """
+    chart for reports:
+    report in charts for all the checkins for teacher or school admin.  District Admin returns 404.
+    """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District_Admin.")
+
     checkins = request.user.checkins
     from_date = request.GET.get('from', '')
     to_date = request.GET.get('to', '')
