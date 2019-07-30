@@ -628,11 +628,12 @@ def students_pdf(request):
     )
 
 @login_required
-@teacher_required(raise_exception=True)
 def reports(request):
     """
-    displays report
+    displays report for Teacher and School_Admin
     """
+    if request.user.is_district_admin:
+        raise Http404("This view isn't defined for District_Admin.")
     students = Student.objects.all().only("id", "first_name", "last_name")
     return render(request, 'core/report.html', {"students": students})
 
