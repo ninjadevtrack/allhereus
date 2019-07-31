@@ -60,5 +60,8 @@ urlpatterns = [
     url(r'^strategies/$', views.strategies, name='strategies'),
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
 
+    url(r'^schools/(?P<school_id>[0-9]+)/teachers/$', views.school_teachers, name='school_teachers'),
+    
+       
     url(r'^tinymce/', include('tinymce.urls')),
 ]

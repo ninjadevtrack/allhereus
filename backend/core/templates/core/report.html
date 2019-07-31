@@ -40,6 +40,24 @@ ul {
     </div>
     <div class="row">
       <div class="col-md-6 mt-4">
+      	<select name="school" id="school" required>
+          <option value="">Select School</option>
+          {% for school in request.user.schools %} 
+            <option value="{{school.id}}">{{school.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-4">
+      	<select name="teacher" id="teacher">
+          <option value="">Select Teacher</option>
+          <option value="all">All</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-4">
       	<select name="student" required>
           <option value="">Select student</option>
           <option value="all">All</option>
@@ -132,6 +150,24 @@ function checkDate(id) {
 $('form').submit(function() {
     return checkDate('from') && checkDate('to');
 });
+
+$("#school").change(function() {
+  var schoolId = $("#school").val() || 1;
+  $.get(`/schools/${schoolId}/teachers`,
+    function(teachers) {
+      var teacherNode = $('#teacher');
+      teacherNode.selectize()[0].selectize.destroy();
+      teacherNode.empty();
+      teacherNode.append(`<option value="">Select Teacher</option>`)
+      teacherNode.append(`<option value="all">All</option>`)
+      teachers.forEach(teacher=> {
+        teacherNode.append(`<option value="${teacher.id}">${teacher.first_name} ${teacher.last_name}</option>`)
+      })
+      $('#teacher').selectize();
+    }
+  )
+})
+
 $('select').selectize();
 </script>
 {% endblock %}

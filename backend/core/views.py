@@ -6,10 +6,9 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
 from django.contrib.auth.forms import SetPasswordForm
-
-from .models import CheckIn, Student, School, MyUser, Strategy
+from .models import CheckIn, Student, School, MyUser, Strategy, Teacher
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
 import io
@@ -939,3 +938,8 @@ def strategies(request):
     }
 
     return render(request, 'core/strategies.html', context=context)
+
+@login_required
+def school_teachers(request, school_id):
+    teachers = Teacher.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
+    return JsonResponse(list(teachers), safe=False)
