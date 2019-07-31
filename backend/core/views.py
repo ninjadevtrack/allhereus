@@ -639,8 +639,7 @@ def reports(request):
     """
     if request.user.is_district_admin:
         raise Http404("This view isn't defined for District_Admin.")
-    students = Student.objects.all().only("id", "first_name", "last_name")
-    return render(request, 'core/report.html', {"students": students})
+    return render(request, 'core/report.html')
 
 @login_required
 def teams(request):
@@ -943,3 +942,13 @@ def strategies(request):
 def school_teachers(request, school_id):
     teachers = Teacher.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
     return JsonResponse(list(teachers), safe=False)
+
+@login_required
+def school_students(request, school_id):
+    students = Student.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
+    return JsonResponse(list(students), safe=False)
+
+@login_required
+def teacher_students(request, teacher_id):
+    students = Student.objects.filter(teacher__id=teacher_id).values('id', 'first_name', 'last_name')
+    return JsonResponse(list(students), safe=False)
