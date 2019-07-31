@@ -184,7 +184,7 @@ $("#teacher").change(function() {
   }
   var url = `/schools/${schoolId}/students`;
   if(teacherId != 'all') {
-    url = `/teachers/${teacherId}/students`;
+    url = `/schools/${schoolId}/teachers/${teacherId}/students`;
   };
 
   $.get(url,

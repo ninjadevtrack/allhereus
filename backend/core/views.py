@@ -949,6 +949,8 @@ def school_students(request, school_id):
     return JsonResponse(list(students), safe=False)
 
 @login_required
-def teacher_students(request, teacher_id):
-    students = Student.objects.filter(teacher__id=teacher_id).values('id', 'first_name', 'last_name')
+def teacher_school_students(request, school_id, teacher_id):
+    teacher = Teacher.objects.get(id=teacher_id)
+    school = School.objects.get(pk=school_id)
+    students = teacher.students.filter(school=school).order_by('last_name','first_name').values('id', 'first_name', 'last_name')
     return JsonResponse(list(students), safe=False)
