@@ -58,12 +58,8 @@ ul {
     </div>
     <div class="row">
       <div class="col-md-6 mt-4">
-      	<select name="student" required>
-          <option value="">Select student</option>
-          <option value="all">All</option>
-          {% for student in students %} 
-            <option value="{{student.id}}">{{student.first_name}} {{student.last_name}}</option>
-          {% endfor %}
+      	<select name="student" id="student" required>
+          <option value="">Select Student</option>
         </select>
       </div>
     </div>
@@ -151,11 +147,21 @@ $('form').submit(function() {
     return checkDate('from') && checkDate('to');
 });
 
+var teacherNode = $('#teacher');
+var schoolNode = $('#school');
+var studentNode = $('#student');
+
+function resetStudent() {
+  studentNode.selectize()[0].selectize.destroy();
+  studentNode.empty();
+  studentNode.append(`<option value="">Select Student</option>`)
+  studentNode.selectize();
+}
+
 $("#school").change(function() {
-  var schoolId = $("#school").val() || 1;
+  var schoolId = $("#school").val();
   $.get(`/schools/${schoolId}/teachers`,
     function(teachers) {
-      var teacherNode = $('#teacher');
       teacherNode.selectize()[0].selectize.destroy();
       teacherNode.empty();
       teacherNode.append(`<option value="">Select Teacher</option>`)
@@ -164,8 +170,38 @@ $("#school").change(function() {
         teacherNode.append(`<option value="${teacher.id}">${teacher.first_name} ${teacher.last_name}</option>`)
       })
       $('#teacher').selectize();
+      resetStudent();
     }
   )
+});
+
+$("#teacher").change(function() {
+  var teacherId = teacherNode.val();
+  var schoolId = schoolNode.val();
+  if(teacherId == "") {
+    resetStudent();
+    return;
+  }
+  var url = `/schools/${schoolId}/students`;
+  if(teacherId != 'all') {
+    url = `/teachers/${teacherId}/students`;
+  };
+
+  $.get(url,
+    function(students) {
+      studentNode.selectize()[0].selectize.destroy();
+      studentNode.empty();
+      studentNode.append(`<option value="">Select Student</option>`)
+      studentNode.append(`<option value="all">All</option>`)
+      students.forEach(student=> {
+        studentNode.append(`<option value="${student.id}">${student.first_name} ${student.last_name}</option>`)
+      })
+      $('#student').selectize();
+    }
+  )
+
+   
+
 })
 
 $('select').selectize();
