@@ -34,9 +34,10 @@
         // Set chart options
         var options = {
            'title':`Total # of Interventions Done by Formt
-                Date Range: {{from_time}} - {{to_time}}
-                Name of Teacher: {{request.user.first_name}} {{request.user.last_name}}
+                School: {{school_name}}
+                Teacher: {{ teacher_name }}
                 Report for {{student_name}}
+                Date Range: {{from_time}} - {{to_time}}
            `,
             sliceVisibilityThreshold:0,
             width:800,

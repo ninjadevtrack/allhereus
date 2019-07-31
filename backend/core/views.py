@@ -398,17 +398,35 @@ def reports_in_chart(request):
     if request.user.is_district_admin:
         raise Http404("This view isn't defined for District_Admin.")
 
-    checkins = request.user.checkins
+
     from_date = request.GET.get('from', '')
     to_date = request.GET.get('to', '')
-    student = request.GET.get('student', 'all')
+    school_id = request.GET.get('school', 'all')
+    teacher_id = request.GET.get('teacher', 'all')
+    student_id = request.GET.get('student', 'all')
+    checkins = CheckIn.objects.filter(student__school__id=school_id)
     student_name = "All Students"
+    teacher_name = "All Teachers"
+    school_name = School.objects.get(pk=school_id).name
+
+    if teacher_id != 'all':
+        teacher_checkins = checkins.filter(teacher__id=teacher_id)
+        teacher_name = Teacher.objects.get(pk=teacher_id).name
+    else:
+        teacher_checkins = checkins
+
+    if student_id != 'all':
+        student_checkins = teacher_checkins.filter(student__id=student_id)
+        student_name = Student.objects.get(pk=student_id).name
+    else:
+        student_checkins = teacher_checkins
+
 
     intervention_type = request.GET.get('type','')
-    if student != 'all':
-        checkins = request.user.checkins.filter(student__id=student)
-        student_name = Student.objects.get(pk=student).name
-    from_date_checkins = checkins
+        
+    from_date_checkins = student_checkins
+    
+    
     if from_date != '':
         from_date_checkins = checkins.filter(date__gte=datetime.strptime(from_date, '%m/%d/%Y').date())
 
@@ -422,15 +440,30 @@ def reports_in_chart(request):
         left_message = to_date_checkins.filter(status='M').count()
 
         return render(request, 'core/intervention_report.html', \
-            { 'complete': complete, 'unreachable': unreachable, 'left_message': left_message, \
-            'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
+            { 
+                'complete': complete, \
+                'unreachable': unreachable, \
+                'left_message': left_message, \
+                'student_name': student_name, \
+                'teacher_name': teacher_name, \
+                'school_name': school_name,\
+                'from_time':from_date, \
+                'to_time': to_date
+            })
 
     if intervention_type == 'score':
         scores = [0] * 10
         for i in range(10):
             scores[i] = to_date_checkins.filter(success_score=i).count()
         return render(request, 'core/intervention_report_by_score.html', \
-            { 'scores' : scores, 'student_name': student_name, 'from_time':from_date, 'to_time': to_date })
+            { 
+                'scores' : scores,
+                'student_name': student_name,
+                'teacher_name': teacher_name,
+                'school_name': school_name,
+                'from_time':from_date,
+                'to_time': to_date
+            })
 
     if intervention_type == 'mode':
         phone = to_date_checkins.filter(mode='P').count()
@@ -439,8 +472,15 @@ def reports_in_chart(request):
         email = to_date_checkins.filter(mode='E').count()
 
         return render(request, 'core/intervention_report_by_format.html', \
-            { 'phone': phone, 'visit': visit, 'in_person': in_person, 'email': email, \
-            'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
+            { 
+                'phone': phone,
+                'visit': visit,
+                'in_person': in_person,
+                'email': email,
+                'student_name': student_name,
+                'teacher_name': teacher_name,
+                'school_name': school_name,
+                'from_time':from_date, 'to_time': to_date})
 
 
 
