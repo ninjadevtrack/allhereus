@@ -50,7 +50,7 @@ ul {
     </div>
     <div class="row">
       <div class="col-md-6 mt-4">
-      	<select name="teacher" id="teacher">
+      	<select name="teacher" id="teacher" required>
           <option value="">Select Teacher</option>
           <option value="all">All</option>
         </select>
@@ -60,6 +60,7 @@ ul {
       <div class="col-md-6 mt-4">
       	<select name="student" id="student" required>
           <option value="">Select Student</option>
+          <option value="all">All</option>
         </select>
       </div>
     </div>
@@ -154,8 +155,8 @@ var studentNode = $('#student');
 function resetStudent() {
   studentNode.selectize()[0].selectize.destroy();
   studentNode.empty();
-  studentNode.append(`<option value="">Select Student</option>`)
-  studentNode.selectize();
+  studentNode.append(`<option value="">Select Student</option>`);
+  studentNode.prop('required', true).selectize();
 }
 
 $("#school").change(function() {
@@ -169,7 +170,7 @@ $("#school").change(function() {
       teachers.forEach(teacher=> {
         teacherNode.append(`<option value="${teacher.id}">${teacher.first_name} ${teacher.last_name}</option>`)
       })
-      $('#teacher').selectize();
+      teacherNode.prop('required',true).selectize();
       resetStudent();
     }
   )
@@ -196,7 +197,7 @@ $("#teacher").change(function() {
       students.forEach(student=> {
         studentNode.append(`<option value="${student.id}">${student.first_name} ${student.last_name}</option>`)
       })
-      $('#student').selectize();
+      studentNode.prop('required', true).selectize();
     }
   )
 
