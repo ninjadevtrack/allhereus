@@ -391,17 +391,9 @@ def checkins_pdf(request):
 
 @login_required
 def reports_in_chart(request):
-    """
-    chart for reports:
-    report in charts for all the checkins for teacher or school admin.  District Admin returns 404.
-    """
-    if request.user.is_district_admin:
-        raise Http404("This view isn't defined for District_Admin.")
-
-
     from_date = request.GET.get('from', '')
     to_date = request.GET.get('to', '')
-    school_id = request.GET.get('school', 'all')
+    school_id = request.GET.get('school', 0)
     teacher_id = request.GET.get('teacher', 'all')
     student_id = request.GET.get('student', 'all')
     checkins = CheckIn.objects.filter(student__school__id=school_id)
@@ -674,11 +666,6 @@ def students_pdf(request):
 
 @login_required
 def reports(request):
-    """
-    displays report for Teacher and School_Admin
-    """
-    if request.user.is_district_admin:
-        raise Http404("This view isn't defined for District_Admin.")
     return render(request, 'core/report.html')
 
 @login_required
