@@ -5,10 +5,15 @@ from __future__ import unicode_literals
 from django.db import migrations
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.sites.models import Site
+from django.db import connection
+import os
 
 def add_library_framework_page(apps, schema_editor):
     # We can't import the Person model directly as it may be a newer
     # version than this migration expects. We use the historical version.
+    db_name = os.getenv('DB_NAME')
+    if db_name != connection.settings_dict['NAME']:
+        return
     try:
         site = Site.objects.get(pk=1)
     except Site.DoesNotExist:
