@@ -41,12 +41,11 @@
         </li>
       {% endif %}
 
-      {% if request.user.is_teacher or request.user.is_school_admin %}
-        {% url 'reports' as reports_url %}
-        <li class="nav-item {% if request.get_full_path == reports_url %} active {% endif %}">
-          <a class="nav-link" href="{{ reports_url }}">Reports</a>
-        </li>
-      {% endif %}
+      {% url 'reports' as reports_url %}
+      <li class="nav-item {% if request.get_full_path == reports_url %} active {% endif %}">
+        <a class="nav-link" href="{{ reports_url }}">Reports</a>
+      </li>
+
       {% url 'support' as support_url %}
       <li class="nav-item {% if request.get_full_path == support_url %} active {% endif %}">
         <a class="nav-link" href="{{ support_url }}">Help</a>
