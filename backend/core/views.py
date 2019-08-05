@@ -413,19 +413,15 @@ def reports_in_chart(request):
     else:
         student_checkins = teacher_checkins
 
-
-    intervention_type = request.GET.get('type','')
-        
     from_date_checkins = student_checkins
-    
-    
     if from_date != '':
-        from_date_checkins = checkins.filter(date__gte=datetime.strptime(from_date, '%m/%d/%Y').date())
+        from_date_checkins = student_checkins.filter(date__gte=datetime.strptime(from_date, '%m/%d/%Y').date())
 
     to_date_checkins = from_date_checkins
     if to_date != '':
         to_date_checkins = from_date_checkins.filter(date__lt=datetime.strptime(to_date, '%m/%d/%Y').date() + timedelta(days=1))
 
+    intervention_type = request.GET.get('type','')
     if intervention_type == 'status':
         complete = to_date_checkins.filter(status='C').count()
         unreachable = to_date_checkins.filter(status='U').count()
@@ -966,17 +962,17 @@ def strategies(request):
     return render(request, 'core/strategies.html', context=context)
 
 @login_required
-def school_teachers(request, school_id):
+def school_stuff_json(request, school_id):
     teachers = Teacher.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
     return JsonResponse(list(teachers), safe=False)
 
 @login_required
-def school_students(request, school_id):
+def school_students_json(request, school_id):
     students = Student.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
     return JsonResponse(list(students), safe=False)
 
 @login_required
-def teacher_school_students(request, school_id, teacher_id):
+def staff_school_students_json(request, school_id, teacher_id):
     teacher = Teacher.objects.get(id=teacher_id)
     school = School.objects.get(pk=school_id)
     students = teacher.students.filter(school=school).order_by('last_name','first_name').values('id', 'first_name', 'last_name')

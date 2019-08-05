@@ -61,10 +61,10 @@ urlpatterns = [
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
 
     # ajax request urls
-    url(r'^schools/(?P<school_id>[0-9]+)/teachers/$', views.school_teachers, name='school_teachers'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff.json/$', views.school_stuff_json, name='school_stuff_json'),
     
-    url(r'^schools/(?P<school_id>[0-9]+)/teachers/(?P<teacher_id>[0-9]+)/students/$', views.teacher_school_students, name='teacher_school_students'),
-    url(r'^schools/(?P<school_id>[0-9]+)/students/$', views.school_students, name='school_students'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<teacher_id>[0-9]+)/students.json/$', views.staff_school_students_json, name='staff_school_students_json'),
+    url(r'^schools/(?P<school_id>[0-9]+)/students.json/$', views.school_students_json, name='school_students_json'),
     
        
     url(r'^tinymce/', include('tinymce.urls')),
