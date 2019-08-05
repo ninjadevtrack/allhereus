@@ -1,5 +1,6 @@
 import pytest
-
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.sites.models import Site
 from .models import (
     CheckIn,
     MyUser,
@@ -94,3 +95,25 @@ def strategy(practice):
         display_name="Test Strategy Display Name",
         grade_level_from="k",
         grade_level_to="12")
+
+                                
+
+@pytest.fixture
+def flatpage_library_framework():
+    try:
+        site = Site.objects.get(pk=1)
+    except Site.DoesNotExist:
+        site = Site.objects.create(domain="app.allhere.co", name="allhere")
+    try:
+        flatpage = FlatPage.objects.get(url='/library/framework/')
+    except FlatPage.DoesNotExist:
+        flatpage = FlatPage.objects.create(
+                url='/library/framework/',
+                title="Library Framework",
+                content="AllHere Library Strategy",
+                registration_required=True,
+                )
+        flatpage.sites.add(site)
+        flatpage.save()
+        
+                
