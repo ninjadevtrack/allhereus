@@ -455,28 +455,6 @@ def student(request, id):
         'recent_checkins': student.checkins[:10]
     })
 
-
-@login_required
-def student_add(request):
-    """
-    Create new student view for rostered user
-    """
-    if not request.user.is_rostered:
-        raise Http404("This view is not available for the rostered users.")
-    if request.method == 'POST':
-        form = StudentForm(request.user, request.POST)
-        form.district = request.user.district
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('students'))
-    else:
-        form = StudentForm(request.user)
-    return render(request, 'core/student_edit.html', {
-        'form': form,
-        'error_message': [error for error in form.non_field_errors()],
-    })
-
-
 @login_required
 def student_edit(request, id):
     """
