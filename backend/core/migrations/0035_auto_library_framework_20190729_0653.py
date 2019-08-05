@@ -37,6 +37,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('core', '0034_intervention_strategy_new_fields_20190719'),
+        ('sites', '0002_alter_domain_unique'),  
+        ('flatpages', '0001_initial'), 
     ]
 
     operations = [
