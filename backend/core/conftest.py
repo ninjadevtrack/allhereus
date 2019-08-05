@@ -104,13 +104,16 @@ def flatpage_library_framework():
         site = Site.objects.get(pk=1)
     except Site.DoesNotExist:
         site = Site.objects.create(domain="app.allhere.co", name="allhere")
-    flatpage = FlatPage.objects.create(
-        url='/library/framework/',
-        title="Library Framework",
-        content="AllHere Library Strategy",
-        registration_required=True,
-        )
-    flatpage.sites.add(site)
-    flatpage.save()
+    try:
+        flatpage = FlatPage.objects.get(url='/library/framework/')
+    except FlatPage.DoesNotExist:
+        flatpage = FlatPage.objects.create(
+                url='/library/framework/',
+                title="Library Framework",
+                content="AllHere Library Strategy",
+                registration_required=True,
+                )
+        flatpage.sites.add(site)
+        flatpage.save()
         
                 

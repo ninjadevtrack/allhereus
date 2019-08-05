@@ -11,9 +11,9 @@ import os
 def add_library_framework_page(apps, schema_editor):
     # We can't import the Person model directly as it may be a newer
     # version than this migration expects. We use the historical version.
-    db_name = os.getenv('DB_NAME')
-    if db_name != connection.settings_dict['NAME']:
-        return
+    # db_name = os.getenv('DB_NAME')
+    # if db_name != connection.settings_dict['NAME']:
+    #     return
     try:
         site = Site.objects.get(pk=1)
     except Site.DoesNotExist:
