@@ -61,7 +61,7 @@ urlpatterns = [
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
 
     # ajax request urls
-    url(r'^schools/(?P<school_id>[0-9]+)/staff.json$', views.schools_stuff_json, name='schools_stuff_json'),
+    url(r'^schools/(?P<school_id>[0-9]+)/staff.json$', views.schools_staff_json, name='schools_staff_json'),
     
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<teacher_id>[0-9]+)/students.json$', views.schools_staff_students_json, name='schools_staff_students_json'),
     url(r'^schools/(?P<school_id>[0-9]+)/students.json$', views.schools_students_json, name='schools_students_json'),

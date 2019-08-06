@@ -962,7 +962,7 @@ def strategies(request):
     return render(request, 'core/strategies.html', context=context)
 
 @login_required
-def schools_stuff_json(request, school_id):
+def schools_staff_json(request, school_id):
     teachers = Teacher.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
     return JsonResponse(list(teachers), safe=False)
 

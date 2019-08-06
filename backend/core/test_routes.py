@@ -1107,7 +1107,7 @@ def test_strategy_anonymous(client, strategy):
     assert res.status_code == 302
 
 """
-url(r'^schools/(?P<school_id>[0-9]+)/staff.json$', views.schools_stuff_json, name='schools_stuff_json'),
+url(r'^schools/(?P<school_id>[0-9]+)/staff.json$', views.schools_staff_json, name='schools_staff_json'),
 """
 def test_schools_staff_json_teacher(client, teacher, school):
     # teacher
