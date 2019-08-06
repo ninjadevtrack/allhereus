@@ -161,7 +161,7 @@ function resetStudent() {
 
 $("#school").change(function() {
   var schoolId = $("#school").val();
-  $.get(`/schools/${schoolId}/staff.json/`,
+  $.get(`/schools/${schoolId}/staff.json`,
     function(teachers) {
       teacherNode.selectize()[0].selectize.destroy();
       teacherNode.empty();
@@ -183,9 +183,9 @@ $("#teacher").change(function() {
     resetStudent();
     return;
   }
-  var url = `/schools/${schoolId}/students_json/`;
+  var url = `/schools/${schoolId}/students.json`;
   if(teacherId != 'all') {
-    url = `/schools/${schoolId}/staff/${teacherId}/students.json/`;
+    url = `/schools/${schoolId}/staff/${teacherId}/students.json`;
   };
 
   $.get(url,
