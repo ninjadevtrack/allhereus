@@ -1107,81 +1107,81 @@ def test_strategy_anonymous(client, strategy):
     assert res.status_code == 302
 
 """
-url(r'^schools/(?P<school_id>[0-9]+)/staff.json/$', views.school_stuff_json, name='school_stuff_json'),
+url(r'^schools/(?P<school_id>[0-9]+)/staff.json$', views.schools_stuff_json, name='schools_stuff_json'),
 """
-def test_school_staff_json_teacher(client, teacher, school):
+def test_schools_staff_json_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
-    res = client.get(f'/schools/{school.id}/staff.json/')
+    res = client.get(f'/schools/{school.id}/staff.json')
     assert res.status_code == 200
 
-def test_school_staff_json_school_admin(client, school_admin, school, teacher):
+def test_schools_staff_json_school_admin(client, school_admin, school, teacher):
     # school_admin
     client.force_login(school_admin)
-    res = client.get(f'/schools/{school.id}/staff.json/')
+    res = client.get(f'/schools/{school.id}/staff.json')
     assert res.status_code == 200
 
-def test_school_staff_json_district_admin(client, district_admin, school, teacher):
+def test_schools_staff_json_district_admin(client, district_admin, school, teacher):
     # district_admin
     client.force_login(district_admin)
-    res = client.get(f'/schools/{school.id}/staff.json/')
+    res = client.get(f'/schools/{school.id}/staff.json')
     assert res.status_code == 200
 
-def test_school_staff_json_anonymous(client, school, teacher):
+def test_schools_staff_json_anonymous(client, school, teacher):
     # anonymous
-    res = client.get(f'/schools/{school.id}/staff.json/')
+    res = client.get(f'/schools/{school.id}/staff.json')
     assert res.status_code == 302
 
 
 """
-url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<teacher_id>[0-9]+)/students.json/$', views.staff_school_students_json, name='staff_school_students_json'),
+url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<teacher_id>[0-9]+)/students.json$', views.schools_staff_students_json, name='schools_staff_students_json'),
 """
 def test_staff_school_students_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
-    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json')
     assert res.status_code == 200
 
 def test_staff_school_students_school_admin(client, school_admin, school, teacher):
     # school_admin
     client.force_login(school_admin)
-    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json')
     assert res.status_code == 200
 
 def test_staff_school_students_district_admin(client, district_admin, school, teacher):
     # district_admin
     client.force_login(district_admin)
-    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json')
     assert res.status_code == 200
 
 def test_staff_school_students_anonymous(client, school, teacher):
     # anonymous
-    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/staff/{teacher.id}/students.json')
     assert res.status_code == 302
 
 
 """
-url(r'^schools/(?P<school_id>[0-9]+)/students.json/$', views.school_students_json, name='school_students_json'),
+url(r'^schools/(?P<school_id>[0-9]+)/students.json$', views.schools_students_json, name='schools_students_json'),
 """
-def test_school_students_json_teacher(client, teacher, school):
+def test_schools_students_json_teacher(client, teacher, school):
     # teacher
     client.force_login(teacher)
-    res = client.get(f'/schools/{school.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/students.json')
     assert res.status_code == 200
 
-def test_school_students_json_school_admin(client, school_admin, school):
+def test_schools_students_json_school_admin(client, school_admin, school):
     # school_admin
     client.force_login(school_admin)
-    res = client.get(f'/schools/{school.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/students.json')
     assert res.status_code == 200
 
-def test_school_students_json_district_admin(client, district_admin, school):
+def test_schools_students_json_district_admin(client, district_admin, school):
     # district_admin
     client.force_login(district_admin)
-    res = client.get(f'/schools/{school.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/students.json')
     assert res.status_code == 200
 
-def test_school_students_json_anonymous(client, school):
+def test_schools_students_json_anonymous(client, school):
     # anonymous
-    res = client.get(f'/schools/{school.id}/students.json/')
+    res = client.get(f'/schools/{school.id}/students.json')
     assert res.status_code == 302
