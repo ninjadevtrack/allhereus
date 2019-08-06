@@ -8,7 +8,7 @@ from core.models import MyUser, Student, CheckIn, District, School, Section, Sec
 import csv
 from django.http import HttpResponse
 from datetime import datetime
-from .utils import download_checkins_csv
+from .utils import download_checkins_csv, download_users_csv
 
 
 from versions.admin import VersionedAdmin
@@ -103,6 +103,12 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email','district__name')
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
+
+    def download_csv(self, request, queryset):
+        return download_users_csv(queryset)
+
+    download_csv.short_description = "Download CSV"
+    actions = [download_csv]
 
 class StudentAdmin(admin.ModelAdmin):
     model = Student
