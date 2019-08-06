@@ -910,3 +910,15 @@ def strategies(request):
     }
 
     return render(request, 'core/strategies.html', context=context)
+
+@login_required
+def strategy_favorites(request):
+    """
+    the landing page for Intevention Stratgy Library
+    """
+    strategies = request.user.strategy_favorites.all().order_by('practice', 'display_name'),
+    context = {
+        'strategies': strategies
+    }
+
+    return render(request, 'core/strategy_favorites.html', context=context)
