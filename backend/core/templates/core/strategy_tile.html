@@ -9,10 +9,17 @@
         </a>
         </div>
         <div class="d-flex justify-content-end">
-            <div class="btn btn-default heart">
+            {% if strategy in request.user.strategy_favorites.all %}
+            <div class="btn btn-default heart heart-active">
                 <a href="#">
                 </a>
             </div>
+            {% else %}
+            <div class="btn btn-default heart heart-inactive">
+                    <a href="#">
+                    </a>
+                </div>
+            {% endif %}
             <div class="btn btn-default strategy-button">
                 <a href="{% url 'checkin_add' %}">Track</a>
             </div>
