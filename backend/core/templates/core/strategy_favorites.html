@@ -9,10 +9,10 @@ Allhere Strategies
   <h1 class="mt-3 mb-5">Favorite Strategies</h1>
 
   <div class="row m-3 d-flex justify-content-left">
-    {% if not strategies %}
+    {% if not request.user.strategy_favorites.all %}
       <h1>No Results</h1>
     {% endif %}
-    {% for strategy in strategies %}
+    {% for strategy in request.user.strategy_favorites.all %}
       {% include "core/strategy_tile.html" with strategy=strategy %}
     {% endfor %}
   </div>

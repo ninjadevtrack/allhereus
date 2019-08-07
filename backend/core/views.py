@@ -916,9 +916,6 @@ def strategy_favorites(request):
     """
     the landing page for Intevention Stratgy Library
     """
-    strategies = request.user.strategy_favorites.all().order_by('practice', 'display_name'),
-    context = {
-        'strategies': strategies
-    }
+    strategies = request.user.strategy_favorites.as_of().all().order_by('practice', 'display_name'),
 
-    return render(request, 'core/strategy_favorites.html', context=context)
+    return render(request, 'core/strategy_favorites.html')

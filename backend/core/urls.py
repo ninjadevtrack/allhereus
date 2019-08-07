@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'^library/framework/$', flat_views.flatpage, {'url': '/library/framework/'}, name='library_framework'),
     url(r'^$', views.home, name='home'),
     url(r'login', auth_views.login, {'template_name': 'core/login.html'}, name='login'),
@@ -57,8 +58,11 @@ urlpatterns = [
     url(r'^library/$', views.library, name='library'),
 
     url(r'^strategies/$', views.strategies, name='strategies'),
-    url(r'^strategy_favorites/$', views.strategy_favorites, name='strategy_favorites'),
+    url(r'^strategies/favorites/$', views.strategy_favorites, name='strategy_favorites'),
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
+    
+    
 
-    url(r'^tinymce/', include('tinymce.urls')),
+    
+    
 ]
