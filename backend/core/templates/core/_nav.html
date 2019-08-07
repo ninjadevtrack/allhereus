@@ -39,13 +39,13 @@
         <li class="nav-item {% if request.get_full_path == library_url %} active {% endif %}">
           <a class="nav-link" href="{{ library_url }}">AllHere Strategies</a>
         </li>
-        {% url 'reports' as reports_url %}
-        {% if request.user.is_teacher %}
-        <li class="nav-item {% if request.get_full_path == reports_url %} active {% endif %}">
-          <a class="nav-link" href="{{ reports_url }}">Reports</a>
-        </li>
-        {% endif %}
       {% endif %}
+
+      {% url 'reports' as reports_url %}
+      <li class="nav-item {% if request.get_full_path == reports_url %} active {% endif %}">
+        <a class="nav-link" href="{{ reports_url }}">Reports</a>
+      </li>
+
       {% url 'support' as support_url %}
       <li class="nav-item {% if request.get_full_path == support_url %} active {% endif %}">
         <a class="nav-link" href="{{ support_url }}">Help</a>

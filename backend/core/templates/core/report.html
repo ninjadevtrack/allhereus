@@ -40,12 +40,27 @@ ul {
     </div>
     <div class="row">
       <div class="col-md-6 mt-4">
-      	<select name="student" required>
-          <option value="">Select student</option>
-          <option value="all">All</option>
-          {% for student in students %} 
-            <option value="{{student.id}}">{{student.first_name}} {{student.last_name}}</option>
+      	<select name="school" id="school" required>
+          <option value="">Select School</option>
+          {% for school in request.user.schools %} 
+            <option value="{{school.id}}">{{school.name}}</option>
           {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-4">
+      	<select name="teacher" id="teacher" required>
+          <option value="">Select Teacher</option>
+          <option value="all">All</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-4">
+      	<select name="student" id="student" required>
+          <option value="">Select Student</option>
+          <option value="all">All</option>
         </select>
       </div>
     </div>
@@ -132,6 +147,64 @@ function checkDate(id) {
 $('form').submit(function() {
     return checkDate('from') && checkDate('to');
 });
+
+var teacherNode = $('#teacher');
+var schoolNode = $('#school');
+var studentNode = $('#student');
+
+function resetStudent() {
+  studentNode.selectize()[0].selectize.destroy();
+  studentNode.empty();
+  studentNode.append(`<option value="">Select Student</option>`);
+  studentNode.prop('required', true).selectize();
+}
+
+$("#school").change(function() {
+  var schoolId = $("#school").val();
+  $.get(`/schools/${schoolId}/staff.json`,
+    function(teachers) {
+      teacherNode.selectize()[0].selectize.destroy();
+      teacherNode.empty();
+      teacherNode.append(`<option value="">Select Teacher</option>`)
+      teacherNode.append(`<option value="all">All</option>`)
+      teachers.forEach(teacher=> {
+        teacherNode.append(`<option value="${teacher.id}">${teacher.first_name} ${teacher.last_name}</option>`)
+      })
+      teacherNode.prop('required',true).selectize();
+      resetStudent();
+    }
+  )
+});
+
+$("#teacher").change(function() {
+  var teacherId = teacherNode.val();
+  var schoolId = schoolNode.val();
+  if(teacherId == "") {
+    resetStudent();
+    return;
+  }
+  var url = `/schools/${schoolId}/students.json`;
+  if(teacherId != 'all') {
+    url = `/schools/${schoolId}/staff/${teacherId}/students.json`;
+  };
+
+  $.get(url,
+    function(students) {
+      studentNode.selectize()[0].selectize.destroy();
+      studentNode.empty();
+      studentNode.append(`<option value="">Select Student</option>`)
+      studentNode.append(`<option value="all">All</option>`)
+      students.forEach(student=> {
+        studentNode.append(`<option value="${student.id}">${student.first_name} ${student.last_name}</option>`)
+      })
+      studentNode.prop('required', true).selectize();
+    }
+  )
+
+   
+
+})
+
 $('select').selectize();
 </script>
 {% endblock %}

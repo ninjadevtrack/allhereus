@@ -6,10 +6,9 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
 from django.contrib.auth.forms import SetPasswordForm
-
-from .models import CheckIn, Student, School, MyUser, Strategy
+from .models import CheckIn, Student, School, MyUser, Strategy, Teacher
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
 import io
@@ -391,41 +390,68 @@ def checkins_pdf(request):
 
 
 @login_required
-@teacher_required(raise_exception=True)
 def reports_in_chart(request):
-    checkins = request.user.checkins
     from_date = request.GET.get('from', '')
     to_date = request.GET.get('to', '')
-    student = request.GET.get('student', 'all')
+    school_id = request.GET.get('school', 0)
+    teacher_id = request.GET.get('teacher', 'all')
+    student_id = request.GET.get('student', 'all')
+    checkins = CheckIn.objects.filter(student__school__id=school_id)
     student_name = "All Students"
+    teacher_name = "All Teachers"
+    school_name = School.objects.get(pk=school_id).name
 
-    intervention_type = request.GET.get('type','')
-    if student != 'all':
-        checkins = request.user.checkins.filter(student__id=student)
-        student_name = Student.objects.get(pk=student).name
-    from_date_checkins = checkins
+    if teacher_id != 'all':
+        teacher_checkins = checkins.filter(teacher__id=teacher_id)
+        teacher_name = Teacher.objects.get(pk=teacher_id).name
+    else:
+        teacher_checkins = checkins
+
+    if student_id != 'all':
+        student_checkins = teacher_checkins.filter(student__id=student_id)
+        student_name = Student.objects.get(pk=student_id).name
+    else:
+        student_checkins = teacher_checkins
+
+    from_date_checkins = student_checkins
     if from_date != '':
-        from_date_checkins = checkins.filter(date__gte=datetime.strptime(from_date, '%m/%d/%Y').date())
+        from_date_checkins = student_checkins.filter(date__gte=datetime.strptime(from_date, '%m/%d/%Y').date())
 
     to_date_checkins = from_date_checkins
     if to_date != '':
         to_date_checkins = from_date_checkins.filter(date__lt=datetime.strptime(to_date, '%m/%d/%Y').date() + timedelta(days=1))
 
+    intervention_type = request.GET.get('type','')
     if intervention_type == 'status':
         complete = to_date_checkins.filter(status='C').count()
         unreachable = to_date_checkins.filter(status='U').count()
         left_message = to_date_checkins.filter(status='M').count()
 
         return render(request, 'core/intervention_report.html', \
-            { 'complete': complete, 'unreachable': unreachable, 'left_message': left_message, \
-            'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
+            { 
+                'complete': complete, \
+                'unreachable': unreachable, \
+                'left_message': left_message, \
+                'student_name': student_name, \
+                'teacher_name': teacher_name, \
+                'school_name': school_name,\
+                'from_time':from_date, \
+                'to_time': to_date
+            })
 
     if intervention_type == 'score':
         scores = [0] * 10
         for i in range(10):
             scores[i] = to_date_checkins.filter(success_score=i).count()
         return render(request, 'core/intervention_report_by_score.html', \
-            { 'scores' : scores, 'student_name': student_name, 'from_time':from_date, 'to_time': to_date })
+            { 
+                'scores' : scores,
+                'student_name': student_name,
+                'teacher_name': teacher_name,
+                'school_name': school_name,
+                'from_time':from_date,
+                'to_time': to_date
+            })
 
     if intervention_type == 'mode':
         phone = to_date_checkins.filter(mode='P').count()
@@ -434,8 +460,15 @@ def reports_in_chart(request):
         email = to_date_checkins.filter(mode='E').count()
 
         return render(request, 'core/intervention_report_by_format.html', \
-            { 'phone': phone, 'visit': visit, 'in_person': in_person, 'email': email, \
-            'student_name': student_name, 'from_time':from_date, 'to_time': to_date})
+            { 
+                'phone': phone,
+                'visit': visit,
+                'in_person': in_person,
+                'email': email,
+                'student_name': student_name,
+                'teacher_name': teacher_name,
+                'school_name': school_name,
+                'from_time':from_date, 'to_time': to_date})
 
 
 
@@ -606,13 +639,8 @@ def students_pdf(request):
     )
 
 @login_required
-@teacher_required(raise_exception=True)
 def reports(request):
-    """
-    displays report
-    """
-    students = Student.objects.all().only("id", "first_name", "last_name")
-    return render(request, 'core/report.html', {"students": students})
+    return render(request, 'core/report.html')
 
 @login_required
 def teams(request):
@@ -910,3 +938,20 @@ def strategies(request):
     }
 
     return render(request, 'core/strategies.html', context=context)
+
+@login_required
+def schools_staff_json(request, school_id):
+    teachers = Teacher.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
+    return JsonResponse(list(teachers), safe=False)
+
+@login_required
+def schools_students_json(request, school_id):
+    students = Student.objects.filter(school__id=school_id).values('id', 'first_name', 'last_name')
+    return JsonResponse(list(students), safe=False)
+
+@login_required
+def schools_staff_students_json(request, school_id, teacher_id):
+    teacher = Teacher.objects.get(id=teacher_id)
+    school = School.objects.get(pk=school_id)
+    students = teacher.students.filter(school=school).order_by('last_name','first_name').values('id', 'first_name', 'last_name')
+    return JsonResponse(list(students), safe=False)
