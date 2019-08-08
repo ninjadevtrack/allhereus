@@ -18,9 +18,12 @@ $(document).ready(function() {
     $.fn.strategies_favorites_remove = function (id) {
         var csrfmiddlewaretoken = getCookie('csrftoken');
         $.ajax({
-            url: `/strategies/favorites/remove/${id}.json`,
+            url: `/strategies/favorites/${id}.json`,
             type: 'DELETE',
             headers: { csrfmiddlewaretoken },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+            },
             success: function(data) {
                 if(data.success) {
                     $(`#${id}`).removeClass('heart-active').addClass('heart-inactive');
@@ -28,11 +31,11 @@ $(document).ready(function() {
             }
         });
     };
-    
+
     $.fn.strategies_favorites_add = function (id) {
         var csrfmiddlewaretoken = getCookie('csrftoken');
         $.ajax({
-            url: `/strategies/favorites/add/${id}.json`,
+            url: `/strategies/favorites/${id}.json`,
             type: 'POST',
             data: {csrfmiddlewaretoken },
             success: function(data) {

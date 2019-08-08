@@ -926,32 +926,33 @@ def strategy_favorites(request):
 
 @login_required
 @csrf_protect
-@require_http_methods(["POST"])
-def strategy_favorites_add(request, strategy_id):
-    try:
-        strategy = Strategy.objects.get(id=strategy_id)
-    except Strategy.DoesNotExist:
-        return JsonResponse({ 'success': False })
+@require_http_methods(["POST","DELETE"])
+def strategy_favorites_cud(request, strategy_id):
+    if request.method == 'POST':
+        try:
+            strategy = Strategy.objects.get(id=strategy_id)
+        except Strategy.DoesNotExist:
+            return JsonResponse({ 'success': False })
 
-    strategy_favorites = request.user.strategy_favorites.all()
-    if strategy in strategy_favorites:
-        return JsonResponse({ 'success': False })
-    else:
-        request.user.strategy_favorites.add(strategy)
-        return JsonResponse({ 'success': True, 'result': 1 })
+        strategy_favorites = request.user.strategy_favorites.all()
+        if strategy in strategy_favorites:
+            return JsonResponse({ 'success': False })
+        else:
+            request.user.strategy_favorites.add(strategy)
+            return JsonResponse({ 'success': True, 'result': 1 })
 
-@login_required
-@csrf_protect
-@require_http_methods(["DELETE"])
-def strategy_favorites_remove(request, strategy_id):
-    try:
-        strategy = Strategy.objects.get(id=strategy_id)
-    except Strategy.DoesNotExist:
-        return JsonResponse({ 'success': False })
+    elif request.method == 'DELETE':
+        try:
+            strategy = Strategy.objects.get(id=strategy_id)
+        except Strategy.DoesNotExist:
+            return JsonResponse({ 'success': False })
 
-    strategy_favorites = request.user.strategy_favorites.all()
-    if strategy in strategy_favorites:
-        request.user.strategy_favorites.remove(strategy)
-        return JsonResponse({ 'success': True })
+        strategy_favorites = request.user.strategy_favorites.all()
+        if strategy in strategy_favorites:
+            request.user.strategy_favorites.remove(strategy)
+            return JsonResponse({ 'success': True })
+        else:
+            return JsonResponse({ 'success': False })
+
     else:
         return JsonResponse({ 'success': False })
