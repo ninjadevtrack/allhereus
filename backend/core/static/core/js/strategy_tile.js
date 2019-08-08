@@ -15,34 +15,38 @@ $(document).ready(function() {
         }
         return cookieValue;
     }
-    $.fn.strategies_favorites_remove = function (id) {
+    $.fn.strategies_favorites_cud = function (id) {
         var csrfmiddlewaretoken = getCookie('csrftoken');
-        $.ajax({
-            url: `/strategies/favorites/${id}.json`,
-            type: 'DELETE',
-            headers: { csrfmiddlewaretoken },
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-            },
-            success: function(data) {
-                if(data.success) {
-                    $(`#${id}`).removeClass('heart-active').addClass('heart-inactive');
+        var heartNode = $(`#${id}`);
+        heartNode.css('pointer-events', 'none');
+        setTimeout(() => {
+            heartNode.css('pointer-events', 'auto');
+        }, 2000);
+        if(heartNode.hasClass('heart-active')) {
+            $.ajax({
+                url: `/strategies/favorites/${id}.json`,
+                type: 'DELETE',
+                headers: { csrfmiddlewaretoken },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrfmiddlewaretoken);
+                },
+                success: function(data) {
+                    if(data.success) {
+                        heartNode.removeClass('heart-active').addClass('heart-inactive');
+                    }
                 }
-            }
-        });
-    };
-
-    $.fn.strategies_favorites_add = function (id) {
-        var csrfmiddlewaretoken = getCookie('csrftoken');
-        $.ajax({
-            url: `/strategies/favorites/${id}.json`,
-            type: 'POST',
-            data: {csrfmiddlewaretoken },
-            success: function(data) {
-                if(data.success) {
-                    $(`#${id}`).removeClass('heart-inactive').addClass('heart-active');
+            });
+        } else if(heartNode.hasClass('heart-inactive')) {
+            $.ajax({
+                url: `/strategies/favorites/${id}.json`,
+                type: 'POST',
+                data: {csrfmiddlewaretoken },
+                success: function(data) {
+                    if(data.success) {
+                        heartNode.removeClass('heart-inactive').addClass('heart-active');
+                    }
                 }
-            }
-        });
+            });
+        }
     };
 });

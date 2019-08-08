@@ -1108,56 +1108,55 @@ def test_library_framework_anonymous(client, flatpage_library_framework):
     # anonymous
     res = client.get(f'/library/framework/')
     assert res.status_code == 302
-    
+
 
 """
-url(r'^strategies/favorites/remove/(?P<strategy_id>[a-z0-9\-]+).json$', views.strategy_favorites_remove, name='strategy_favorites_remove'),
+url(r'^strategies/favorites/(?P<strategy_id>[a-z0-9\-]+).json$', views.strategy_favorites_cud, name='strategy_favorites_cud'),
 """
+### DELETE
 def test_strategies_favorite_remove_teacher(client, teacher, strategy):
     # teacher
     client.force_login(teacher)
-    res = client.delete(f'/strategies/favorites/remove/{strategy.id}.json')
+    res = client.delete(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 200
 
 def test_strategies_favorite_remove_school_admin(client, school_admin, strategy):
     # school_admin
     client.force_login(school_admin)
-    res = client.delete(f'/strategies/favorites/remove/{strategy.id}.json')
+    res = client.delete(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 200
 
 def test_strategies_favorite_remove_district_admin(client, district_admin, strategy):
     # district_admin
     client.force_login(district_admin)
-    res = client.delete(f'/strategies/favorites/remove/{strategy.id}.json')
+    res = client.delete(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 200
 
 def test_strategies_favorite_remove_anonymous(client, strategy):
     # anonymous
-    res = client.delete(f'/strategies/favorites/remove/{strategy.id}.json')
+    res = client.delete(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 302
 
-"""
-url(r'^strategies/favorites/add/(?P<strategy_id>[a-z0-9\-]+).json$', views.strategy_favorites_add, name='strategy_favorites_add'),
-"""
+### POST
 def test_strategies_favorite_add_teacher(client, teacher, strategy):
     # teacher
     client.force_login(teacher)
-    res = client.post(f'/strategies/favorites/add/{strategy.id}.json')
+    res = client.post(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 200
 
 def test_strategies_favorite_add_school_admin(client, school_admin, strategy):
     # school_admin
     client.force_login(school_admin)
-    res = client.post(f'/strategies/favorites/add/{strategy.id}.json')
+    res = client.post(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 200
 
 def test_strategies_favorite_add_district_admin(client, district_admin, strategy):
     # district_admin
     client.force_login(district_admin)
-    res = client.post(f'/strategies/favorites/add/{strategy.id}.json')
+    res = client.post(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 200
 
 def test_strategies_favorite_add_anonymous(client, strategy):
     # anonymous
-    res = client.post(f'/strategies/favorites/add/{strategy.id}.json')
+    res = client.post(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 302
