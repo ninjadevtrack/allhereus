@@ -1,5 +1,5 @@
 {% extends "core/base.html" %}
-
+{% load static %}
 {% block title %}
 Allhere Strategies
 {% endblock %}
@@ -28,4 +28,7 @@ Allhere Strategies
     {% endfor %}
   </div>
 </article>
+{% endblock %}
+{% block js %}
+ <script src="{% static 'core/js/strategy_tile.js' %}"></script>
 {% endblock %}

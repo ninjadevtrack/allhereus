@@ -1109,3 +1109,29 @@ def test_library_framework_anonymous(client, flatpage_library_framework):
     res = client.get(f'/library/framework/')
     assert res.status_code == 302
     
+
+"""
+url(r'^strategies/favorites/(?P<strategy_id>[a-z0-9\-]+).json$', views.strategy_favorites_update, name='strategy_favorites_update'),
+"""
+def test_strategies_favorite_update_teacher(client, teacher, strategy):
+    # teacher
+    client.force_login(teacher)
+    res = client.get(f'/strategies/favorites/{strategy.id}.json')
+    assert res.status_code == 200
+
+def test_strategies_favorite_update_school_admin(client, school_admin, strategy):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get(f'/strategies/favorites/{strategy.id}.json')
+    assert res.status_code == 200
+
+def test_strategies_favorite_update_district_admin(client, district_admin, strategy):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get(f'/strategies/favorites/{strategy.id}.json')
+    assert res.status_code == 200
+
+def test_strategies_favorite_update_anonymous(client, strategy):
+    # anonymous
+    res = client.get(f'/strategies/favorites/{strategy.id}.json')
+    assert res.status_code == 302

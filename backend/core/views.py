@@ -21,6 +21,8 @@ from datetime import datetime, timedelta
 from operator import or_
 from .utils import download_checkins_csv
 from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.http import JsonResponse
+
 TABLE_DISPLAY_LIMIT = 100
 
 
@@ -919,3 +921,19 @@ def strategy_favorites(request):
     strategies = request.user.strategy_favorites.as_of().all().order_by('practice', 'display_name'),
 
     return render(request, 'core/strategy_favorites.html')
+
+@login_required
+def strategy_favorites_update(request, strategy_id):
+    try:
+        strategy = Strategy.objects.get(id=strategy_id)
+    except Strategy.DoesNotExist:
+        return JsonResponse({ 'success': False })
+
+    strategy_favorites = request.user.strategy_favorites.all()
+    if strategy in strategy_favorites:
+        request.user.strategy_favorites.remove(strategy)
+        return JsonResponse({ 'success': True, 'result': 0 })
+    else:
+        request.user.strategy_favorites.add(strategy)
+        return JsonResponse({ 'success': True, 'result': 1 })
+    

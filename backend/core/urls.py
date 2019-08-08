@@ -60,9 +60,5 @@ urlpatterns = [
     url(r'^strategies/$', views.strategies, name='strategies'),
     url(r'^strategies/favorites/$', views.strategy_favorites, name='strategy_favorites'),
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
-    
-    
-
-    
-    
+    url(r'^strategies/favorites/(?P<strategy_id>[a-z0-9\-]+).json$', views.strategy_favorites_update, name='strategy_favorites_update'),
 ]
