@@ -22,6 +22,7 @@ from operator import or_
 from .utils import download_checkins_csv
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 
 TABLE_DISPLAY_LIMIT = 100
 
@@ -923,7 +924,23 @@ def strategy_favorites(request):
     return render(request, 'core/strategy_favorites.html')
 
 @login_required
-def strategy_favorites_update(request, strategy_id):
+@require_http_methods(["POST"])
+def strategy_favorites_add(request, strategy_id):
+    try:
+        strategy = Strategy.objects.get(id=strategy_id)
+    except Strategy.DoesNotExist:
+        return JsonResponse({ 'success': False })
+
+    strategy_favorites = request.user.strategy_favorites.all()
+    if strategy in strategy_favorites:
+        return JsonResponse({ 'success': False })
+    else:
+        request.user.strategy_favorites.add(strategy)
+        return JsonResponse({ 'success': True, 'result': 1 })
+
+@login_required
+@require_http_methods(["DELETE"])
+def strategy_favorites_remove(request, strategy_id):
     try:
         strategy = Strategy.objects.get(id=strategy_id)
     except Strategy.DoesNotExist:
@@ -932,8 +949,6 @@ def strategy_favorites_update(request, strategy_id):
     strategy_favorites = request.user.strategy_favorites.all()
     if strategy in strategy_favorites:
         request.user.strategy_favorites.remove(strategy)
-        return JsonResponse({ 'success': True, 'result': 0 })
+        return JsonResponse({ 'success': True })
     else:
-        request.user.strategy_favorites.add(strategy)
-        return JsonResponse({ 'success': True, 'result': 1 })
-    
+        return JsonResponse({ 'success': False })
