@@ -23,6 +23,7 @@ from .utils import download_checkins_csv
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_protect
 
 TABLE_DISPLAY_LIMIT = 100
 
@@ -924,6 +925,7 @@ def strategy_favorites(request):
     return render(request, 'core/strategy_favorites.html')
 
 @login_required
+@csrf_protect
 @require_http_methods(["POST"])
 def strategy_favorites_add(request, strategy_id):
     try:
@@ -939,6 +941,7 @@ def strategy_favorites_add(request, strategy_id):
         return JsonResponse({ 'success': True, 'result': 1 })
 
 @login_required
+@csrf_protect
 @require_http_methods(["DELETE"])
 def strategy_favorites_remove(request, strategy_id):
     try:

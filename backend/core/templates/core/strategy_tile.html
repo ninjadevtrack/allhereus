@@ -10,11 +10,10 @@
         </div>
         <div class="d-flex justify-content-end">
             {% if strategy in request.user.strategy_favorites.all %}
-            <div class="btn btn-default heart heart-active" id="{{strategy.id}}" onclick="$(this).add_strategy_favorites('{{ strategy.id }}')">
+            <div class="btn btn-default heart heart-active" id="{{strategy.id}}" onclick="$(this).strategies_favorites_remove('{{ strategy.id }}')">
             {% else %}
-            <div class="btn btn-default heart heart-inactive" id="{{strategy.id}}" onclick="$(this).add_strategy_favorites('{{ strategy.id }}')">
+            <div class="btn btn-default heart heart-inactive" id="{{strategy.id}}" onclick="$(this).strategies_favorites_add('{{ strategy.id }}')">
             {% endif %}
-                <a href="javascript:void(0);">
             </div>
             <div class="btn btn-default strategy-button">
                 <a href="{% url 'checkin_add' %}">Track</a>
