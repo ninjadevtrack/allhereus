@@ -926,7 +926,6 @@ def strategy_favorites(request):
 
 @login_required
 @csrf_protect
-@require_http_methods(["POST","DELETE"])
 def strategy_favorites_cud(request, strategy_id):
     if request.method == 'POST':
         try:

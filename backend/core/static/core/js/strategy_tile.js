@@ -33,6 +33,10 @@ $(document).ready(function() {
                 success: function(data) {
                     if(data.success) {
                         heartNode.removeClass('heart-active').addClass('heart-inactive');
+                    } else {
+                        $('#strategy_favorite_alert').append('<div class="alert alert-danger" style="text-align: center; width: 100%; position:fixed; top: 70px;">Something went wrong!</div>').ready(function () {
+                            $('#strategy_favorite_alert').delay(2000).fadeOut(2000);
+                        });
                     }
                 }
             });
@@ -44,6 +48,10 @@ $(document).ready(function() {
                 success: function(data) {
                     if(data.success) {
                         heartNode.removeClass('heart-inactive').addClass('heart-active');
+                    } else {
+                        $('#strategy_favorite_alert').append('<div class="alert alert-danger" style="text-align: center; width: 100%; position:fixed; top: 70px;">Something went wrong!</div>').ready(function () {
+                            $('#strategy_favorite_alert').delay(2000).fadeOut(2000);
+                        });
                     }
                 }
             });
