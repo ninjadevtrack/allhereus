@@ -31,6 +31,8 @@ $(document).ready(function() {
                     if(data.success) {
                         heartNode.removeClass('heart-active').addClass('heart-inactive');
                     }
+                    heartNode.attr('alt', "Add to favorites");
+                    heartNode.attr('title', "Add to favorites");
                     heartNode.css('pointer-events', 'auto');
                 }
             });
@@ -43,6 +45,8 @@ $(document).ready(function() {
                     if(data.success) {
                         heartNode.removeClass('heart-inactive').addClass('heart-active');
                     }
+                    heartNode.attr('alt', "Remove from favorites");
+                    heartNode.attr('title', "Remove from favorites");
                     heartNode.css('pointer-events', 'auto');
                 }
             });

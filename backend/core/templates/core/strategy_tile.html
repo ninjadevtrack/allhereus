@@ -10,9 +10,9 @@
         </div>
         <div class="d-flex justify-content-end">
             {% if strategy in request.user.strategy_favorites.all %}
-            <div class="btn btn-default heart heart-active" id="{{strategy.id}}" onclick="$(this).strategies_favorites_cud('{{ strategy.id }}')">
+            <div role="img text" alt="Remove from favorites" title="Remove from favorites" class="btn btn-default heart heart-active" id="{{strategy.id}}" onclick="$(this).strategies_favorites_cud('{{ strategy.id }}')">
             {% else %}
-            <div class="btn btn-default heart heart-inactive" id="{{strategy.id}}" onclick="$(this).strategies_favorites_cud('{{ strategy.id }}')">
+            <div role="img text" alt="Add to favorites" title="Add to favorites" class="btn btn-default heart heart-inactive" id="{{strategy.id}}" onclick="$(this).strategies_favorites_cud('{{ strategy.id }}')">
             {% endif %}
             </div>
             <div class="btn btn-default strategy-button">
