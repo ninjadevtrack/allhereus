@@ -19,9 +19,6 @@ $(document).ready(function() {
         var csrfmiddlewaretoken = getCookie('csrftoken');
         var heartNode = $(`#${id}`);
         heartNode.css('pointer-events', 'none');
-        setTimeout(() => {
-            heartNode.css('pointer-events', 'auto');
-        }, 2000);
         if(heartNode.hasClass('heart-active')) {
             $.ajax({
                 url: `/strategies/favorites/${id}.json`,
@@ -34,6 +31,7 @@ $(document).ready(function() {
                     if(data.success) {
                         heartNode.removeClass('heart-active').addClass('heart-inactive');
                     }
+                    heartNode.css('pointer-events', 'auto');
                 }
             });
         } else if(heartNode.hasClass('heart-inactive')) {
@@ -45,6 +43,7 @@ $(document).ready(function() {
                     if(data.success) {
                         heartNode.removeClass('heart-inactive').addClass('heart-active');
                     }
+                    heartNode.css('pointer-events', 'auto');
                 }
             });
         }
