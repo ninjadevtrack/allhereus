@@ -42,7 +42,7 @@
     <div class="col-md-4">
       <div class="card text-center mb-4 library-item" target="_blank">
         <div class="card-body">
-          <a class="stretched-link" href="#">
+          <a class="stretched-link" href="{% url 'strategy_favorites' %}">
             <p class="card-title mb-3 text-dark library-item-title">My Strategies</p>
             <img src="{% static 'core/ribbon-with-cross.svg' %}" width="50"/>
             <p class="card-text mt-2 text-dark">Quickly organize favorite strategies for planning</p>
@@ -74,4 +74,8 @@
     fill: #4e4e4e;
   }
 </style>
+{% endblock %}
+
+{% block js %}
+ <script src="{% static 'core/js/strategy_tile.js' %}"></script>
 {% endblock %}

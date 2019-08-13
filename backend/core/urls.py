@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'^library/framework/$', flat_views.flatpage, {'url': '/library/framework/'}, name='library_framework'),
     url(r'^$', views.home, name='home'),
     url(r'login', auth_views.login, {'template_name': 'core/login.html'}, name='login'),
@@ -57,14 +58,16 @@ urlpatterns = [
     url(r'^library/$', views.library, name='library'),
 
     url(r'^strategies/$', views.strategies, name='strategies'),
+    url(r'^strategies/favorites/$', views.strategy_favorites, name='strategy_favorites'),
     url(r'^strategies/(?P<strategy_id>[a-z0-9\-]+)/$', views.strategy, name='strategy'),
 
     # ajax request urls
     url(r'^schools/(?P<school_id>[0-9]+)/staff.json$', views.schools_staff_json, name='schools_staff_json'),
-    
+
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<teacher_id>[0-9]+)/students.json$', views.schools_staff_students_json, name='schools_staff_students_json'),
     url(r'^schools/(?P<school_id>[0-9]+)/students.json$', views.schools_students_json, name='schools_students_json'),
-    
-       
+
+
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^strategies/favorites/(?P<strategy_id>[a-z0-9\-]+).json$', views.strategy_favorites_cud, name='strategy_favorites_cud'),
 ]

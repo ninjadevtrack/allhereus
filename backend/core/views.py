@@ -20,6 +20,10 @@ from datetime import datetime, timedelta
 from operator import or_
 from .utils import download_checkins_csv
 from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_protect
+
 TABLE_DISPLAY_LIMIT = 100
 
 
@@ -428,7 +432,7 @@ def reports_in_chart(request):
         left_message = to_date_checkins.filter(status='M').count()
 
         return render(request, 'core/intervention_report.html', \
-            { 
+            {
                 'complete': complete, \
                 'unreachable': unreachable, \
                 'left_message': left_message, \
@@ -444,7 +448,7 @@ def reports_in_chart(request):
         for i in range(10):
             scores[i] = to_date_checkins.filter(success_score=i).count()
         return render(request, 'core/intervention_report_by_score.html', \
-            { 
+            {
                 'scores' : scores,
                 'student_name': student_name,
                 'teacher_name': teacher_name,
@@ -460,7 +464,7 @@ def reports_in_chart(request):
         email = to_date_checkins.filter(mode='E').count()
 
         return render(request, 'core/intervention_report_by_format.html', \
-            { 
+            {
                 'phone': phone,
                 'visit': visit,
                 'in_person': in_person,
@@ -955,3 +959,44 @@ def schools_staff_students_json(request, school_id, teacher_id):
     school = School.objects.get(pk=school_id)
     students = teacher.students.filter(school=school).order_by('last_name','first_name').values('id', 'first_name', 'last_name')
     return JsonResponse(list(students), safe=False)
+
+@login_required
+def strategy_favorites(request):
+    """
+    the landing page for Intevention Stratgy Library
+    """
+    strategies = request.user.strategy_favorites.as_of().all().order_by('practice', 'display_name'),
+
+    return render(request, 'core/strategy_favorites.html')
+
+@login_required
+@csrf_protect
+def strategy_favorites_cud(request, strategy_id):
+    if request.method == 'POST':
+        try:
+            strategy = Strategy.objects.get(id=strategy_id)
+        except Strategy.DoesNotExist:
+            return JsonResponse({ 'success': False })
+
+        strategy_favorites = request.user.strategy_favorites.all()
+        if strategy in strategy_favorites:
+            return JsonResponse({ 'success': False })
+        else:
+            request.user.strategy_favorites.add(strategy)
+            return JsonResponse({ 'success': True, 'result': 1 })
+
+    elif request.method == 'DELETE':
+        try:
+            strategy = Strategy.objects.get(id=strategy_id)
+        except Strategy.DoesNotExist:
+            return JsonResponse({ 'success': False })
+
+        strategy_favorites = request.user.strategy_favorites.all()
+        if strategy in strategy_favorites:
+            request.user.strategy_favorites.remove(strategy)
+            return JsonResponse({ 'success': True })
+        else:
+            return JsonResponse({ 'success': False })
+
+    else:
+        return JsonResponse({ 'success': False })

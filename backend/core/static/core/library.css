@@ -47,12 +47,19 @@
     margin: 2px;
 }
 .heart {
-    background: url('./heart.png') no-repeat center;
     background-color: transparent !important;
     border-radius:  10px 10px 5px 5px !important;
     width: 77px;
     height: 41px;
     margin-top: -2px;
+}
+
+.heart-active {
+    background: url('./heart-active.png') no-repeat center;
+}
+
+.heart-inactive {
+    background: url('./heart-inactive.png') no-repeat center;
 }
 .strategy-button a {
     color: white !important;

@@ -105,6 +105,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin, SoftDeleteInfo):
     district = models.ForeignKey('District', related_name='members', null=True, blank=True)
     school = models.ForeignKey('School', related_name='members', null=True, blank=True)
 
+    strategy_favorites = models.ManyToManyField('Strategy', blank=True)
+
     grade = models.CharField(max_length=255, null=True, blank=True)
     subject = models.CharField(max_length=255, null=True, blank=True)
 

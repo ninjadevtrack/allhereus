@@ -79,6 +79,7 @@ class UserAdmin(BaseUserAdmin):
         ('Personal Info', {'fields': ('first_name', 'last_name',)}),
         ('Account Info', {'fields': ('role', 'is_manager',)}),
         ('Organization Info', {'fields': ('district', 'school',)}),
+        ('Favorite Strategies', {'fields': ('strategy_favorites',)}),
         # ('Organization Info', {'fields': ('district', 'school', 'team',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',
                                     'groups', 'user_permissions')}),
