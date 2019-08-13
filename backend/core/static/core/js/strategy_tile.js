@@ -31,8 +31,8 @@ $(document).ready(function() {
                     if(data.success) {
                         heartNode.removeClass('heart-active').addClass('heart-inactive');
                     } else {
-                        $('#strategy_favorite_alert').append('<div class="alert alert-danger" style="text-align: center; width: 100%; position:fixed; top: 70px;">Something went wrong!</div>').ready(function () {
-                            $('#strategy_favorite_alert').delay(2000).fadeOut(2000);
+                        $('#strategy_favorite_alert').append('<div class="alert alert-danger" style="text-align: center; width: 100%; position:fixed; top: 70px;">Something went wrong please refresh the page and try again.</div>').ready(function () {
+                            $('#strategy_favorite_alert').delay(2000);
                         });
                     }
                     heartNode.attr('alt', "Add to favorites");
@@ -49,8 +49,8 @@ $(document).ready(function() {
                     if(data.success) {
                         heartNode.removeClass('heart-inactive').addClass('heart-active');
                     } else {
-                        $('#strategy_favorite_alert').append('<div class="alert alert-danger" style="text-align: center; width: 100%; position:fixed; top: 70px;">Something went wrong!</div>').ready(function () {
-                            $('#strategy_favorite_alert').delay(2000).fadeOut(2000);
+                        $('#strategy_favorite_alert').append('<div class="alert alert-danger" style="text-align: center; width: 100%; position:fixed; top: 70px;">Something went wrong please refresh the page and try again.</div>').ready(function () {
+                            $('#strategy_favorite_alert').delay(2000);
                         });
                     }
                     heartNode.attr('alt', "Remove from favorites");
