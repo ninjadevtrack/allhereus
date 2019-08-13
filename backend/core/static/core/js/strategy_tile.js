@@ -19,9 +19,6 @@ $(document).ready(function() {
         var csrfmiddlewaretoken = getCookie('csrftoken');
         var heartNode = $(`#${id}`);
         heartNode.css('pointer-events', 'none');
-        setTimeout(() => {
-            heartNode.css('pointer-events', 'auto');
-        }, 2000);
         if(heartNode.hasClass('heart-active')) {
             $.ajax({
                 url: `/strategies/favorites/${id}.json`,
@@ -38,6 +35,9 @@ $(document).ready(function() {
                             $('#strategy_favorite_alert').delay(2000).fadeOut(2000);
                         });
                     }
+                    heartNode.attr('alt', "Add to favorites");
+                    heartNode.attr('title', "Add to favorites");
+                    heartNode.css('pointer-events', 'auto');
                 }
             });
         } else if(heartNode.hasClass('heart-inactive')) {
@@ -53,6 +53,9 @@ $(document).ready(function() {
                             $('#strategy_favorite_alert').delay(2000).fadeOut(2000);
                         });
                     }
+                    heartNode.attr('alt', "Remove from favorites");
+                    heartNode.attr('title', "Remove from favorites");
+                    heartNode.css('pointer-events', 'auto');
                 }
             });
         }
