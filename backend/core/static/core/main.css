@@ -78,3 +78,7 @@ body {
   color: white !important;
   background-color: orange;
 }
+.dropdown-student {
+  margin: auto;
+  width: 250px;
+}
