@@ -28,7 +28,6 @@ urlpatterns = [
     url(r'^checkins.pdf', views.checkins_pdf, name='checkins_pdf'),
 
     url(r'^students/$', views.students, name='students'),
-    url(r'^students/unassigned', views.students_unassigned, name='students_unassigned'),
     url(r'^students/(?P<id>[0-9]+)/$', views.student, name='student'),
     url(r'^students/(?P<id>[0-9]+)/edit$', views.student_edit, name='student_edit'),
     url(r'^students.csv', views.students_csv, name='students_csv'),
