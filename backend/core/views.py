@@ -187,9 +187,14 @@ def checkins_add(request):
     """
 
     if request.method == 'GET':
-        form = CheckInForm(request.user, None)
+        strategy_id = request.GET.get('strategy_id', '')
+        try:
+            strategy=Strategy.objects.get(id=strategy_id)
+            form = CheckInForm(request.user, None, strategy)
+        except:
+            form = CheckInForm(request.user, None, None)
     else:
-        form = CheckInForm(request.user, None, request.POST)
+        form = CheckInForm(request.user, None, None, request.POST)
         # If data is valid, proceeds to create a new CheckIn and redirect the user
         if form.is_valid():
             form.save()
