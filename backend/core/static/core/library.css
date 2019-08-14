@@ -107,8 +107,9 @@
 
 .strategy-subitem-middle > h5 {
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     text-decoration: underline;
+    padding-left: 10px;
 }
 
 .strategy-row > div > div {
