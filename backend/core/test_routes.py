@@ -1239,3 +1239,30 @@ def test_strategies_favorite_add_anonymous(client, strategy):
     # anonymous
     res = client.post(f'/strategies/favorites/{strategy.id}.json')
     assert res.status_code == 302
+
+
+"""
+url(r'students/(?P<id>[0-9]+)/checkin/add', views.student_checkin_add, name='student_checkin_add'),
+"""
+def test_students_checkin_add_teacher(client, teacher, student):
+    # teacher
+    client.force_login(teacher)
+    res = client.get(f'/students/{student.id}/checkin/add')
+    assert res.status_code == 200
+
+def test_students_checkin_add_school_admin(client, school_admin, student):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get(f'/students/{student.id}/checkin/add')
+    assert res.status_code == 200
+
+def test_students_checkin_add_district_admin(client, district_admin, student):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get(f'/students/{student.id}/checkin/add')
+    assert res.status_code == 200
+
+def test_students_checkin_add_anonymous(client, student):
+    # anonymous
+    res = client.get(f'/students/{student.id}/checkin/add')
+    assert res.status_code == 302
