@@ -23,7 +23,9 @@
 }
 
 .library-item:hover {
-    font-weight: bold !important;
+    border: 2px solid black;
+    outline: 4px solid black;
+    outline-offset: 1px;
 }
 
 .stretched-link:hover {
