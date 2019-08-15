@@ -35,13 +35,15 @@ class CheckInForm(ModelForm):
             if teacher.school != self.user.school or student.school != self.user.school:
                 raise ValidationError("Teacher/student schools must match.")
 
-    def __init__(self, user, student, *args, **kwargs):
+    def __init__(self, user, student, strategy, *args, **kwargs):
         self.user = user
         super(CheckInForm, self).__init__(*args, **kwargs)
         if self.instance.id == None:
             self.fields['strategy'] = ModelChoiceField(
                 queryset=Strategy.objects.for_district(user.district).as_of(),
                 required=False)
+        if strategy != None:
+            self.fields['strategy'].initial=strategy
 
         # District admins can view teachers and students of distrct
         # School admins can view teachers and students of school

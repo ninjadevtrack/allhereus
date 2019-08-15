@@ -187,9 +187,14 @@ def checkins_add(request):
     """
 
     if request.method == 'GET':
-        form = CheckInForm(request.user, None)
+        strategy_id = request.GET.get('strategy_id', '')
+        try:
+            strategy=Strategy.objects.get(id=strategy_id)
+            form = CheckInForm(request.user, None, strategy)
+        except:
+            form = CheckInForm(request.user, None, None)
     else:
-        form = CheckInForm(request.user, None, request.POST)
+        form = CheckInForm(request.user, None, None, request.POST)
         # If data is valid, proceeds to create a new CheckIn and redirect the user
         if form.is_valid():
             form.save()
@@ -241,9 +246,9 @@ def checkin_edit(request, id):
     has_checkin_permission(checkin, request.user)
 
     if request.method == 'GET':
-        form = CheckInForm(request.user, None, instance=checkin)
+        form = CheckInForm(request.user, None, None, instance=checkin)
     else:
-        form = CheckInForm(request.user, None, request.POST, instance=checkin)
+        form = CheckInForm(request.user, None, None, request.POST, instance=checkin)
         if form.is_valid():
             form.save()
             return redirect('checkins')
@@ -554,7 +559,7 @@ def student_checkin_add(request, id):
     create a new checkin
     """
     student = get_object_or_404(Student, pk=id)
-    form = CheckInForm(request.user, student)
+    form = CheckInForm(request.user, student, None)
     return render(request, 'core/checkin_edit.html', {
         'form': form
     })
