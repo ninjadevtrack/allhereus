@@ -441,8 +441,8 @@ class CheckIn(CommonInfo):
         max_length=1,
         choices=(
             ('P', 'Phone'),
-            ('V', 'Visit'),
-            ('I', 'In-Person'),
+            ('V', 'Home Visit'),
+            ('C', 'Conference'),
             ('E', 'Email')
         ),
         blank=False,

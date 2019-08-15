@@ -296,8 +296,8 @@ def checkins_csv(request):
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
     mode_choices=(
             ('P', 'Phone'),
-            ('V', 'Visit'),
-            ('I', 'In-Person'),
+            ('V', 'Home Visit'),
+            ('C', 'Conference'),
             ('E', 'Email')
         )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
@@ -359,8 +359,8 @@ def checkins_pdf(request):
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
     mode_choices=(
             ('P', 'Phone'),
-            ('V', 'Visit'),
-            ('I', 'In-Person'),
+            ('V', 'Home Visit'),
+            ('C', 'Conference'),
             ('E', 'Email')
         )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
@@ -451,14 +451,14 @@ def reports_in_chart(request):
     if intervention_type == 'mode':
         phone = to_date_checkins.filter(mode='P').count()
         visit = to_date_checkins.filter(mode='V').count()
-        in_person = to_date_checkins.filter(mode='I').count()
+        conference = to_date_checkins.filter(mode='I').count()
         email = to_date_checkins.filter(mode='E').count()
 
         return render(request, 'core/intervention_report_by_format.html', \
             {
                 'phone': phone,
                 'visit': visit,
-                'in_person': in_person,
+                'conference': conference,
                 'email': email,
                 'student_name': student_name,
                 'teacher_name': teacher_name,
