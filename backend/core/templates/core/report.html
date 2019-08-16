@@ -22,6 +22,7 @@ ul {
 {% block content %}
 <form action={% url 'reports-chart' %} target="_blank">
   <div class="container mt-5">
+    <label for="from">Start Date</label>
     <div class="row">
       <div class="form-group col-md-6 clickable">
         <div class='right-inner-addon date datepicker' data-date-format="yyyy-mm-dd">
@@ -30,6 +31,7 @@ ul {
         </div>
       </div>
     </div>
+    <label for="to">End Date</label>
     <div class="row">
       <div class="col-md-6 clickable">
       	<div class='right-inner-addon text-danger' data-date-format="yyyy-mm-dd">
