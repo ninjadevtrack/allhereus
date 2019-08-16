@@ -668,29 +668,6 @@ def test_students_anonymous(client):
     res = client.get('/students/')
     assert res.status_code == 302 and res.url == '/login?next=/students/'
 
-"""
-Url Tests url(r'^students/unassigned', views.students_unassigned, name='students_unassigned'),
-"""
-def test_students_unassigned_teacher(client, teacher):
-    # teacher
-    client.force_login(teacher)
-    res = client.get('/students/unassigned')
-    assert res.status_code == 200
-def test_students_unassigned_school_admin(client, school_admin):
-    # school_admin
-    client.force_login(school_admin)
-    res = client.get('/students/unassigned')
-    assert res.status_code == 404
-
-def test_students_unassigned_district_admin(client, district_admin):
-    # district_admin
-    client.force_login(district_admin)
-    res = client.get('/students/unassigned')
-    assert res.status_code == 200
-def test_students_unassigned_anonymous(client):
-    # anonymous
-    res = client.get('/students/unassigned')
-    assert res.status_code == 302 and res.url == '/login?next=/students/unassigned'
 
 """
 Url Tests url(r'^students/(?P<id>[0-9]+)/$', views.student, name='student'),

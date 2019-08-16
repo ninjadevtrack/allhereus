@@ -521,38 +521,6 @@ def students(request):
         'student_total': len(students),
     })
 
-
-@login_required
-def students_unassigned(request):
-    """
-    List view/ form to assign unassigned students to teacher for district_admin or Teacher.  School_admin returns 404.
-    """
-    if request.user.is_school_admin:
-        raise Http404("This view isn't defined for School_admin.")
-    errors = []
-    if request.method == 'POST':
-        student_ids = []
-        for form_input in request.POST:
-            # get primary key values from checkboxes with name formated 'checkbox-<pk>'
-            if form_input.split('-')[0] == 'checkbox':
-                student_ids.append(int(form_input.split('-')[1]))
-        students = []
-        for student_id in student_ids:
-            try:
-                student = Student.objects.get(pk=student_id)
-                if student.teacher:
-                    errors.append(f'Student already has a teacher assigned')
-                students.append(student)
-            except ObjectDoesNotExist:
-                errors.append(f'Student does not exist for provided id')
-        if not errors:
-            for student in students:
-                student.teacher = request.user
-                student.save()
-            return HttpResponseRedirect(reverse('students'))
-    students = request.user.unassigned_students
-    return render(request, 'core/students_unassigned.html', {'students': students, 'error_message': errors})
-
 @login_required
 def student_checkin_add(request, id):
     """
