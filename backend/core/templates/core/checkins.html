@@ -18,7 +18,14 @@ Check-ins
   table.dataTable {
   border-collapse: collapse !important;
   }
-
+  .checkin-filters {
+    margin-top: -30px;
+    font-weight: bold;
+    width: 100px;
+  }
+  form {
+    margin-bottom: 30px;
+  }
 </style>
 {% endblock %}
 {% block content %}
@@ -26,15 +33,20 @@ Check-ins
 <div class="container">
   <h1 class="mt-3 {% if staff and request.user.is_district_admin %}mb-1{% else %}mb-3{% endif %}">Check-ins</h1>
   <div class="row pl-3 d-flex justify-content-between align-items-center">
-    <form id="checkins-form mt-3" target="_blank">
+    <form id="checkins-form mt-3 mb-5" target="_blank">
       <div class="d-flex justify-content-between align-items-center">
+        <div class="checkin-filters">
+          <p >Filters:</p>
+        </div>
         <div class="col-md-3 clickable">
+          <label for="from">Start Date</label>
           <div class='right-inner-addon date datepicker'>
             <img  class="date-icon" onclick="changeFromDate()" src="{% static 'core/calendar.svg' %}"/>
             <input id="from" name="from" type="text" class="form-control">
           </div>
         </div>
         <div class="col-md-3 clickable">
+          <label for="to">End Date</label>
           <div class='right-inner-addon text-danger' data-date-format="yyyy-mm-dd">
             <img  onclick="changeToDate()" src="{% static 'core/calendar.svg' %}"/>
             <input id="to" name="to" type="text" class="form-control"/>
@@ -42,6 +54,7 @@ Check-ins
         </div>
         {% if request.user.is_teacher %}
         <div class="col-md-3 mr-2">
+          <label for="from">Student</label>
           <select name="student" id="student" class="dropdown-student">
             <option value="all" selected>All</option>
             {% for student in students %}
@@ -50,8 +63,8 @@ Check-ins
           </select>
         </div>
         {% endif %}
-        <input id="search" class="form-control col-md-2 mr-2" name="search" type="search" placeholder="search...">
-        <div class="btn-group">
+        <input id="search" class="form-control col-md-2 mr-2 checkin-filter-no-label" name="search" type="search" placeholder="search...">
+        <div class="btn-group checkin-filter-no-label">
           {% if staff and request.user.is_district_admin %}
           {% else %}
             <a href="{% url 'checkin_add' %}" class="btn btn-primary">+ New</a>

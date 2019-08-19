@@ -82,3 +82,7 @@ body {
   margin: auto;
   width: 250px;
 }
+
+.checkin-filter-no-label {
+  margin-top: 30px;
+}
