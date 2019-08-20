@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='checkin',
             name='mode',
-            field=models.CharField(choices=[('P', 'Phone'), ('V', 'Home Visit'), ('C', 'Conference'), ('E', 'Email')], help_text='Mode of communication for check-in.', max_length=1),
+            field=models.CharField(choices=[('P', 'Phone'), ('H', 'Home Visit'), ('C', 'Conference'), ('E', 'Email')], help_text='Mode of communication for check-in.', max_length=1),
         ),
     ]

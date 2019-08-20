@@ -296,7 +296,7 @@ def checkins_csv(request):
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
     mode_choices=(
             ('P', 'Phone'),
-            ('V', 'Home Visit'),
+            ('H', 'Home Visit'),
             ('C', 'Conference'),
             ('E', 'Email')
         )
@@ -359,7 +359,7 @@ def checkins_pdf(request):
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
     mode_choices=(
             ('P', 'Phone'),
-            ('V', 'Home Visit'),
+            ('H', 'Home Visit'),
             ('C', 'Conference'),
             ('E', 'Email')
         )
