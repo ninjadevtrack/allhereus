@@ -18,7 +18,7 @@ ul {
 }
 </style>
 
-<link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.bootstrap3.min.css">
 {% endblock %}
 
@@ -170,12 +170,12 @@ ul {
 {% endblock %}
 
 {% block js %}
-<script src="https://unpkg.com/flatpickr"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
 <script>
 $('input[name="date"]').flatpickr({
-  dateFormat: 'n/j/Y h:i K',
-  enableTime: true
+  dateFormat: 'n/j/Y',
+  enableTime: false
 });
 
 $('select').selectize();
