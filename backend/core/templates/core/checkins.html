@@ -38,14 +38,14 @@ Check-ins
         <div class="checkin-filters">
           <p >Filters:</p>
         </div>
-        <div class="col-md-3 clickable">
+        <div class="col-md-3 clickable" alt="Start Date" title="Start Date">
           <label for="from">Start Date</label>
           <div class='right-inner-addon date datepicker'>
             <img  class="date-icon" onclick="changeFromDate()" src="{% static 'core/calendar.svg' %}"/>
             <input id="from" name="from" type="text" class="form-control">
           </div>
         </div>
-        <div class="col-md-3 clickable">
+        <div class="col-md-3 clickable" alt="End Date" title="End Date">
           <label for="to">End Date</label>
           <div class='right-inner-addon text-danger' data-date-format="yyyy-mm-dd">
             <img  onclick="changeToDate()" src="{% static 'core/calendar.svg' %}"/>
@@ -53,7 +53,7 @@ Check-ins
           </div>
         </div>
         {% if request.user.is_teacher %}
-        <div class="col-md-3 mr-2">
+        <div class="col-md-3 mr-2" alt="Student" title="Student">
           <label for="from">Student</label>
           <select name="student" id="student" class="dropdown-student">
             <option value="all" selected>All</option>
@@ -63,7 +63,7 @@ Check-ins
           </select>
         </div>
         {% endif %}
-        <input id="search" class="form-control col-md-2 mr-2 checkin-filter-no-label" name="search" type="search" placeholder="search...">
+        <input id="search" alt="Search" title="Search" class="form-control col-md-2 mr-2 checkin-filter-no-label" name="search" type="search" placeholder="search...">
         <div class="btn-group checkin-filter-no-label">
           {% if staff and request.user.is_district_admin %}
           {% else %}

@@ -22,16 +22,18 @@ ul {
 {% block content %}
 <form action={% url 'reports-chart' %} target="_blank">
   <div class="container mt-5">
+    <label for="from">Start Date</label>
     <div class="row">
-      <div class="form-group col-md-6 clickable">
+      <div class="form-group col-md-6 clickable" alt="Start Date" title="Start Date">
         <div class='right-inner-addon date datepicker' data-date-format="yyyy-mm-dd">
           <img onclick="changeFromDate()"src="{% static 'core/calendar.svg' %}"/>
           <input id="from"  name="from" type="text" class="form-control" required>
         </div>
       </div>
     </div>
+    <label for="to">End Date</label>
     <div class="row">
-      <div class="col-md-6 clickable">
+      <div class="col-md-6 clickable" alt="End Date" title="End Date">
       	<div class='right-inner-addon text-danger' data-date-format="yyyy-mm-dd">
           <img  onclick="changeToDate()" src="{% static 'core/calendar.svg' %}"/>
   	      <input id="to" name="to" type="text" class="form-control" required/>
@@ -39,7 +41,7 @@ ul {
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 mt-4">
+      <div class="col-md-6 mt-4" alt="Select School" title="Select School">
       	<select name="school" id="school" required>
           <option value="">Select School</option>
           {% for school in request.user.schools %} 
@@ -49,7 +51,7 @@ ul {
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 mt-4">
+      <div class="col-md-6 mt-4" alt="Select Teacher" title="Select Teacher">
       	<select name="teacher" id="teacher" required>
           <option value="">Select Teacher</option>
           <option value="all">All</option>
@@ -57,7 +59,7 @@ ul {
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 mt-4">
+      <div class="col-md-6 mt-4" alt="Select Student" title="Select Student">
       	<select name="student" id="student" required>
           <option value="">Select Student</option>
           <option value="all">All</option>
@@ -65,9 +67,9 @@ ul {
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 mt-4">
+      <div class="col-md-6 mt-4" alt="Select Type" title="Select Type">
         <select name="type" required>
-          <option value="">Select type</option>
+          <option value="">Select Type</option>
           <option value="status">Number of Interventions by Status</option>
           <option value="mode">Percent of Intervention by Format</option>
         </select>
