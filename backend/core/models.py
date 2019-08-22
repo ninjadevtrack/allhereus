@@ -442,7 +442,7 @@ class CheckIn(CommonInfo):
         choices=(
             ('P', 'Phone'),
             ('V', 'Home Visit'),
-            ('C', 'Conference'),
+            ('I', 'Conference'),
             ('E', 'Email')
         ),
         blank=False,
