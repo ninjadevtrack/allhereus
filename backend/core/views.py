@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
 from django.contrib.auth.forms import SetPasswordForm
-from .models import CheckIn, Student, School, MyUser, Strategy, Teacher
+from .models import CheckIn, Student, School, MyUser, Strategy, Teacher, mode_choices
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
 import io
@@ -294,12 +294,6 @@ def checkins_csv(request):
             ('M', 'Left Message'),
         )
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
-    mode_choices=(
-            ('P', 'Phone'),
-            ('V', 'Visit'),
-            ('I', 'In-Person'),
-            ('E', 'Email')
-        )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
 
     checkins = request.user.checkins \
@@ -357,12 +351,6 @@ def checkins_pdf(request):
             ('M', 'Left Message'),
         )
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
-    mode_choices=(
-            ('P', 'Phone'),
-            ('V', 'Visit'),
-            ('I', 'In-Person'),
-            ('E', 'Email')
-        )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
 
     checkins = request.user.checkins \
@@ -451,14 +439,14 @@ def reports_in_chart(request):
     if intervention_type == 'mode':
         phone = to_date_checkins.filter(mode='P').count()
         visit = to_date_checkins.filter(mode='V').count()
-        in_person = to_date_checkins.filter(mode='I').count()
+        conference = to_date_checkins.filter(mode='I').count()
         email = to_date_checkins.filter(mode='E').count()
 
         return render(request, 'core/intervention_report_by_format.html', \
             {
                 'phone': phone,
                 'visit': visit,
-                'in_person': in_person,
+                'conference': conference,
                 'email': email,
                 'student_name': student_name,
                 'teacher_name': teacher_name,
