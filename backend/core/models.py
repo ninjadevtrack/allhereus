@@ -410,6 +410,12 @@ class Student(CommonInfo, SoftDeleteInfo):
     def __repr__(self):
         return f'{self.name} <{self.student_id}>'
 
+mode_choices = (
+            ('P', 'Phone'),
+            ('V', 'Home Visit'),
+            ('I', 'Conference'),
+            ('E', 'Email')
+        )
 
 class CheckIn(CommonInfo):
     """CheckIn by teacher with student's family.
@@ -439,12 +445,7 @@ class CheckIn(CommonInfo):
     )
     mode = models.CharField(
         max_length=1,
-        choices=(
-            ('P', 'Phone'),
-            ('V', 'Home Visit'),
-            ('I', 'Conference'),
-            ('E', 'Email')
-        ),
+        choices=mode_choices,
         blank=False,
         help_text='Mode of communication for check-in.',
     )

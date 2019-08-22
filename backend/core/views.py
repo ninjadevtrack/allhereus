@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, Http404
 from django.contrib.auth.forms import SetPasswordForm
-from .models import CheckIn, Student, School, MyUser, Strategy, Teacher
+from .models import CheckIn, Student, School, MyUser, Strategy, Teacher, mode_choices
 from .forms import CheckInForm, ProfileForm, StudentForm
 from xhtml2pdf import pisa
 import io
@@ -294,12 +294,6 @@ def checkins_csv(request):
             ('M', 'Left Message'),
         )
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
-    mode_choices=(
-            ('P', 'Phone'),
-            ('V', 'Home Visit'),
-            ('I', 'Conference'),
-            ('E', 'Email')
-        )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
 
     checkins = request.user.checkins \
@@ -357,12 +351,6 @@ def checkins_pdf(request):
             ('M', 'Left Message'),
         )
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
-    mode_choices=(
-            ('P', 'Phone'),
-            ('V', 'Home Visit'),
-            ('I', 'Conference'),
-            ('E', 'Email')
-        )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
 
     checkins = request.user.checkins \
