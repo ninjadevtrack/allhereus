@@ -96,7 +96,6 @@ def strategy(practice):
         grade_level_from="k",
         grade_level_to="12")
 
-                                
 
 @pytest.fixture
 def flatpage_library_framework():
@@ -105,10 +104,10 @@ def flatpage_library_framework():
     except Site.DoesNotExist:
         site = Site.objects.create(domain="app.allhere.co", name="allhere")
     try:
-        flatpage = FlatPage.objects.get(url='/library/framework/')
+        flatpage = FlatPage.objects.get(url='/strategy-framework/')
     except FlatPage.DoesNotExist:
         flatpage = FlatPage.objects.create(
-                url='/library/framework/',
+                url='/strategy-framework/',
                 title="Library Framework",
                 content="AllHere Library Strategy",
                 registration_required=True,
