@@ -359,8 +359,8 @@ def checkins_pdf(request):
     status = [k for k, v in status_choices if search.lower() in v.lower()] + ['A']
     mode_choices=(
             ('P', 'Phone'),
-            ('I', 'Home Visit'),
-            ('C', 'Conference'),
+            ('V', 'Home Visit'),
+            ('I', 'Conference'),
             ('E', 'Email')
         )
     modes = [k for k, v in mode_choices if search.lower() in v.lower()] + ['A']
