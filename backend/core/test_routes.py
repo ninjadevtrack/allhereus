@@ -981,31 +981,6 @@ def test_team_anonymous(client):
     res = client.get('/teams/123/')
     assert res.status_code == 302
 
-"""
-Url Tests url(r'/library/$', views.library, name='library')
-"""
-def test_library_teacher(client, teacher):
-    # teacher
-    client.force_login(teacher)
-    res = client.get('/library/')
-    assert res.status_code == 200
-
-def test_library_school_admin(client, school_admin):
-    # school_admin
-    client.force_login(school_admin)
-    res = client.get('/library/')
-    assert res.status_code == 200
-
-def test_library_district_admin(client, district_admin):
-    # district_admin
-    client.force_login(district_admin)
-    res = client.get('/library/')
-    assert res.status_code == 200
-
-def test_library_anonymous(client):
-    # anonymous
-    res = client.get('/library/')
-    assert res.status_code == 302
 
 """
 Url Tests url(r'/strategies/$', views.strategies, name='strategies')
@@ -1066,24 +1041,24 @@ Url Tests url(r'^library/framework/$', flagepge_view.library_framework, name='li
 def test_library_framework_teacher(client, teacher, flatpage_library_framework):
     # teacher
     client.force_login(teacher)
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
 def test_library_framework_school_admin(client, school_admin, flatpage_library_framework):
     # school_admin
     client.force_login(school_admin)
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
 def test_library_framework_district_admin(client, district_admin, flatpage_library_framework):
     # district_admin
     client.force_login(district_admin)
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
 def test_library_framework_anonymous(client, flatpage_library_framework):
     # anonymous
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 302
 
 """
