@@ -1,4 +1,5 @@
 
+{% load word_wrap %}
 <html>
   <head>
     <style>
@@ -25,11 +26,11 @@
       {% for student in students %}
         <tr>
           <th style="font-size:12px; text-align: center; padding-top:10px;">{{ forloop.counter }}</td>
-          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.first_name }}</td>
-          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.last_name }}</td>
-          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.student_id }}</td>
-          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.grade | default_if_none:"ND"}}</td>
-          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.email | default_if_none:" "}}</td>
+          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.first_name | word_wrap:20 }}</td>
+          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.last_name | word_wrap:20}}</td>
+          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.student_id | word_wrap:20 }}</td>
+          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.grade | default_if_none:"ND" | word_wrap:20}}</td>
+          <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.email | default_if_none:" " | word_wrap:20}}</td>
           <td style="font-size:12px; text-align: center; padding-top:10px;">{{ student.last_checkin.date }}</td>
         </tr>
       {% endfor %}
