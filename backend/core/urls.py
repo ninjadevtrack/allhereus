@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^library/framework/$', flat_views.flatpage, {'url': '/strategy-framework/'}, name='library_framework'),
+    url(r'^strategy-framework/$', flat_views.flatpage, {'url': '/strategy-framework/'}, name='strategy_framework'),
     url(r'^$', views.home, name='home'),
     url(r'login', auth_views.login, {'template_name': 'core/login.html'}, name='login'),
     url(r'logout', views.logout_view, name="logout"),
