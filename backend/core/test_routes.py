@@ -1038,25 +1038,25 @@ def test_strategy_anonymous(client, strategy):
 """
 Url Tests url(r'^library/framework/$', flagepge_view.library_framework, name='library_framework')
 """
-def test_library_framework_teacher(client, teacher, flatpage_library_framework):
+def test_library_framework_teacher(client, teacher, flatpage_strategy_framework):
     # teacher
     client.force_login(teacher)
     res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
-def test_library_framework_school_admin(client, school_admin, flatpage_library_framework):
+def test_library_framework_school_admin(client, school_admin, flatpage_strategy_framework):
     # school_admin
     client.force_login(school_admin)
     res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
-def test_library_framework_district_admin(client, district_admin, flatpage_library_framework):
+def test_library_framework_district_admin(client, district_admin, flatpage_strategy_framework):
     # district_admin
     client.force_login(district_admin)
     res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
-def test_library_framework_anonymous(client, flatpage_library_framework):
+def test_library_framework_anonymous(client, flatpage_strategy_framework):
     # anonymous
     res = client.get(f'/strategy-framework/')
     assert res.status_code == 302

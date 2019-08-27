@@ -875,9 +875,9 @@ def strategies(request):
     """
     the landing page for Intevention Stratgy Library
     """
-    all = request.GET.get("all", "")
+    landing = request.GET.get("landing", "")
 
-    if all == "":
+    if landing == "":
         search = request.GET.get("search", "")
         strategies = Strategy.objects.as_of()
         filtered_strategies = strategies.filter(
@@ -898,7 +898,7 @@ def strategies(request):
         'total': len(request.user.checkins),
     }
 
-    return render(request, 'core/library.html', context=context)
+    return render(request, 'core/strategies_landing.html', context=context)
 
 @login_required
 def schools_staff_json(request, school_id):

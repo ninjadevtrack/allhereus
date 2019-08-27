@@ -27,7 +27,7 @@
       {% if request.user.is_district_admin or request.user.is_school_admin %}
       {% url 'strategies' as strategies_url %}
       <li class="nav-item {% if request.get_full_path == strategies_url %} active {% endif %}">
-        <a class="nav-link" href="{{ strategies_url }}?all=true">Strategies</a>
+        <a class="nav-link" href="{{ strategies_url }}?landing=true">Strategies</a>
       </li>
       {% endif %}
       {% if not request.user.is_district_admin and not request.user.is_school_admin %}
@@ -37,7 +37,7 @@
         </li>
         {% url 'strategies' as strategies_url %}
         <li class="nav-item {% if request.get_full_path == strategies_url %} active {% endif %}">
-          <a class="nav-link" href="{{ strategies_url }}?all=true">Strategies</a>
+          <a class="nav-link" href="{{ strategies_url }}?landing=true">Strategies</a>
         </li>
       {% endif %}
 

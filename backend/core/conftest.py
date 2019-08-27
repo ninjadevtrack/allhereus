@@ -98,7 +98,7 @@ def strategy(practice):
 
 
 @pytest.fixture
-def flatpage_library_framework():
+def flatpage_strategy_framework():
     try:
         site = Site.objects.get(pk=1)
     except Site.DoesNotExist:
