@@ -752,13 +752,13 @@ def staff_students(request, school_id, staff_id):
     """
     if request.user.is_teacher:
         raise Http404("This view isn't defined for Teacher.")
-    # school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
-    # staff = get_object_or_404(school.staff, pk=staff_id)
-    # students = staff.students.filter(school=school).order_by('last_name','first_name')
+    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    staff = get_object_or_404(school.staff, pk=staff_id)
+    students = staff.students.filter(school=school).order_by('last_name','first_name')
     return render(request, 'core/student_list.html', {
-        # 'staff': staff,
-        # 'students': students,
-        # 'student_total': len(students),
+        'staff': staff,
+        'students': students,
+        'student_total': len(students),
     })
 
 @login_required
