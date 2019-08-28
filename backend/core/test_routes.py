@@ -51,18 +51,18 @@ def test_staff_student_edit_district_admin(client, district_admin, school, stude
     # district_admin
     client.force_login(district_admin)
     res = client.get('/schools/{}/staff/{}/students/{}/edit'.format(school.id, district_admin.id, student.id))
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_staff_student_edit_school_admin(client, school_admin, school, student):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/schools/{}/staff/{}/students/{}/edit'.format(school.id, school_admin.id, student.id))
-    assert res.status_code == 200
+    assert res.status_code == 404
 
 def test_staff_student_edit_anonymous(client, school, student):
     # anonymous user
     res = client.get('/schools/{}/staff/1/students/{}/edit'.format(school.id, student.id))
-    assert res.status_code == 302
+    assert res.status_code == 404
 
 """
 Url tests for url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/$', views.staff_student, name='staff_student'),
@@ -700,7 +700,7 @@ def test_student_teacher(client, teacher, student):
     # teacher
     client.force_login(teacher)
     res = client.get('/students/{}/edit'.format(student.id))
-    assert res.status_code == 200
+    assert res.status_code == 404
 def test_student_school_admin(client, school_admin, student):
     # school_admin
     client.force_login(school_admin)
@@ -711,11 +711,11 @@ def test_student_district_admin(client, district_admin, student):
     # district_admin
     client.force_login(district_admin)
     res = client.get('/students/{}/edit'.format(student.id))
-    assert res.status_code == 200
+    assert res.status_code == 404
 def test_student_anonymous(client, student):
     # anonymous
     res = client.get('/students/{}/edit'.format(student.id))
-    assert res.status_code == 302 and res.url == '/login?next=/students/{}/edit'.format(student.id)
+    assert res.status_code == 404
 
 """
 Url Tests url(r'^students.pdf', views.students_pdf, name='students_pdf'),

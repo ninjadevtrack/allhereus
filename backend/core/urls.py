@@ -30,7 +30,7 @@ urlpatterns = [
 
     url(r'^students/$', views.students, name='students'),
     url(r'^students/(?P<id>[0-9]+)/$', views.student, name='student'),
-    url(r'^students/(?P<id>[0-9]+)/edit$', views.student_edit, name='student_edit'),
+    # url(r'^students/(?P<id>[0-9]+)/edit$', views.student_edit, name='student_edit'),
     url(r'^students.csv', views.students_csv, name='students_csv'),
     url(r'^students.pdf', views.students_pdf, name='students_pdf'),
 
@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/password_set$', views.staff_password_set, name='staff_password_set'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/$', views.staff_students, name='staff_students'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/$', views.staff_student, name='staff_student'),
-    url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/edit$', views.staff_student_edit, name='staff_student_edit'),
+    # url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/edit$', views.staff_student_edit, name='staff_student_edit'),
 
     url(r'^library/$', views.library, name='library'),
 

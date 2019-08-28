@@ -471,27 +471,27 @@ def student(request, id):
         'recent_checkins': student.checkins[:10]
     })
 
-@login_required
-def student_edit(request, id):
-    """
-    Edit existing student view for district_admin or Teacher.  School_admin returns 404.
-    """
-    if request.user.is_school_admin:
-        raise Http404("This view isn't defined for School_admin.")
-    student = get_object_or_404(Student, pk=id)
-    if request.method == 'POST':
-        form = StudentForm(request.user, request.POST, instance=student)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('students'))
-    else:
-        form = StudentForm(request.user, instance=student)
-    return render(request, 'core/student_edit.html', {
-        'form': form,
-        'view': 'edit',
-        'student': student,
-        'error_message': [error for error in form.non_field_errors()],
-    })
+# @login_required
+# def student_edit(request, id):
+#     """
+#     Edit existing student view for district_admin or Teacher.  School_admin returns 404.
+#     """
+#     if request.user.is_school_admin:
+#         raise Http404("This view isn't defined for School_admin.")
+#     student = get_object_or_404(Student, pk=id)
+#     if request.method == 'POST':
+#         form = StudentForm(request.user, request.POST, instance=student)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('students'))
+#     else:
+#         form = StudentForm(request.user, instance=student)
+#     return render(request, 'core/student_edit.html', {
+#         'form': form,
+#         'view': 'edit',
+#         'student': student,
+#         'error_message': [error for error in form.non_field_errors()],
+#     })
 
 
 @login_required
@@ -752,13 +752,13 @@ def staff_students(request, school_id, staff_id):
     """
     if request.user.is_teacher:
         raise Http404("This view isn't defined for Teacher.")
-    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
-    staff = get_object_or_404(school.staff, pk=staff_id)
-    students = staff.students.filter(school=school).order_by('last_name','first_name')
+    # school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+    # staff = get_object_or_404(school.staff, pk=staff_id)
+    # students = staff.students.filter(school=school).order_by('last_name','first_name')
     return render(request, 'core/student_list.html', {
-        'staff': staff,
-        'students': students,
-        'student_total': len(students),
+        # 'staff': staff,
+        # 'students': students,
+        # 'student_total': len(students),
     })
 
 @login_required
@@ -779,32 +779,32 @@ def staff_student(request, school_id, staff_id, student_id):
         'recent_checkins': student.checkins[:10]
     })
 
-@login_required
-def staff_student_edit(request, school_id, staff_id, student_id):
-    """
-    Editing exsting student for district_admin or school_admin.  Teacher returns 404.
-    """
-    if request.user.is_teacher:
-        raise Http404("This view isn't defined for Teacher.")
-    school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
-    staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
-    student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
-    if request.method == 'POST':
-        form = StudentForm(request.user, request.POST, instance=student)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('staff_students', kwargs={
-                'school_id': school_id, 'staff_id': staff_id}))
-    else:
-        form = StudentForm(request.user, instance=student)
-    return render(request, 'core/student_edit.html', {
-        'form': form,
-        'view': 'edit',
-        'school': school,
-        'staff': staff,
-        'student': student,
-        'error_message': [error for error in form.non_field_errors()],
-    })
+# @login_required
+# def staff_student_edit(request, school_id, staff_id, student_id):
+#     """
+#     Editing exsting student for district_admin or school_admin.  Teacher returns 404.
+#     """
+#     if request.user.is_teacher:
+#         raise Http404("This view isn't defined for Teacher.")
+#     school = get_object_or_404(request.user.schools, pk=school_id) # only allow viewing schools in my schools.
+#     staff = get_object_or_404(school.staff, pk=staff_id) # make sure the staff is at the school
+#     student = get_object_or_404(staff.students, pk=student_id) # make sure the student belongs to staff
+#     if request.method == 'POST':
+#         form = StudentForm(request.user, request.POST, instance=student)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('staff_students', kwargs={
+#                 'school_id': school_id, 'staff_id': staff_id}))
+#     else:
+#         form = StudentForm(request.user, instance=student)
+#     return render(request, 'core/student_edit.html', {
+#         'form': form,
+#         'view': 'edit',
+#         'school': school,
+#         'staff': staff,
+#         'student': student,
+#         'error_message': [error for error in form.non_field_errors()],
+#     })
 
 
 @login_required
