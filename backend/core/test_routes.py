@@ -1011,25 +1011,25 @@ def test_strategies_anonymous(client):
 """
 Url Tests url(r'/strategies/?landing=true$', views.strategies, name='strategies')
 """
-def test_strategies_teacher(client, teacher):
+def test_strategies_landing_teacher(client, teacher):
     # teacher
     client.force_login(teacher)
     res = client.get('/strategies/?landing=true')
     assert res.status_code == 200
 
-def test_strategies_school_admin(client, school_admin):
+def test_strategies_landing_school_admin(client, school_admin):
     # school_admin
     client.force_login(school_admin)
     res = client.get('/strategies/?landing=true')
     assert res.status_code == 200
 
-def test_strategies_district_admin(client, district_admin):
+def test_strategies_landing_district_admin(client, district_admin):
     # district_admin
     client.force_login(district_admin)
     res = client.get('/strategies/?landing=true')
     assert res.status_code == 200
 
-def test_strategies_anonymous(client):
+def test_strategies_landing_anonymous(client):
     # anonymous
     res = client.get('/strategies/?landing=true')
     assert res.status_code == 302
