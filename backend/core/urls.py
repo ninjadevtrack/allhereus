@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^library/framework/$', flat_views.flatpage, {'url': '/library/framework/'}, name='library_framework'),
+    url(r'^strategy-framework/$', flat_views.flatpage, {'url': '/strategy-framework/'}, name='strategy_framework'),
     url(r'^$', views.home, name='home'),
     url(r'login', auth_views.login, {'template_name': 'core/login.html'}, name='login'),
     url(r'logout', views.logout_view, name="logout"),
@@ -53,8 +53,6 @@ urlpatterns = [
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/$', views.staff_students, name='staff_students'),
     url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/$', views.staff_student, name='staff_student'),
     # url(r'^schools/(?P<school_id>[0-9]+)/staff/(?P<staff_id>[0-9]+)/students/(?P<student_id>[0-9]+)/edit$', views.staff_student_edit, name='staff_student_edit'),
-
-    url(r'^library/$', views.library, name='library'),
 
     url(r'^strategies/$', views.strategies, name='strategies'),
     url(r'^strategies/favorites/$', views.strategy_favorites, name='strategy_favorites'),

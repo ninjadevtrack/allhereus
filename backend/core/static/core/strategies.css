@@ -1,28 +1,28 @@
-.library-search {
+.strategy-search {
     border: 4px solid black;
     border-radius: 0px;
     padding: 10px;
     color: black;
     font-size: 20px;
 }
-.library-search::placeholder {
+.strategy-search::placeholder {
     color: black;
     font-weight: bold;
     font-style: italic;
     text-align: center;
 }
 
-.library-item {
+.strategy-item {
     border: 4px solid black;
     border-radius: 0px;
     font-weight: normal;
 }
 
-.library-item-title {
+.strategy-item-title {
     font-size: 20px !important;
 }
 
-.library-item:hover {
+.strategy-item:hover {
     border: 2px solid black;
     outline: 4px solid black;
     outline-offset: 1px;

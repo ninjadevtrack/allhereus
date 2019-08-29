@@ -846,17 +846,6 @@ def staff_checkin(request, school_id, staff_id, checkin_id):
         'viewonly': True,
     })
 
-@login_required
-def library(request):
-    """
-    the landing page for Intevention Stratgy Library
-    """
-    context = {
-        'strategies': Strategy.objects.as_of(),
-        'total': len(request.user.checkins),
-    }
-
-    return render(request, 'core/library.html', context=context)
 
 @login_required
 def strategy(request, strategy_id):
@@ -874,21 +863,30 @@ def strategies(request):
     """
     the landing page for Intevention Stratgy Library
     """
-    search = request.GET.get("search", "")
-    strategies = Strategy.objects.as_of()
-    filtered_strategies = strategies.filter(
-        Q(name__icontains=search) |
-        Q(display_name__icontains=search) |
-        Q(description__icontains=search) |
-        Q(district__name__icontains=search) |
-        Q(practice__name__icontains=search)
-    )
-    context = {
-        'strategies': filtered_strategies.order_by('practice', 'display_name'),
-        'search': search
+    landing = request.GET.get("landing", "")
+
+    if landing == "":
+        search = request.GET.get("search", "")
+        strategies = Strategy.objects.as_of()
+        filtered_strategies = strategies.filter(
+            Q(name__icontains=search) |
+            Q(display_name__icontains=search) |
+            Q(description__icontains=search) |
+            Q(district__name__icontains=search) |
+            Q(practice__name__icontains=search)
+        )
+        context = {
+            'strategies': filtered_strategies.order_by('practice', 'display_name'),
+            'search': search
+        }
+        return render(request, 'core/strategies.html', context=context)
+    else:
+        context = {
+        'strategies': Strategy.objects.as_of(),
+        'total': len(request.user.checkins),
     }
 
-    return render(request, 'core/strategies.html', context=context)
+    return render(request, 'core/strategies_landing.html', context=context)
 
 @login_required
 def schools_staff_json(request, school_id):

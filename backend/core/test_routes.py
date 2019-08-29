@@ -981,31 +981,6 @@ def test_team_anonymous(client):
     res = client.get('/teams/123/')
     assert res.status_code == 302
 
-"""
-Url Tests url(r'/library/$', views.library, name='library')
-"""
-def test_library_teacher(client, teacher):
-    # teacher
-    client.force_login(teacher)
-    res = client.get('/library/')
-    assert res.status_code == 200
-
-def test_library_school_admin(client, school_admin):
-    # school_admin
-    client.force_login(school_admin)
-    res = client.get('/library/')
-    assert res.status_code == 200
-
-def test_library_district_admin(client, district_admin):
-    # district_admin
-    client.force_login(district_admin)
-    res = client.get('/library/')
-    assert res.status_code == 200
-
-def test_library_anonymous(client):
-    # anonymous
-    res = client.get('/library/')
-    assert res.status_code == 302
 
 """
 Url Tests url(r'/strategies/$', views.strategies, name='strategies')
@@ -1031,6 +1006,32 @@ def test_strategies_district_admin(client, district_admin):
 def test_strategies_anonymous(client):
     # anonymous
     res = client.get('/strategies/')
+    assert res.status_code == 302
+
+"""
+Url Tests url(r'/strategies/?landing=true$', views.strategies, name='strategies')
+"""
+def test_strategies_landing_teacher(client, teacher):
+    # teacher
+    client.force_login(teacher)
+    res = client.get('/strategies/?landing=true')
+    assert res.status_code == 200
+
+def test_strategies_landing_school_admin(client, school_admin):
+    # school_admin
+    client.force_login(school_admin)
+    res = client.get('/strategies/?landing=true')
+    assert res.status_code == 200
+
+def test_strategies_landing_district_admin(client, district_admin):
+    # district_admin
+    client.force_login(district_admin)
+    res = client.get('/strategies/?landing=true')
+    assert res.status_code == 200
+
+def test_strategies_landing_anonymous(client):
+    # anonymous
+    res = client.get('/strategies/?landing=true')
     assert res.status_code == 302
 
 """
@@ -1061,29 +1062,29 @@ def test_strategy_anonymous(client, strategy):
 
 
 """
-Url Tests url(r'^library/framework/$', flagepge_view.library_framework, name='library_framework')
+Url Tests url(r'^strategy-framework/$', flagepge_view.strategy_framework, name='strategy_framework')
 """
-def test_library_framework_teacher(client, teacher, flatpage_library_framework):
+def test_strategy_framework_teacher(client, teacher, flatpage_strategy_framework):
     # teacher
     client.force_login(teacher)
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
-def test_library_framework_school_admin(client, school_admin, flatpage_library_framework):
+def test_strategy_framework_school_admin(client, school_admin, flatpage_strategy_framework):
     # school_admin
     client.force_login(school_admin)
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
-def test_library_framework_district_admin(client, district_admin, flatpage_library_framework):
+def test_strategy_framework_district_admin(client, district_admin, flatpage_strategy_framework):
     # district_admin
     client.force_login(district_admin)
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 200
 
-def test_library_framework_anonymous(client, flatpage_library_framework):
+def test_strategy_framework_anonymous(client, flatpage_strategy_framework):
     # anonymous
-    res = client.get(f'/library/framework/')
+    res = client.get(f'/strategy-framework/')
     assert res.status_code == 302
 
 """
