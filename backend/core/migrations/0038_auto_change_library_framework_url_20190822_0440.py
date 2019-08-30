@@ -37,7 +37,7 @@ def change_library_framework_url_into_strategy_framework(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0036_myuser_strategy_favorites'),
+        ('core', '0037_auto_20190815_1816'),
         ('sites', '0002_alter_domain_unique'),
         ('flatpages', '0001_initial'), 
     ]
